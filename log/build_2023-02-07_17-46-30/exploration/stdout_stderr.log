@@ -1,0 +1,18 @@
+[35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:38:5:[m[K [01;31m[Kerror: [m[Kunterminated argument list invoking macro "RCLCPP_INFO"
+   38 | 
+      |     [01;31m[K^[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In member function ‘[01m[Kvoid exploration::MWFCN_Algo::timer_callback()[m[K’:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:19:7:[m[K [01;31m[Kerror: [m[K‘[01m[KRCLCPP_INFO[m[K’ was not declared in this scope
+   19 |       [01;31m[KRCLCPP_INFO[m[K(this->get_logger(), nodename;
+      |       [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:19:18:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K}[m[K’ at end of input
+   19 |       RCLCPP_INFO[01;31m[K([m[Kthis->get_logger(), nodename;
+      |                  [01;31m[K^[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:16:1:[m[K [01;36m[Knote: [m[Kto match this ‘[01m[K{[m[K’
+   16 | [01;36m[K{[m[K
+      | [01;36m[K^[m[K
+gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

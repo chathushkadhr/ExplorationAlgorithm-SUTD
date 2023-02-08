@@ -41,7 +41,7 @@ DESTINATION lib/${PROJECT_NAME}
 )
 
 install(
-  DIRECTORY include launch
+  DIRECTORY include launch config
   DESTINATION share/${PROJECT_NAME}
 )
 

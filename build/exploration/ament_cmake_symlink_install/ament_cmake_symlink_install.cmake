@@ -313,8 +313,8 @@ message(STATUS "Execute custom install script")
 # install("TARGETS" "exec_exp" "DESTINATION" "lib/exploration")
 include("/home/chathushka-sutd/ros2_ws_exp/build/exploration/ament_cmake_symlink_install_targets_0_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
 
-# install(DIRECTORY "include" "launch" "DESTINATION" "share/exploration")
-ament_cmake_symlink_install_directory("/home/chathushka-sutd/ros2_ws_exp/src/exploration" DIRECTORY "include" "launch" "DESTINATION" "share/exploration")
+# install(DIRECTORY "include" "launch" "config" "DESTINATION" "share/exploration")
+ament_cmake_symlink_install_directory("/home/chathushka-sutd/ros2_ws_exp/src/exploration" DIRECTORY "include" "launch" "config" "DESTINATION" "share/exploration")
 
 # install(FILES "/home/chathushka-sutd/ros2_ws_exp/build/exploration/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/exploration" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 ament_cmake_symlink_install_files("/home/chathushka-sutd/ros2_ws_exp/src/exploration" FILES "/home/chathushka-sutd/ros2_ws_exp/build/exploration/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/exploration" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")

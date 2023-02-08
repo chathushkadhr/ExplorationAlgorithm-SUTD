@@ -83,5 +83,19 @@
         "variant": "cpp",
         "core": "cpp",
         "*.txx": "cpp"
-    }
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/chathushka-sutd/ros2_ws/install/simple_publisher/local/lib/python3.10/dist-packages",
+        "/home/chathushka-sutd/ros2_ws/build/my_package2",
+        "/home/chathushka-sutd/ros2_ws/install/my_package2/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/chathushka-sutd/ros2_ws/install/simple_publisher/local/lib/python3.10/dist-packages",
+        "/home/chathushka-sutd/ros2_ws/build/my_package2",
+        "/home/chathushka-sutd/ros2_ws/install/my_package2/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
 }
