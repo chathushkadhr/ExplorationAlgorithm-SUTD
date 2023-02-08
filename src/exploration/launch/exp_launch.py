@@ -16,7 +16,7 @@ def generate_launch_description():
 
     # Declare arguments
     declare_arg_namespace = DeclareLaunchArgument('namespace',
-        default_value='robot6',
+        default_value='robot2',
         description='Host Name / Namespace')
 
     # Create Launch configurations

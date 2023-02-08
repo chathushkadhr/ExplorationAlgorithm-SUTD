@@ -1,0 +1,122 @@
+[0.012s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.033s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.044s] [ 33%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[1.452s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In constructor ‘[01m[Kexploration::MWFCN_Algo::MWFCN_Algo()[m[K’:
+[1.452s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:11:7:[m[K [01;35m[Kwarning: [m[Klist-initializer for non-class type must not be parenthesized
+[1.452s]    11 |       [01;35m[Krotation_w({0.866,  0.500, 1.0})[m[K,
+[1.452s]       |       [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.452s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:12:7:[m[K [01;35m[Kwarning: [m[Klist-initializer for non-class type must not be parenthesized
+[1.453s]    12 |       [01;35m[Krotation_z({0.5  , -0.866, 0.0})[m[K
+[1.453s]       |       [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.477s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:52:7:[m[K [01;31m[Kerror: [m[K‘[01m[Kdebug_param[m[K’ was not declared in this scope
+[1.477s]    52 |       [01;31m[Kdebug_param[m[K()
+[1.477s]       |       [01;31m[K^~~~~~~~~~~[m[K
+[1.477s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:27:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KrateHz[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+[1.477s]    27 |       int [01;35m[KrateHz[m[K=this->get_parameter("rate").get_parameter_value().get<int>();
+[1.477s]       |           [01;35m[K^~~~~~[m[K
+[1.478s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:29:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinflation_radius[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+[1.478s]    29 |       float [01;35m[Kinflation_radius[m[K=this->get_parameter("inflation_radius").get_parameter_value().get<float>();
+[1.478s]       |             [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[1.478s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:31:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kn_robot[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+[1.478s]    31 |       int [01;35m[Kn_robot[m[K=this->get_parameter("n_robot").get_parameter_value().get<int>();
+[1.478s]       |           [01;35m[K^~~~~~~[m[K
+[1.478s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:33:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kthis_robot_idx[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+[1.478s]    33 |       int [01;35m[Kthis_robot_idx[m[K=this->get_parameter("this_robot_idx").get_parameter_value().get<int>();
+[1.478s]       |           [01;35m[K^~~~~~~~~~~~~~[m[K
+[1.478s] In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/client.hpp:40[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+[1.478s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+[1.478s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:5[m[K,
+[1.479s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.479s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In function ‘[01m[Kvoid debug_param()[m[K’:
+[1.479s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:36:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K->[m[K’ token
+[1.479s]    59 |       RCLCPP_INFO_STREAM(MWFCN_Algo[01;31m[K->[m[Kget_logger(), "Map topic: " << map_topic
+[1.479s]       |                                    [01;31m[K^~[m[K
+[1.479s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[1.479s]    59 |       [01;31m[KRCLCPP_INFO_STREAM[m[K(MWFCN_Algo->get_logger(), "Map topic: " << map_topic
+[1.479s]       |       [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.479s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:7:[m[K [01;31m[Kerror: [m[K‘[01m[K<declaration error>[m[K’ is not a template [[01;31m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-fpermissive-fpermissive]8;;[m[K]
+[1.479s]    59 |       [01;31m[KRCLCPP_INFO_STREAM[m[K(MWFCN_Algo->get_logger(), "Map topic: " << map_topic
+[1.479s]       |       [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.479s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[1.479s]    59 |       [01;31m[KRCLCPP_INFO_STREAM[m[K(MWFCN_Algo->get_logger(), "Map topic: " << map_topic
+[1.479s]       |       [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.479s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:7:[m[K [01;31m[Kerror: [m[K‘[01m[K<declaration error>[m[K’ is not a template [[01;31m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-fpermissive-fpermissive]8;;[m[K]
+[1.479s]    59 |       [01;31m[KRCLCPP_INFO_STREAM[m[K(MWFCN_Algo->get_logger(), "Map topic: " << map_topic
+[1.479s]       |       [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.479s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:7:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[1.479s]    59 |       [01;31m[KRCLCPP_INFO_STREAM[m[K(MWFCN_Algo->get_logger(), "Map topic: " << map_topic
+[1.479s]       |       [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.480s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:69:[m[K [01;31m[Kerror: [m[K‘[01m[Kmap_topic[m[K’ was not declared in this scope
+[1.480s]    59 | RCLCPP_INFO_STREAM(MWFCN_Algo->get_logger(), "Map topic: " << [01;31m[Kmap_topic[m[K
+[1.480s]       |                                                               [01;31m[K^~~~~~~~~[m[K
+[1.480s] 
+[1.483s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:60:30:[m[K [01;31m[Kerror: [m[K‘[01m[Kcostmap_topic[m[K’ was not declared in this scope
+[1.483s]    60 |       <<"\ncostmap_topic: "<<[01;31m[Kcostmap_topic[m[K
+[1.483s]       |                              [01;31m[K^~~~~~~~~~~~~[m[K
+[1.486s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:61:33:[m[K [01;31m[Kerror: [m[K‘[01m[Krobot_base_frame[m[K’ was not declared in this scope
+[1.486s]    61 |       <<"\nrobot_base_frame: "<<[01;31m[Krobot_base_frame[m[K
+[1.486s]       |                                 [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[1.488s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:62:28:[m[K [01;31m[Kerror: [m[K‘[01m[Krobot_frame[m[K’ was not declared in this scope
+[1.488s]    62 |       <<"\nrobot_frame: "<<[01;31m[Krobot_frame[m[K
+[1.489s]       |                            [01;31m[K^~~~~~~~~~~[m[K
+[1.490s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:63:26:[m[K [01;31m[Kerror: [m[K‘[01m[Kns[m[K’ was not declared in this scope
+[1.490s]    63 |       <<"\nnamespace: "<<[01;31m[Kns[m[K
+[1.490s]       |                          [01;31m[K^~[m[K
+[1.491s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:64:21:[m[K [01;31m[Kerror: [m[K‘[01m[KrateHz[m[K’ was not declared in this scope
+[1.492s]    64 |       <<"\nrate: "<<[01;31m[KrateHz[m[K
+[1.492s]       |                     [01;31m[K^~~~~~[m[K
+[1.494s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:65:33:[m[K [01;31m[Kerror: [m[K‘[01m[Kinflation_radius[m[K’ was not declared in this scope
+[1.495s]    65 |       <<"\ninflation_radius: "<<[01;31m[Kinflation_radius[m[K
+[1.495s]       |                                 [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[1.496s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:66:24:[m[K [01;31m[Kerror: [m[K‘[01m[Kn_robot[m[K’ was not declared in this scope
+[1.496s]    66 |       <<"\nn_robot: "<<[01;31m[Kn_robot[m[K
+[1.496s]       |                        [01;31m[K^~~~~~~[m[K
+[1.499s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:67:31:[m[K [01;31m[Kerror: [m[K‘[01m[Kthis_robot_idx[m[K’ was not declared in this scope
+[1.499s]    67 |       <<"\nthis_robot_idx: "<<[01;31m[Kthis_robot_idx[m[K
+[1.499s]       |                               [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.502s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:68:40:[m[K [01;31m[Kerror: [m[K‘[01m[Krobot_ano_frame_preffix[m[K’ was not declared in this scope
+[1.502s]    68 |       <<"\nrobot_ano_frame_preffix: "<<[01;31m[Krobot_ano_frame_preffix[m[K
+[1.503s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.506s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:69:39:[m[K [01;31m[Kerror: [m[K‘[01m[Krobot_ano_frame_suffix[m[K’ was not declared in this scope
+[1.506s]    69 |       <<"\nrobot_ano_frame_suffix: "<<[01;31m[Krobot_ano_frame_suffix[m[K
+[1.506s]       |                                       [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.510s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:70:38:[m[K [01;31m[Kerror: [m[K‘[01m[Ktrajectory_query_name[m[K’ was not declared in this scope
+[1.510s]    70 |       <<"\ntrajectory_query_name: "<<[01;31m[Ktrajectory_query_name[m[K
+[1.510s]       |                                      [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[1.512s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:71:28:[m[K [01;31m[Kerror: [m[K‘[01m[Koutput_file[m[K’ was not declared in this scope
+[1.512s]    71 |       <<"\noutput_file: "<<[01;31m[Koutput_file[m[K
+[1.512s]       |                            [01;31m[K^~~~~~~~~~~[m[K
+[1.514s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:72:32:[m[K [01;31m[Kerror: [m[K‘[01m[Koutput_map_file[m[K’ was not declared in this scope
+[1.514s]    72 |       <<"\noutput_map_file: "<<[01;31m[Koutput_map_file[m[K
+[1.514s]       |                                [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.515s] In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/logging.hpp:24[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/client.hpp:40[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+[1.515s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+[1.515s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:5[m[K,
+[1.515s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.515s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:36:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K->[m[K’ token
+[1.515s]    59 |       RCLCPP_INFO_STREAM(MWFCN_Algo[01;31m[K->[m[Kget_logger(), "Map topic: " << map_topic
+[1.515s]       |                                    [01;31m[K^~[m[K
+[1.515s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:59:36:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K->[m[K’ token
+[1.515s]    59 |       RCLCPP_INFO_STREAM(MWFCN_Algo[01;31m[K->[m[Kget_logger(), "Map topic: " << map_topic
+[1.515s]       |                                    [01;31m[K^~[m[K
+[2.035s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
+[2.035s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+[2.035s] gmake: *** [Makefile:146: all] Error 2
+[2.036s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16

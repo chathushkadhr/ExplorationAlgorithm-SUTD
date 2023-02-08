@@ -1,0 +1,191 @@
+[0.014s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.041s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.055s] [ 66%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[0.055s] [ 66%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o[0m
+[1.735s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.735s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:40:[m[K [01;31m[Kerror: [m[K‘[01m[KOccupancyGrid[m[K’ in namespace ‘[01m[Knav_msgs[m[K’ does not name a type
+[1.735s]    24 |       void mapCallBack(const nav_msgs::[01;31m[KOccupancyGrid[m[K::ConstPtr& msg);
+[1.735s]       |                                        [01;31m[K^~~~~~~~~~~~~[m[K
+[1.735s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:63:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+[1.735s]    24 |       void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.735s]       |                                                               [01;31m[K^[m[K
+[1.735s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:63:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[1.735s]    24 |       void mapCallBack[34m[K([m[Kconst nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.735s]       |                       [34m[K~[m[K                                       [01;31m[K^[m[K
+[1.735s]       |                                                               [32m[K)[m[K
+[1.735s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:63:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+[1.735s]    24 |       void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.735s]       |                                                               [01;31m[K^[m[K
+[1.735s]       |                                                                [32m[K;[m[K
+[1.736s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:65:[m[K [01;31m[Kerror: [m[K‘[01m[Kmsg[m[K’ does not name a type
+[1.736s]    24 |       void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr& [01;31m[Kmsg[m[K);
+[1.736s]       |                                                                 [01;31m[K^~~[m[K
+[1.736s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:50:[m[K [01;31m[Kerror: [m[K‘[01m[KOccupancyGrid[m[K’ in namespace ‘[01m[Knav_msgs[m[K’ does not name a type
+[1.736s]    25 |       void costmapMergedCallBack(const nav_msgs::[01;31m[KOccupancyGrid[m[K::ConstPtr& msg);
+[1.736s]       |                                                  [01;31m[K^~~~~~~~~~~~~[m[K
+[1.736s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:73:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+[1.736s]    25 |       void costmapMergedCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.736s]       |                                                                         [01;31m[K^[m[K
+[1.736s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:73:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[1.736s]    25 |       void costmapMergedCallBack[34m[K([m[Kconst nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.736s]       |                                 [34m[K~[m[K                                       [01;31m[K^[m[K
+[1.736s]       |                                                                         [32m[K)[m[K
+[1.736s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:73:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+[1.736s]    25 |       void costmapMergedCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.736s]       |                                                                         [01;31m[K^[m[K
+[1.736s]       |                                                                          [32m[K;[m[K
+[1.737s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:75:[m[K [01;31m[Kerror: [m[K‘[01m[Kmsg[m[K’ does not name a type
+[1.737s]    25 |       void costmapMergedCallBack(const nav_msgs::OccupancyGrid::ConstPtr& [01;31m[Kmsg[m[K);
+[1.737s]       |                                                                           [01;31m[K^~~[m[K
+[1.737s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:46:[m[K [01;31m[Kerror: [m[K‘[01m[KPointStamped[m[K’ in namespace ‘[01m[Kgeometry_msgs[m[K’ does not name a type
+[1.737s]    26 |       void rvizCallBack(const geometry_msgs::[01;31m[KPointStamped[m[K::ConstPtr& msg);
+[1.737s]       |                                              [01;31m[K^~~~~~~~~~~~[m[K
+[1.737s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:68:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+[1.737s]    26 |       void rvizCallBack(const geometry_msgs::PointStamped::ConstPtr[01;31m[K&[m[K msg);
+[1.737s]       |                                                                    [01;31m[K^[m[K
+[1.737s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:68:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[1.737s]    26 |       void rvizCallBack[34m[K([m[Kconst geometry_msgs::PointStamped::ConstPtr[01;31m[K&[m[K msg);
+[1.737s]       |                        [34m[K~[m[K                                           [01;31m[K^[m[K
+[1.737s]       |                                                                    [32m[K)[m[K
+[1.737s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:68:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+[1.737s]    26 |       void rvizCallBack(const geometry_msgs::PointStamped::ConstPtr[01;31m[K&[m[K msg);
+[1.737s]       |                                                                    [01;31m[K^[m[K
+[1.737s]       |                                                                     [32m[K;[m[K
+[1.738s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:70:[m[K [01;31m[Kerror: [m[K‘[01m[Kmsg[m[K’ does not name a type
+[1.738s]    26 |       void rvizCallBack(const geometry_msgs::PointStamped::ConstPtr& [01;31m[Kmsg[m[K);
+[1.738s]       |                                                                      [01;31m[K^~~[m[K
+[1.767s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:51:27:[m[K [01;31m[Kerror: [m[K‘[01m[KPointStamped[m[K’ in namespace ‘[01m[Kgeometry_msgs::msg[m[K’ does not name a type
+[1.768s]    51 |       geometry_msgs::msg::[01;31m[KPointStamped[m[K clickedpoint;
+[1.768s]       |                           [01;31m[K^~~~~~~~~~~~[m[K
+[1.783s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In constructor ‘[01m[Kexploration::MWFCN_Algo::MWFCN_Algo()[m[K’:
+[1.783s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:48:126:[m[K [01;31m[Kerror: [m[K‘[01m[K_1[m[K’ was not declared in this scope; did you mean ‘[01m[Kstd::placeholders::_1[m[K’?
+[1.783s]    48 | iption<nav_msgs::msg::OccupancyGrid>(map_topic, 10, std::bind(&MWFCN_Algo::mapCallBack, this, [01;31m[K_1[m[K));
+[1.783s]       |                                                                                               [01;31m[K^~[m[K
+[1.783s]       |                                                                                               [32m[Kstd::placeholders::_1[m[K
+[1.783s] In file included from [01m[K/usr/include/c++/11/pstl/glue_algorithm_defs.h:13[m[K,
+[1.783s]                  from [01m[K/usr/include/c++/11/algorithm:74[m[K,
+[1.783s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:18[m[K,
+[1.783s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+[1.783s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+[1.784s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+[1.784s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:5[m[K,
+[1.784s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.784s] [01m[K/usr/include/c++/11/functional:225:34:[m[K [01;36m[Knote: [m[K‘[01m[Kstd::placeholders::_1[m[K’ declared here
+[1.784s]   225 |     extern const _Placeholder<1> [01;36m[K_1[m[K;
+[1.784s]       |                                  [01;36m[K^~[m[K
+[1.784s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:50:64:[m[K [01;31m[Kerror: [m[K‘[01m[KPointStamped[m[K’ is not a member of ‘[01m[Kgeometry_msgs::msg[m[K’
+[1.784s]    50 |       rviz_sub = this->create_subscription<geometry_msgs::msg::[01;31m[KPointStamped[m[K>("/clicked_point", 10, std::bind(&MWFCN_Algo::rvizCallBack, this, _1));
+[1.784s]       |                                                                [01;31m[K^~~~~~~~~~~~[m[K
+[1.794s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K At global scope:
+[1.794s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:65:79:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.794s]    65 | void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr& msg[01;35m[K)[m[K
+[1.794s]       |                                                                               [01;35m[K^[m[K
+[1.794s] In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+[1.794s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7[m[K,
+[1.794s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.794s] [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.794s]   124 |     [01;36m[KConstPtr[m[K;
+[1.794s]       |     [01;36m[K^~~~~~~~[m[K
+[1.794s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:65:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid exploration::MWFCN_Algo::mapCallBack(const ConstPtr&)[m[K’
+[1.794s]    65 | void [01;31m[KMWFCN_Algo[m[K::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr& msg)
+[1.794s]       |      [01;31m[K^~~~~~~~~~[m[K
+[1.794s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.795s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:12:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid exploration::MWFCN_Algo::mapCallBack(...) &[m[K’
+[1.795s]    24 |       void [01;36m[KmapCallBack[m[K(const nav_msgs::OccupancyGrid::ConstPtr& msg);
+[1.795s]       |            [01;36m[K^~~~~~~~~~~[m[K
+[1.795s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:16:9:[m[K [01;36m[Knote: [m[K‘[01m[Kclass exploration::MWFCN_Algo[m[K’ defined here
+[1.795s]    16 |   class [01;36m[KMWFCN_Algo[m[K : public rclcpp::Node
+[1.795s]       |         [01;36m[K^~~~~~~~~~[m[K
+[1.795s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:73:89:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.795s]    73 | void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr& msg[01;35m[K)[m[K
+[1.795s]       |                                                                                         [01;35m[K^[m[K
+[1.795s] In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+[1.795s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7[m[K,
+[1.795s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.795s] [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.795s]   124 |     [01;36m[KConstPtr[m[K;
+[1.795s]       |     [01;36m[K^~~~~~~~[m[K
+[1.795s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:73:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid exploration::MWFCN_Algo::costmapMergedCallBack(const ConstPtr&)[m[K’
+[1.795s]    73 | void [01;31m[KMWFCN_Algo[m[K::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr& msg)
+[1.795s]       |      [01;31m[K^~~~~~~~~~[m[K
+[1.795s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.795s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:12:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid exploration::MWFCN_Algo::costmapMergedCallBack(...) &[m[K’
+[1.796s]    25 |       void [01;36m[KcostmapMergedCallBack[m[K(const nav_msgs::OccupancyGrid::ConstPtr& msg);
+[1.796s]       |            [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[1.796s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:16:9:[m[K [01;36m[Knote: [m[K‘[01m[Kclass exploration::MWFCN_Algo[m[K’ defined here
+[1.796s]    16 |   class [01;36m[KMWFCN_Algo[m[K : public rclcpp::Node
+[1.796s]       |         [01;36m[K^~~~~~~~~~[m[K
+[1.796s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:82:57:[m[K [01;31m[Kerror: [m[K‘[01m[KPointStamped[m[K’ in namespace ‘[01m[Kgeometry_msgs::msg[m[K’ does not name a type
+[1.796s]    82 | void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::[01;31m[KPointStamped[m[K::ConstPt& msg)
+[1.796s]       |                                                         [01;31m[K^~~~~~~~~~~~[m[K
+[1.796s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:82:78:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+[1.796s]    82 | void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPt[01;31m[K&[m[K msg)
+[1.796s]       |                                                                              [01;31m[K^[m[K
+[1.796s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:82:78:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[1.796s]    82 | void MWFCN_Algo::rvizCallBack[34m[K([m[Kconst geometry_msgs::msg::PointStamped::ConstPt[01;31m[K&[m[K msg)
+[1.796s]       |                              [34m[K~[m[K                                               [01;31m[K^[m[K
+[1.796s]       |                                                                              [32m[K)[m[K
+[1.796s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:82:80:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[Kmsg[m[K’
+[1.796s]    82 | void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPt& [01;31m[Kmsg[m[K)
+[1.796s]       |                                                                                [01;31m[K^~~[m[K
+[1.806s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:1[m[K:
+[1.806s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:40:[m[K [01;31m[Kerror: [m[K‘[01m[KOccupancyGrid[m[K’ in namespace ‘[01m[Knav_msgs[m[K’ does not name a type
+[1.806s]    24 |       void mapCallBack(const nav_msgs::[01;31m[KOccupancyGrid[m[K::ConstPtr& msg);
+[1.806s]       |                                        [01;31m[K^~~~~~~~~~~~~[m[K
+[1.806s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:63:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+[1.806s]    24 |       void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.806s]       |                                                               [01;31m[K^[m[K
+[1.806s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:63:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[1.806s]    24 |       void mapCallBack[34m[K([m[Kconst nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.806s]       |                       [34m[K~[m[K                                       [01;31m[K^[m[K
+[1.806s]       |                                                               [32m[K)[m[K
+[1.806s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:63:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+[1.806s]    24 |       void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.806s]       |                                                               [01;31m[K^[m[K
+[1.807s]       |                                                                [32m[K;[m[K
+[1.807s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:24:65:[m[K [01;31m[Kerror: [m[K‘[01m[Kmsg[m[K’ does not name a type
+[1.807s]    24 |       void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr& [01;31m[Kmsg[m[K);
+[1.807s]       |                                                                 [01;31m[K^~~[m[K
+[1.807s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:50:[m[K [01;31m[Kerror: [m[K‘[01m[KOccupancyGrid[m[K’ in namespace ‘[01m[Knav_msgs[m[K’ does not name a type
+[1.807s]    25 |       void costmapMergedCallBack(const nav_msgs::[01;31m[KOccupancyGrid[m[K::ConstPtr& msg);
+[1.807s]       |                                                  [01;31m[K^~~~~~~~~~~~~[m[K
+[1.807s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:73:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+[1.807s]    25 |       void costmapMergedCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.807s]       |                                                                         [01;31m[K^[m[K
+[1.807s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:73:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[1.807s]    25 |       void costmapMergedCallBack[34m[K([m[Kconst nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.807s]       |                                 [34m[K~[m[K                                       [01;31m[K^[m[K
+[1.807s]       |                                                                         [32m[K)[m[K
+[1.807s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:73:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+[1.808s]    25 |       void costmapMergedCallBack(const nav_msgs::OccupancyGrid::ConstPtr[01;31m[K&[m[K msg);
+[1.808s]       |                                                                         [01;31m[K^[m[K
+[1.808s]       |                                                                          [32m[K;[m[K
+[1.808s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:25:75:[m[K [01;31m[Kerror: [m[K‘[01m[Kmsg[m[K’ does not name a type
+[1.808s]    25 |       void costmapMergedCallBack(const nav_msgs::OccupancyGrid::ConstPtr& [01;31m[Kmsg[m[K);
+[1.808s]       |                                                                           [01;31m[K^~~[m[K
+[1.808s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:46:[m[K [01;31m[Kerror: [m[K‘[01m[KPointStamped[m[K’ in namespace ‘[01m[Kgeometry_msgs[m[K’ does not name a type
+[1.808s]    26 |       void rvizCallBack(const geometry_msgs::[01;31m[KPointStamped[m[K::ConstPtr& msg);
+[1.808s]       |                                              [01;31m[K^~~~~~~~~~~~[m[K
+[1.808s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:68:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+[1.808s]    26 |       void rvizCallBack(const geometry_msgs::PointStamped::ConstPtr[01;31m[K&[m[K msg);
+[1.808s]       |                                                                    [01;31m[K^[m[K
+[1.808s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:68:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[1.808s]    26 |       void rvizCallBack[34m[K([m[Kconst geometry_msgs::PointStamped::ConstPtr[01;31m[K&[m[K msg);
+[1.808s]       |                        [34m[K~[m[K                                           [01;31m[K^[m[K
+[1.808s]       |                                                                    [32m[K)[m[K
+[1.808s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:68:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ at end of member declaration
+[1.809s]    26 |       void rvizCallBack(const geometry_msgs::PointStamped::ConstPtr[01;31m[K&[m[K msg);
+[1.809s]       |                                                                    [01;31m[K^[m[K
+[1.809s]       |                                                                     [32m[K;[m[K
+[1.809s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:26:70:[m[K [01;31m[Kerror: [m[K‘[01m[Kmsg[m[K’ does not name a type
+[1.809s]    26 |       void rvizCallBack(const geometry_msgs::PointStamped::ConstPtr& [01;31m[Kmsg[m[K);
+[1.809s]       |                                                                      [01;31m[K^~~[m[K
+[1.842s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:51:27:[m[K [01;31m[Kerror: [m[K‘[01m[KPointStamped[m[K’ in namespace ‘[01m[Kgeometry_msgs::msg[m[K’ does not name a type
+[1.842s]    51 |       geometry_msgs::msg::[01;31m[KPointStamped[m[K clickedpoint;
+[1.842s]       |                           [01;31m[K^~~~~~~~~~~~[m[K
+[2.210s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:90: CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o] Error 1
+[2.210s] gmake[2]: *** Waiting for unfinished jobs....
+[2.407s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
+[2.407s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+[2.407s] gmake: *** [Makefile:146: all] Error 2
+[2.408s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16

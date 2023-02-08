@@ -1,0 +1,24 @@
+[0.014s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.040s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.054s] [ 33%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[0.055s] [ 66%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o[0m
+[1.749s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:1[m[K:
+[1.749s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:50:7:[m[K [01;31m[Kerror: [m[K‘[01m[Knav_msgs[m[K’ does not name a type
+[1.749s]    50 |       [01;31m[Knav_msgs[m[K::msg::OccupancyGrid mapData, costmapData;
+[1.749s]       |       [01;31m[K^~~~~~~~[m[K
+[1.749s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:51:28:[m[K [01;31m[Kerror: [m[Kusing-declaration for non-member at class scope
+[1.749s]    51 |       geometry_msgs::msg:: [01;31m[Kclickedpoint[m[K;
+[1.749s]       |                            [01;31m[K^~~~~~~~~~~~[m[K
+[1.810s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.810s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:50:7:[m[K [01;31m[Kerror: [m[K‘[01m[Knav_msgs[m[K’ does not name a type
+[1.810s]    50 |       [01;31m[Knav_msgs[m[K::msg::OccupancyGrid mapData, costmapData;
+[1.810s]       |       [01;31m[K^~~~~~~~[m[K
+[1.810s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:51:28:[m[K [01;31m[Kerror: [m[Kusing-declaration for non-member at class scope
+[1.810s]    51 |       geometry_msgs::msg:: [01;31m[Kclickedpoint[m[K;
+[1.811s]       |                            [01;31m[K^~~~~~~~~~~~[m[K
+[2.099s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:90: CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o] Error 1
+[2.099s] gmake[2]: *** Waiting for unfinished jobs....
+[2.438s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
+[2.438s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+[2.438s] gmake: *** [Makefile:146: all] Error 2
+[2.439s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16

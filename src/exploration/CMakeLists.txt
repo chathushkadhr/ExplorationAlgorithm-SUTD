@@ -9,6 +9,19 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
+
+set(
+  DEPENDENCIES
+  rclcpp
+  std_msgs
+  nav_msgs
+  geometry_msgs
+  visualization_msgs
+)
+
 
 
 # uncomment the following section in order to fill in
@@ -28,7 +41,7 @@ if(BUILD_TESTING)
 endif()
 
 add_executable(exec_exp src/exploration_code.cpp src/exploration_node.cpp)
-ament_target_dependencies(exec_exp rclcpp std_msgs)
+ament_target_dependencies(exec_exp ${DEPENDENCIES})
 
 target_include_directories(exec_exp PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
