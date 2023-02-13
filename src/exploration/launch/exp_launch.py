@@ -32,6 +32,7 @@ def generate_launch_description():
             executable='exec_exp',
             name='MWFCN_node',
             namespace=namespace,
+            output="screen",
             parameters=[
             ParameterFile(os.path.join(pkg_dir, 'config', 'params.yaml'), allow_substs=True)]
         # prefix=['xterm -e gdb -ex run --args'],

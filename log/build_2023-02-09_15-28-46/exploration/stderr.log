@@ -1,0 +1,16 @@
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:9:19:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ before ‘[01m[Krclcpp[m[K’
+    9 |   printf("BEFORE")
+      |                   [01;31m[K^[m[K
+      |                   [32m[K;[m[K
+   10 |   [32m[Krclcpp[m[K::spin(std::make_shared<MWFCN_Algo>());
+      |   [32m[K~~~~~~[m[K           
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:11:18:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ before ‘[01m[Krclcpp[m[K’
+   11 |   printf("AFTER")
+      |                  [01;31m[K^[m[K
+      |                  [32m[K;[m[K
+   12 |   [32m[Krclcpp[m[K::shutdown();
+      |   [32m[K~~~~~~[m[K          
+gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:90: CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

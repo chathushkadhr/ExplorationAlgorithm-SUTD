@@ -7,9 +7,14 @@
 #include "nav_msgs/msg/occupancy_grid.hpp"
 #include "visualization_msgs/msg/marker.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
+#include "tf2_ros/transform_listener.h"
+#include "tf2_ros/buffer.h"
+
+#define LARGEST_MAP_DISTANCE 500000 
+
 using namespace std::chrono_literals;
 
-#define DEBUG
+//#define DEBUG
 
 namespace exploration{
 
@@ -29,7 +34,8 @@ namespace exploration{
       void mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg);
       void costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg);
       void rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg);
-
+      void dismapConstruction_start_target(int* dismap_, int* dismap_backup_, int* curr, int HEIGHT, int WIDTH);
+      void get_map_data();
       rclcpp::TimerBase::SharedPtr timer_;
       rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
       size_t count_;
@@ -50,7 +56,9 @@ namespace exploration{
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costMapSub;
       rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr rviz_sub;
 
-     
+      rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub;
+      rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub_centroid;
+
 
   };
 }

@@ -1,0 +1,17 @@
+[0.013s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.034s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.047s] [ 33%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[1.809s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In constructor ‘[01m[Kexploration::MWFCN_Algo::MWFCN_Algo()[m[K’:
+[1.809s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:54:21:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Ktf2_ros::Buffer::Buffer()[m[K’
+[1.809s]    54 |     tf2_ros::Buffer [01;31m[Kbuffer[m[K;
+[1.809s]       |                     [01;31m[K^~~~~~[m[K
+[1.809s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:11[m[K,
+[1.809s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.809s] [01m[K/opt/ros/humble/include/tf2_ros/tf2_ros/buffer.h:73:18:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktf2_ros::Buffer::Buffer(rclcpp::Clock::SharedPtr, tf2::Duration, rclcpp::Node::SharedPtr)[m[K’
+[1.809s]    73 |   TF2_ROS_PUBLIC [01;36m[KBuffer[m[K(
+[1.809s]       |                  [01;36m[K^~~~~~[m[K
+[1.809s] [01m[K/opt/ros/humble/include/tf2_ros/tf2_ros/buffer.h:73:18:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[2.506s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
+[2.507s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+[2.507s] gmake: *** [Makefile:146: all] Error 2
+[2.508s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16

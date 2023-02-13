@@ -1,0 +1,20 @@
+[0.013s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.038s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.049s] [ 33%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o[0m
+[1.739s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[1.739s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:9:19:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ before ‘[01m[Krclcpp[m[K’
+[1.739s]     9 |   printf("BEFORE")
+[1.739s]       |                   [01;31m[K^[m[K
+[1.739s]       |                   [32m[K;[m[K
+[1.739s]    10 |   [32m[Krclcpp[m[K::spin(std::make_shared<MWFCN_Algo>());
+[1.739s]       |   [32m[K~~~~~~[m[K           
+[1.739s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_node.cpp:11:18:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ before ‘[01m[Krclcpp[m[K’
+[1.739s]    11 |   printf("AFTER")
+[1.740s]       |                  [01;31m[K^[m[K
+[1.740s]       |                  [32m[K;[m[K
+[1.740s]    12 |   [32m[Krclcpp[m[K::shutdown();
+[1.740s]       |   [32m[K~~~~~~[m[K          
+[2.043s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:90: CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o] Error 1
+[2.043s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+[2.043s] gmake: *** [Makefile:146: all] Error 2
+[2.044s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16

@@ -1,0 +1,31 @@
+[0.015s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.052s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.063s] [ 33%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[0.063s] [ 66%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o[0m
+[3.142s] [100%] [32m[1mLinking CXX executable exec_exp[0m
+[3.316s] [100%] Built target exec_exp
+[3.322s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[3.333s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/exploration
+[3.337s] -- Install configuration: ""
+[3.337s] -- Execute custom install script
+[3.338s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/lib/exploration/exec_exp
+[3.338s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/include/exploration/colored_noise.h
+[3.338s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/include/exploration/exploration_code.hpp
+[3.339s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/launch/exp_launch.py
+[3.339s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/config/params.yaml
+[3.339s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/package_run_dependencies/exploration
+[3.339s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/parent_prefix_path/exploration
+[3.340s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/ament_prefix_path.sh
+[3.340s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/ament_prefix_path.dsv
+[3.340s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/path.sh
+[3.340s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/path.dsv
+[3.340s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.bash
+[3.341s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.sh
+[3.341s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.zsh
+[3.341s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.dsv
+[3.341s] -- Symlinking: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.dsv
+[3.345s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/packages/exploration
+[3.345s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/cmake/explorationConfig.cmake
+[3.346s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/cmake/explorationConfig-version.cmake
+[3.346s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.xml
+[3.348s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/exploration

@@ -1,0 +1,23 @@
+[0.014s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.036s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.049s] [ 66%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[0.049s] [ 66%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o[0m
+[1.850s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In constructor ‘[01m[Kexploration::MWFCN_Algo::MWFCN_Algo()[m[K’:
+[1.850s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:64:30:[m[K [01;31m[Kerror: [m[Kinvalid use of member function ‘[01m[Kstd::vector<_Tp, _Alloc>::size_type std::vector<_Tp, _Alloc>::size() const [with _Tp = signed char; _Alloc = std::allocator<signed char>; std::vector<_Tp, _Alloc>::size_type = long unsigned int][m[K’ (did you forget the ‘[01m[K()[m[K’ ?)
+[1.850s]    64 |         while ( [01;31m[KmapData.data.size[m[K < 1 ){   ros::Duration(0.1).sleep(); }
+[1.850s]       |                 [01;31m[K~~~~~~~~~~~~~^~~~[m[K
+[1.850s]       |                                  [32m[K()[m[K
+[1.850s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:64:44:[m[K [01;31m[Kerror: [m[K‘[01m[Kros[m[K’ has not been declared
+[1.850s]    64 |         while ( mapData.data.size < 1 ){   [01;31m[Kros[m[K::Duration(0.1).sleep(); }
+[1.850s]       |                                            [01;31m[K^~~[m[K
+[1.850s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:66:44:[m[K [01;31m[Kerror: [m[K‘[01m[Kros[m[K’ has not been declared
+[1.850s]    66 |     while ( costmapData.data.size()<1)  {  [01;31m[Kros[m[K::spinOnce();  ros::Duration(0.1).sleep();}
+[1.851s]       |                                            [01;31m[K^~~[m[K
+[1.851s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:66:62:[m[K [01;31m[Kerror: [m[K‘[01m[Kros[m[K’ has not been declared
+[1.851s]    66 |    while ( costmapData.data.size()<1)  {  ros::spinOnce();  [01;31m[Kros[m[K::Duration(0.1).sleep();}
+[1.851s]       |                                                             [01;31m[K^~~[m[K
+[1.851s] 
+[2.452s] gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
+[2.452s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+[2.452s] gmake: *** [Makefile:146: all] Error 2
+[2.454s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16

@@ -1,0 +1,93 @@
+[0.013s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.035s] [35m[1mConsolidate compiler generated dependencies of target exec_exp[0m
+[0.050s] [ 33%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+[1.698s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.698s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:33:74:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.698s]    33 |   void mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K;
+[1.698s]       |                                                                      [01;35m[K^[m[K
+[1.698s] 
+[1.698s] In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+[1.698s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7[m[K,
+[1.698s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.698s] [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.698s]   124 |     [01;36m[KConstPtr[m[K;
+[1.698s]       |     [01;36m[K^~~~~~~~[m[K
+[1.698s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.699s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:34:84:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.699s]    34 | tmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K;
+[1.699s]       |                                                                      [01;35m[K^[m[K
+[1.699s] 
+[1.699s] In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+[1.699s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7[m[K,
+[1.699s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.699s] [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.699s]   124 |     [01;36m[KConstPtr[m[K;
+[1.699s]       |     [01;36m[K^~~~~~~~[m[K
+[1.699s] In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.699s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:35:79:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.699s]    35 | d rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg[01;35m[K)[m[K;
+[1.699s]       |                                                                      [01;35m[K^[m[K
+[1.699s] 
+[1.699s] In file included from [01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7[m[K,
+[1.699s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:9[m[K,
+[1.699s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.699s] [01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.699s]   115 |     [01;36m[KConstPtr[m[K;
+[1.699s]       |     [01;36m[K^~~~~~~~[m[K
+[1.785s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:82:80:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.785s]    82 | N_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K
+[1.785s]       |                                                                       [01;35m[K^[m[K
+[1.785s] 
+[1.785s] In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+[1.785s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7[m[K,
+[1.785s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.785s] [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.785s]   124 |     [01;36m[KConstPtr[m[K;
+[1.785s]       |     [01;36m[K^~~~~~~~[m[K
+[1.786s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:90:90:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.786s]    90 | stmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K
+[1.786s]       |                                                                       [01;35m[K^[m[K
+[1.786s] 
+[1.786s] In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+[1.786s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7[m[K,
+[1.786s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.786s] [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.786s]   124 |     [01;36m[KConstPtr[m[K;
+[1.786s]       |     [01;36m[K^~~~~~~~[m[K
+[1.786s] [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:99:85:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[1.786s]    99 | o::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg[01;35m[K)[m[K
+[1.786s]       |                                                                       [01;35m[K^[m[K
+[1.786s] 
+[1.786s] In file included from [01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7[m[K,
+[1.786s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:9[m[K,
+[1.786s]                  from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[1.786s] [01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[1.786s]   115 |     [01;36m[KConstPtr[m[K;
+[1.786s]       |     [01;36m[K^~~~~~~~[m[K
+[7.991s] [ 66%] [32m[1mLinking CXX executable exec_exp[0m
+[8.353s] [100%] Built target exec_exp
+[8.359s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[8.371s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/exploration
+[8.374s] -- Install configuration: ""
+[8.375s] -- Execute custom install script
+[8.375s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/lib/exploration/exec_exp
+[8.375s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/include/exploration/colored_noise.h
+[8.375s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/include/exploration/exploration_code.hpp
+[8.375s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/launch/exp_launch.py
+[8.375s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/config/params.yaml
+[8.375s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/package_run_dependencies/exploration
+[8.375s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/parent_prefix_path/exploration
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/ament_prefix_path.sh
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/ament_prefix_path.dsv
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/path.sh
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/path.dsv
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.bash
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.sh
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.zsh
+[8.376s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.dsv
+[8.376s] -- Symlinking: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.dsv
+[8.380s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/packages/exploration
+[8.380s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/cmake/explorationConfig.cmake
+[8.380s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/cmake/explorationConfig-version.cmake
+[8.381s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.xml
+[8.383s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/exploration

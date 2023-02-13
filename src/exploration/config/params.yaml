@@ -1,6 +1,6 @@
 $(var namespace)/MWFCN_node:
   ros__parameters:
     # Map Topic discovery
-    map_topic: $(var namespace)/map
+    map_topic: /$(var namespace)/map
 
    

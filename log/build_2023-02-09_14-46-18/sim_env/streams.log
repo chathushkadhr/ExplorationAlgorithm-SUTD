@@ -1,0 +1,24 @@
+[0.008s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/sim_env -- -j16 -l16
+[0.024s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/sim_env -- -j16 -l16
+[0.039s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/sim_env
+[0.042s] -- Install configuration: ""
+[0.043s] -- Execute custom install script
+[0.043s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env//launch/multi_tb3_simulation_launch.py
+[0.043s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env//worlds/map1.world
+[0.043s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env//worlds/map2.world
+[0.043s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/ament_index/resource_index/package_run_dependencies/sim_env
+[0.043s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/ament_index/resource_index/parent_prefix_path/sim_env
+[0.043s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/ament_prefix_path.sh
+[0.043s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/ament_prefix_path.dsv
+[0.044s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/path.sh
+[0.044s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/path.dsv
+[0.044s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.bash
+[0.044s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.sh
+[0.044s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.zsh
+[0.044s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.dsv
+[0.044s] -- Symlinking: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.dsv
+[0.050s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/ament_index/resource_index/packages/sim_env
+[0.050s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/cmake/sim_envConfig.cmake
+[0.050s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/cmake/sim_envConfig-version.cmake
+[0.050s] -- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.xml
+[0.052s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/sim_env
