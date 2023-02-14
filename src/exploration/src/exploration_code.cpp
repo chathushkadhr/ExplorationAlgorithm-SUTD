@@ -9,7 +9,9 @@ MWFCN_Algo:: MWFCN_Algo() :
     start_condition(true),
     no_targets_count(0),
     rotation_w{0.866,  0.500, 1.0},
-    rotation_z{0.5  , -0.866, 0.0}
+    rotation_z{0.5  , -0.866, 0.0},
+    map_data_received(false),
+    init_point_line_frame(false)
 {     
     std::string nodename=MWFCN_Algo::get_name();
 
@@ -66,6 +68,9 @@ MWFCN_Algo:: MWFCN_Algo() :
     debug_param();
     
     #endif
+    rclcpp::Rate rate(rateHz);
+    timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));
+
 }
 
 
@@ -168,15 +173,95 @@ void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backu
 }
 
 
-void MWFCN_Algo::get_map_data(){
-    rclcpp::spin(this);
-     // ------------------------------------- wait until map is received
-    // std::cout << ns << "wait for map "<< std::endl;
-	// while ( mapData.data.size < 1 ){   ros::Duration(0.1).sleep(); }
-    // std::cout << ns << "wait for costmap "<< std::endl;
-    // while ( costmapData.data.size()<1)  {  ros::spinOnce();  ros::Duration(0.1).sleep();}
+void MWFCN_Algo::check_map_data(){
+    if (!(mapData.data.size() < 1 || costmapData.data.size()<1)){
+        map_data_received =true;
+    } 
+}  
 
+void MWFCN_Algo::check_clicked_points(){
+    if (!(points.points.size()<1)){
+        clicked_point=true;
+        points.points.clear();
+        pub->publish(points);
+        
+    }
+    else{
+        pub->publish(points);
+    }
+}  
+
+
+void MWFCN_Algo::explore(){
+    if (!map_data_received){
+        check_map_data();
+    }
+
+    else{
+        if(!(init_point_line_frame)){
+        
+            init_point_line_frame =true;
+
+            robotGoal.header.frame_id=robot_frame;
+            robotGoal.pose.position.z=0;
+            robotGoal.pose.orientation.z=1.0;
+
+            // ------------------------------------- initilize the visualized points & lines  
+            points.header.frame_id = mapData.header.frame_id;
+            points.header.stamp = rclcpp::Time(0);
+            points.type 			= points.POINTS;
+            points.action           = points.ADD;
+            points.pose.orientation.w =1.0;
+            points.scale.x 			= 0.3; 
+            points.scale.y			= 0.3; 
+            points.color.r 			= 1.0;   // 255.0/255.0;
+            points.color.g 			= 0.0;   // 0.0/255.0;
+            points.color.b 			= 0.0;   // 0.0/255.0;
+            points.color.a			= 1.0;
+            points.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+
+            line.header.frame_id    = mapData.header.frame_id;
+            line.header.stamp       = rclcpp::Time(0);
+            line.type				= line.LINE_LIST;
+            line.action             = line.ADD;
+            line.pose.orientation.w = 1.0;
+            line.scale.x 			= 0.03;
+            line.scale.y			= 0.03;
+            line.color.r			= 1.0;   // 0.0/255.0;
+            line.color.g			= 0.0;   // 0.0/255.0;
+            line.color.b 			= 1.0;   // 236.0/255.0;
+            line.color.a 			= 1.0;
+            line.lifetime           = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+            
+            // -------------------------------------Initialize all robots' frame;
+            std::string robots_frame[n_robot];
+            for (int i = 1; i < n_robot+1; i++){
+                std::stringstream ss;              
+                ss << robot_ano_frame_preffix;
+                ss << i;
+                ss << robot_ano_frame_suffix;
+                robots_frame[i-1] = ss.str();
+            }
+
+
+        }
+
+
+        else{
+            
+
+
+            /* Main While*/
+        }
+
+
+
+    }
+        
 }
+
+
+
 
 void MWFCN_Algo::debug_param(){
       RCLCPP_INFO_STREAM(MWFCN_Algo::get_logger(), "Map topic: " << map_topic

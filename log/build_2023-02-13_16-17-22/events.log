@@ -1,0 +1,252 @@
+[0.000000] (-) TimerEvent: {}
+[0.000369] (exploration) JobQueued: {'identifier': 'exploration', 'dependencies': OrderedDict()}
+[0.000406] (sim_env) JobQueued: {'identifier': 'sim_env', 'dependencies': OrderedDict()}
+[0.000429] (exploration) JobStarted: {'identifier': 'exploration'}
+[0.007340] (sim_env) JobStarted: {'identifier': 'sim_env'}
+[0.011184] (exploration) JobProgress: {'identifier': 'exploration', 'progress': 'cmake'}
+[0.011435] (exploration) JobProgress: {'identifier': 'exploration', 'progress': 'build'}
+[0.011891] (exploration) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/chathushka-sutd/ros2_ws_exp/build/exploration', '--', '-j16', '-l16'], 'cwd': '/home/chathushka-sutd/ros2_ws_exp/build/exploration', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_SG:en'), ('USER', 'chathushka-sutd'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/chathushka-sutd'), ('OLDPWD', '/home/chathushka-sutd'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '2023'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws_exp/install:/home/chathushka-sutd/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'chathushka-sutd'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'chathushka-sutd'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', ':/opt/ros/humble/share/turtlebot3_gazebo/models'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:@/tmp/.ICE-unix/2002,unix/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:/tmp/.ICE-unix/2002'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/6c316a51_d28a_49c0_9d16_cf363cb03aba'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.VENF01'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.168'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package2:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/chathushka-sutd/ros2_ws_exp/build/exploration'), ('TURTLEBOT3_MODEL', 'waffle'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/chathushka-sutd/ros2_ws/install/my_package2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble')]), 'shell': False}
+[0.013953] (sim_env) JobProgress: {'identifier': 'sim_env', 'progress': 'cmake'}
+[0.014223] (sim_env) JobProgress: {'identifier': 'sim_env', 'progress': 'build'}
+[0.014653] (sim_env) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/chathushka-sutd/ros2_ws_exp/build/sim_env', '--', '-j16', '-l16'], 'cwd': '/home/chathushka-sutd/ros2_ws_exp/build/sim_env', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_SG:en'), ('USER', 'chathushka-sutd'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/chathushka-sutd'), ('OLDPWD', '/home/chathushka-sutd'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '2023'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws_exp/install:/home/chathushka-sutd/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'chathushka-sutd'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'chathushka-sutd'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', ':/opt/ros/humble/share/turtlebot3_gazebo/models'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:@/tmp/.ICE-unix/2002,unix/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:/tmp/.ICE-unix/2002'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/6c316a51_d28a_49c0_9d16_cf363cb03aba'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.VENF01'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.168'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package2:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/chathushka-sutd/ros2_ws_exp/build/sim_env'), ('TURTLEBOT3_MODEL', 'waffle'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/chathushka-sutd/ros2_ws/install/my_package2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble')]), 'shell': False}
+[0.031783] (sim_env) CommandEnded: {'returncode': 0}
+[0.040984] (exploration) StdoutLine: {'line': b'[ 33%] \x1b[32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o\x1b[0m\n'}
+[0.041539] (sim_env) JobProgress: {'identifier': 'sim_env', 'progress': 'install'}
+[0.045669] (sim_env) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/chathushka-sutd/ros2_ws_exp/build/sim_env'], 'cwd': '/home/chathushka-sutd/ros2_ws_exp/build/sim_env', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_SG:en'), ('USER', 'chathushka-sutd'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/chathushka-sutd'), ('OLDPWD', '/home/chathushka-sutd'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '2023'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws_exp/install:/home/chathushka-sutd/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'chathushka-sutd'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'chathushka-sutd'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', ':/opt/ros/humble/share/turtlebot3_gazebo/models'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:@/tmp/.ICE-unix/2002,unix/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:/tmp/.ICE-unix/2002'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/6c316a51_d28a_49c0_9d16_cf363cb03aba'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.VENF01'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.168'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package2:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/chathushka-sutd/ros2_ws_exp/build/sim_env'), ('TURTLEBOT3_MODEL', 'waffle'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/chathushka-sutd/ros2_ws/install/my_package2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble')]), 'shell': False}
+[0.048867] (sim_env) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[0.049231] (sim_env) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[0.049537] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env//launch/multi_tb3_simulation_launch.py\n'}
+[0.049737] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env//worlds/map1.world\n'}
+[0.049827] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env//worlds/map2.world\n'}
+[0.049949] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/ament_index/resource_index/package_run_dependencies/sim_env\n'}
+[0.050083] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/ament_index/resource_index/parent_prefix_path/sim_env\n'}
+[0.050177] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/ament_prefix_path.sh\n'}
+[0.050294] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/ament_prefix_path.dsv\n'}
+[0.050412] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/path.sh\n'}
+[0.050530] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/environment/path.dsv\n'}
+[0.050648] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.bash\n'}
+[0.050764] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.sh\n'}
+[0.050878] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.zsh\n'}
+[0.050991] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/local_setup.dsv\n'}
+[0.051078] (sim_env) StdoutLine: {'line': b'-- Symlinking: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.dsv\n'}
+[0.055087] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/ament_index/resource_index/packages/sim_env\n'}
+[0.055258] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/cmake/sim_envConfig.cmake\n'}
+[0.055363] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/cmake/sim_envConfig-version.cmake\n'}
+[0.055493] (sim_env) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.xml\n'}
+[0.056605] (sim_env) CommandEnded: {'returncode': 0}
+[0.081112] (sim_env) JobEnded: {'identifier': 'sim_env', 'rc': 0}
+[0.099166] (-) TimerEvent: {}
+[0.199782] (-) TimerEvent: {}
+[0.300505] (-) TimerEvent: {}
+[0.401168] (-) TimerEvent: {}
+[0.501708] (-) TimerEvent: {}
+[0.602006] (-) TimerEvent: {}
+[0.702299] (-) TimerEvent: {}
+[0.802594] (-) TimerEvent: {}
+[0.903573] (-) TimerEvent: {}
+[1.004285] (-) TimerEvent: {}
+[1.105011] (-) TimerEvent: {}
+[1.205687] (-) TimerEvent: {}
+[1.305968] (-) TimerEvent: {}
+[1.406253] (-) TimerEvent: {}
+[1.506550] (-) TimerEvent: {}
+[1.606842] (-) TimerEvent: {}
+[1.613836] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.614858] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:39:74:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.614949] (exploration) StderrLine: {'line': b'   39 |   void mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K;\n'}
+[1.615034] (exploration) StderrLine: {'line': b'      |                                                                      \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.615112] (exploration) StderrLine: {'line': b'\n'}
+[1.615184] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.615254] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7\x1b[m\x1b[K,\n'}
+[1.615323] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.615381] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.615439] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.615495] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.615550] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.615606] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:40:84:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.615665] (exploration) StderrLine: {'line': b'   40 | tmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K;\n'}
+[1.615721] (exploration) StderrLine: {'line': b'      |                                                                      \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.615778] (exploration) StderrLine: {'line': b'\n'}
+[1.615834] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.615889] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7\x1b[m\x1b[K,\n'}
+[1.615945] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.616000] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.616054] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.616110] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.616162] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.616216] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:41:79:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.616274] (exploration) StderrLine: {'line': b'   41 | d rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K;\n'}
+[1.616331] (exploration) StderrLine: {'line': b'      |                                                                      \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.616394] (exploration) StderrLine: {'line': b'\n'}
+[1.616450] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7\x1b[m\x1b[K,\n'}
+[1.616505] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:9\x1b[m\x1b[K,\n'}
+[1.616565] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.616625] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.616682] (exploration) StderrLine: {'line': b'  115 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.616738] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.698020] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:78:80:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.698251] (exploration) StderrLine: {'line': b'   78 | N_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K\n'}
+[1.698336] (exploration) StderrLine: {'line': b'      |                                                                       \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.698411] (exploration) StderrLine: {'line': b'\n'}
+[1.698482] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.698554] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7\x1b[m\x1b[K,\n'}
+[1.698628] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.698697] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.698768] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.698838] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.699151] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:86:90:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.699241] (exploration) StderrLine: {'line': b'   86 | stmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K\n'}
+[1.699316] (exploration) StderrLine: {'line': b'      |                                                                       \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.699388] (exploration) StderrLine: {'line': b'\n'}
+[1.699458] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.699526] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:7\x1b[m\x1b[K,\n'}
+[1.699589] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.699645] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.699702] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.699757] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.699812] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:95:85:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.699872] (exploration) StderrLine: {'line': b'   95 | o::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K\n'}
+[1.699931] (exploration) StderrLine: {'line': b'      |                                                                       \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.699987] (exploration) StderrLine: {'line': b'\n'}
+[1.700042] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7\x1b[m\x1b[K,\n'}
+[1.700098] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:9\x1b[m\x1b[K,\n'}
+[1.700153] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.700213] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.700271] (exploration) StderrLine: {'line': b'  115 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.700326] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.702699] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid exploration::MWFCN_Algo::dismapConstruction_start_target(int*, int*, int*, int, int)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[1.702781] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:122:27:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.702853] (exploration) StderrLine: {'line': b'  122 |         for (int i = 0; \x1b[01;35m\x1b[Ki < curr_iter.size()\x1b[m\x1b[K; i++) {\n'}
+[1.702912] (exploration) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.703529] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:164:41:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.703615] (exploration) StderrLine: {'line': b'  164 |         for (int curr_idx = 0; \x1b[01;35m\x1b[Kcurr_idx < curr_iter.size()\x1b[m\x1b[K; curr_idx++){\n'}
+[1.703675] (exploration) StderrLine: {'line': b'      |                                \x1b[01;35m\x1b[K~~~~~~~~~^~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.704343] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid exploration::MWFCN_Algo::explore()\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[1.704416] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:226:25:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids variable length array \xe2\x80\x98\x1b[01m\x1b[Krobots_frame\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wvla\x07-Wvla\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.704476] (exploration) StderrLine: {'line': b'  226 |             std::string \x1b[01;35m\x1b[Krobots_frame\x1b[m\x1b[K[n_robot];\n'}
+[1.704533] (exploration) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K^~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.706921] (-) TimerEvent: {}
+[1.807526] (-) TimerEvent: {}
+[1.908358] (-) TimerEvent: {}
+[2.009108] (-) TimerEvent: {}
+[2.109409] (-) TimerEvent: {}
+[2.209885] (-) TimerEvent: {}
+[2.310167] (-) TimerEvent: {}
+[2.410451] (-) TimerEvent: {}
+[2.510744] (-) TimerEvent: {}
+[2.611654] (-) TimerEvent: {}
+[2.712357] (-) TimerEvent: {}
+[2.813020] (-) TimerEvent: {}
+[2.913709] (-) TimerEvent: {}
+[3.014008] (-) TimerEvent: {}
+[3.114329] (-) TimerEvent: {}
+[3.214602] (-) TimerEvent: {}
+[3.314885] (-) TimerEvent: {}
+[3.415167] (-) TimerEvent: {}
+[3.515821] (-) TimerEvent: {}
+[3.616573] (-) TimerEvent: {}
+[3.717353] (-) TimerEvent: {}
+[3.817959] (-) TimerEvent: {}
+[3.918281] (-) TimerEvent: {}
+[4.019329] (-) TimerEvent: {}
+[4.120047] (-) TimerEvent: {}
+[4.220769] (-) TimerEvent: {}
+[4.321502] (-) TimerEvent: {}
+[4.421781] (-) TimerEvent: {}
+[4.522072] (-) TimerEvent: {}
+[4.622358] (-) TimerEvent: {}
+[4.722646] (-) TimerEvent: {}
+[4.822936] (-) TimerEvent: {}
+[4.923650] (-) TimerEvent: {}
+[5.024370] (-) TimerEvent: {}
+[5.124653] (-) TimerEvent: {}
+[5.225592] (-) TimerEvent: {}
+[5.325879] (-) TimerEvent: {}
+[5.426173] (-) TimerEvent: {}
+[5.526475] (-) TimerEvent: {}
+[5.627318] (-) TimerEvent: {}
+[5.728094] (-) TimerEvent: {}
+[5.828823] (-) TimerEvent: {}
+[5.929561] (-) TimerEvent: {}
+[6.029855] (-) TimerEvent: {}
+[6.130151] (-) TimerEvent: {}
+[6.230437] (-) TimerEvent: {}
+[6.330732] (-) TimerEvent: {}
+[6.431018] (-) TimerEvent: {}
+[6.531305] (-) TimerEvent: {}
+[6.632146] (-) TimerEvent: {}
+[6.732847] (-) TimerEvent: {}
+[6.833563] (-) TimerEvent: {}
+[6.933806] (-) TimerEvent: {}
+[7.034092] (-) TimerEvent: {}
+[7.134386] (-) TimerEvent: {}
+[7.234688] (-) TimerEvent: {}
+[7.334952] (-) TimerEvent: {}
+[7.435148] (-) TimerEvent: {}
+[7.535344] (-) TimerEvent: {}
+[7.635547] (-) TimerEvent: {}
+[7.735757] (-) TimerEvent: {}
+[7.835993] (-) TimerEvent: {}
+[7.936183] (-) TimerEvent: {}
+[8.036371] (-) TimerEvent: {}
+[8.136560] (-) TimerEvent: {}
+[8.236755] (-) TimerEvent: {}
+[8.336944] (-) TimerEvent: {}
+[8.437133] (-) TimerEvent: {}
+[8.537635] (-) TimerEvent: {}
+[8.637783] (-) TimerEvent: {}
+[8.737970] (-) TimerEvent: {}
+[8.838159] (-) TimerEvent: {}
+[8.938345] (-) TimerEvent: {}
+[9.038532] (-) TimerEvent: {}
+[9.138719] (-) TimerEvent: {}
+[9.238908] (-) TimerEvent: {}
+[9.339098] (-) TimerEvent: {}
+[9.439284] (-) TimerEvent: {}
+[9.539465] (-) TimerEvent: {}
+[9.639639] (-) TimerEvent: {}
+[9.739814] (-) TimerEvent: {}
+[9.839988] (-) TimerEvent: {}
+[9.940161] (-) TimerEvent: {}
+[10.040334] (-) TimerEvent: {}
+[10.140501] (-) TimerEvent: {}
+[10.240683] (-) TimerEvent: {}
+[10.340889] (-) TimerEvent: {}
+[10.441192] (-) TimerEvent: {}
+[10.541504] (-) TimerEvent: {}
+[10.641810] (-) TimerEvent: {}
+[10.742135] (-) TimerEvent: {}
+[10.785345] (exploration) StdoutLine: {'line': b'[ 66%] \x1b[32m\x1b[1mLinking CXX executable exec_exp\x1b[0m\n'}
+[10.842259] (-) TimerEvent: {}
+[10.942588] (-) TimerEvent: {}
+[11.042890] (-) TimerEvent: {}
+[11.117593] (exploration) StdoutLine: {'line': b'[100%] Built target exec_exp\n'}
+[11.122529] (exploration) CommandEnded: {'returncode': 0}
+[11.134867] (exploration) JobProgress: {'identifier': 'exploration', 'progress': 'install'}
+[11.134933] (exploration) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/chathushka-sutd/ros2_ws_exp/build/exploration'], 'cwd': '/home/chathushka-sutd/ros2_ws_exp/build/exploration', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_SG:en'), ('USER', 'chathushka-sutd'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/chathushka-sutd'), ('OLDPWD', '/home/chathushka-sutd'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '2023'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws_exp/install:/home/chathushka-sutd/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'chathushka-sutd'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'chathushka-sutd'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', ':/opt/ros/humble/share/turtlebot3_gazebo/models'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:@/tmp/.ICE-unix/2002,unix/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:/tmp/.ICE-unix/2002'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/6c316a51_d28a_49c0_9d16_cf363cb03aba'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.VENF01'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.168'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package2:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/chathushka-sutd/ros2_ws_exp/build/exploration'), ('TURTLEBOT3_MODEL', 'waffle'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/chathushka-sutd/ros2_ws/install/my_package2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble')]), 'shell': False}
+[11.137999] (exploration) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[11.138296] (exploration) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[11.138564] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/lib/exploration/exec_exp\n'}
+[11.138758] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/include/exploration/colored_noise.h\n'}
+[11.138871] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/include/exploration/exploration_code.hpp\n'}
+[11.138963] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/launch/exp_launch.py\n'}
+[11.139067] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/config/params.yaml\n'}
+[11.139159] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/package_run_dependencies/exploration\n'}
+[11.139265] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/parent_prefix_path/exploration\n'}
+[11.139368] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/ament_prefix_path.sh\n'}
+[11.139446] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/ament_prefix_path.dsv\n'}
+[11.139547] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/path.sh\n'}
+[11.139626] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/environment/path.dsv\n'}
+[11.139726] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.bash\n'}
+[11.139806] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.sh\n'}
+[11.139916] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.zsh\n'}
+[11.140001] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/local_setup.dsv\n'}
+[11.140080] (exploration) StdoutLine: {'line': b'-- Symlinking: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.dsv\n'}
+[11.142960] (-) TimerEvent: {}
+[11.143763] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/ament_index/resource_index/packages/exploration\n'}
+[11.143891] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/cmake/explorationConfig.cmake\n'}
+[11.143991] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/cmake/explorationConfig-version.cmake\n'}
+[11.144097] (exploration) StdoutLine: {'line': b'-- Up-to-date symlink: /home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.xml\n'}
+[11.144909] (exploration) CommandEnded: {'returncode': 0}
+[11.169063] (exploration) JobEnded: {'identifier': 'exploration', 'rc': 0}
+[11.169610] (-) EventReactorShutdown: {}

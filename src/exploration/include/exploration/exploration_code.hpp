@@ -7,8 +7,11 @@
 #include "nav_msgs/msg/occupancy_grid.hpp"
 #include "visualization_msgs/msg/marker.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
+#include "geometry_msgs/msg/pose_stamped.hpp"
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
+
+#include<sstream>
 
 #define LARGEST_MAP_DISTANCE 500000 
 
@@ -26,8 +29,8 @@ namespace exploration{
       nav_msgs::msg::OccupancyGrid mapData,costmapData;
       geometry_msgs::msg::PointStamped clickedpoint;
       visualization_msgs::msg::Marker points,line;
-      geometry_msgs::msg::Point p;  
-
+      geometry_msgs::msg::Point p;
+      
     private:
       void timer_callback();
       void debug_param();
@@ -35,8 +38,13 @@ namespace exploration{
       void costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg);
       void rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg);
       void dismapConstruction_start_target(int* dismap_, int* dismap_backup_, int* curr, int HEIGHT, int WIDTH);
-      void get_map_data();
-      rclcpp::TimerBase::SharedPtr timer_;
+      void check_clicked_points();
+      void check_map_data();  
+      void explore();
+
+
+      geometry_msgs::msg::PoseStamped robotGoal;
+      rclcpp::TimerBase::SharedPtr timer_main;
       rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
       size_t count_;
 
@@ -59,6 +67,10 @@ namespace exploration{
       rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub;
       rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub_centroid;
 
+
+      bool map_data_received;
+      bool clicked_point;
+      bool init_point_line_frame;
 
   };
 }
