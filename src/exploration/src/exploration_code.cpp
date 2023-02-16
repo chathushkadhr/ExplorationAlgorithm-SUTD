@@ -10,8 +10,7 @@ MWFCN_Algo:: MWFCN_Algo() :
     no_targets_count(0),
     rotation_w{0.866,  0.500, 1.0},
     rotation_z{0.5  , -0.866, 0.0},
-    map_data_received(false),
-    init_point_line_frame(false)
+    map_data_received(false)
 {     
     std::string nodename=MWFCN_Algo::get_name();
 
@@ -44,7 +43,7 @@ MWFCN_Algo:: MWFCN_Algo() :
     this->declare_parameter("output_map_file", "$(find exploration)/data/robot1_MWFCN_explored_map.txt");
     output_map_file=this->get_parameter("output_map_file").get_parameter_value().get<std::string>();  
     
-    //ros::Rate rate(rateHz); To edit
+    rclcpp::Rate rate(rateHz);
 
     // ------------------------------------- subscribe the map topics & clicked points
     sub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic, 10, std::bind(&MWFCN_Algo::mapCallBack, this, _1));
@@ -68,8 +67,10 @@ MWFCN_Algo:: MWFCN_Algo() :
     debug_param();
     
     #endif
-    rclcpp::Rate rate(rateHz);
-    timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));
+    trajectory_query_client =this->create_client<cartographer_ros_msgs::srv::TrajectoryQuery>(trajectory_query_name);
+    trajectory_query_client->wait_for_service();
+
+    timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
 
 }
 
@@ -176,7 +177,49 @@ void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backu
 void MWFCN_Algo::check_map_data(){
     if (!(mapData.data.size() < 1 || costmapData.data.size()<1)){
         map_data_received =true;
-    } 
+        robotGoal.header.frame_id=robot_frame;
+        robotGoal.pose.position.z=0;
+        robotGoal.pose.orientation.z=1.0;
+
+        // ------------------------------------- initilize the visualized points & lines  
+        points.header.frame_id = mapData.header.frame_id;
+        points.header.stamp = rclcpp::Time(0);
+        points.type 			= points.POINTS;
+        points.action           = points.ADD;
+        points.pose.orientation.w =1.0;
+        points.scale.x 			= 0.3; 
+        points.scale.y			= 0.3; 
+        points.color.r 			= 1.0;   // 255.0/255.0;
+        points.color.g 			= 0.0;   // 0.0/255.0;
+        points.color.b 			= 0.0;   // 0.0/255.0;
+        points.color.a			= 1.0;
+        points.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+
+        line.header.frame_id    = mapData.header.frame_id;
+        line.header.stamp       = rclcpp::Time(0);
+        line.type				= line.LINE_LIST;
+        line.action             = line.ADD;
+        line.pose.orientation.w = 1.0;
+        line.scale.x 			= 0.03;
+        line.scale.y			= 0.03;
+        line.color.r			= 1.0;   // 0.0/255.0;
+        line.color.g			= 0.0;   // 0.0/255.0;
+        line.color.b 			= 1.0;   // 236.0/255.0;
+        line.color.a 			= 1.0;
+        line.lifetime           = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+        
+        // -------------------------------------Initialize all robots' frame;
+        std::string robots_frame[n_robot];
+        for (int i = 1; i < n_robot+1; i++){
+            std::stringstream ss;              
+            ss << robot_ano_frame_preffix;
+            ss << i;
+            ss << robot_ano_frame_suffix;
+            robots_frame[i-1] = ss.str();
+        }
+
+    }
+
 }  
 
 void MWFCN_Algo::check_clicked_points(){
@@ -184,6 +227,8 @@ void MWFCN_Algo::check_clicked_points(){
         clicked_point=true;
         points.points.clear();
         pub->publish(points);
+
+
         
     }
     else{
@@ -198,63 +243,182 @@ void MWFCN_Algo::explore(){
     }
 
     else{
-        if(!(init_point_line_frame)){
-        
-            init_point_line_frame =true;
+        if(!clicked_point){
+            check_clicked_points();
+        }
+        else{
+            //Main While Loop
 
-            robotGoal.header.frame_id=robot_frame;
-            robotGoal.pose.position.z=0;
-            robotGoal.pose.orientation.z=1.0;
-
-            // ------------------------------------- initilize the visualized points & lines  
-            points.header.frame_id = mapData.header.frame_id;
-            points.header.stamp = rclcpp::Time(0);
-            points.type 			= points.POINTS;
-            points.action           = points.ADD;
-            points.pose.orientation.w =1.0;
-            points.scale.x 			= 0.3; 
-            points.scale.y			= 0.3; 
-            points.color.r 			= 1.0;   // 255.0/255.0;
-            points.color.g 			= 0.0;   // 0.0/255.0;
-            points.color.b 			= 0.0;   // 0.0/255.0;
-            points.color.a			= 1.0;
-            points.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
-
-            line.header.frame_id    = mapData.header.frame_id;
-            line.header.stamp       = rclcpp::Time(0);
-            line.type				= line.LINE_LIST;
-            line.action             = line.ADD;
-            line.pose.orientation.w = 1.0;
-            line.scale.x 			= 0.03;
-            line.scale.y			= 0.03;
-            line.color.r			= 1.0;   // 0.0/255.0;
-            line.color.g			= 0.0;   // 0.0/255.0;
-            line.color.b 			= 1.0;   // 236.0/255.0;
-            line.color.a 			= 1.0;
-            line.lifetime           = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+             // ---------------------------------------- variables from ROS input;
+            HEIGHT = mapData.info.height;
+            WIDTH  = mapData.info.width;
             
-            // -------------------------------------Initialize all robots' frame;
-            std::string robots_frame[n_robot];
-            for (int i = 1; i < n_robot+1; i++){
-                std::stringstream ss;              
-                ss << robot_ano_frame_preffix;
-                ss << i;
-                ss << robot_ano_frame_suffix;
-                robots_frame[i-1] = ss.str();
+            
+            int* dismap_backup = new int[HEIGHT*WIDTH];
+            int map[HEIGHT*WIDTH];
+
+            // ---------------------------------------- initialize the map & dismap
+            for (int i=0; i<HEIGHT; i++)
+            {
+                for (int j=0; j<WIDTH; j++)
+                {
+                    map[i*WIDTH + j] = (int) mapData.data[i*mapData.info.width + j];
+                    dismap_backup[i*WIDTH + j] = map[i*WIDTH + j];
+                }
+            }
+
+            // ------------------------------------------ find the obstacles & targets
+            for (int i = 2; i < HEIGHT-2; i++){
+                for (int j = 2; j < WIDTH-2; j++){
+                    if(map[i*WIDTH + j] == 100){
+                        obstacles.push_back(new int[2]{i,j});
+                    }
+                    else if(map[i*WIDTH + j] == -1){
+                        // accessiable frontiers
+                        int numFree = 0, temp1 = 0;
+
+                        if (map[(i + 1)*WIDTH + j] == 0){
+                            temp1 += (map[(i + 2)*WIDTH + j    ] == 0) ? 3 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i + 2)*WIDTH + j + 1] == 0) ? 4 : 0;
+                            temp1 += (map[(i + 2)*WIDTH + j - 1] == 0) ? 4 : 0;
+                            temp1 += (map[      i*WIDTH + j + 1] == 0) ? 4 : 0;
+                            temp1 += (map[      i*WIDTH + j - 1] == 0) ? 4 : 0;
+                            numFree += (temp1 > 0);
+                        }
+
+                        if (map[i*WIDTH + j + 1] == 0){
+                            temp1 = 0;
+                            temp1 += (map[      i*WIDTH + j + 2] == 0) ? 3 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i - 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j + 2] == 0) ? 4 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                            temp1 += (map[(i - 1)*WIDTH + j + 2] == 0) ? 4 : 0;
+                            temp1 += (map[(i - 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                            numFree += (temp1 > 0);
+                        }
+
+                        if (map[(i - 1) *WIDTH + j] == 0){
+                            temp1 = 0;
+                            temp1 += (map[(i - 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i - 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i - 2)*WIDTH + j    ] == 0) ? 3 : 0;
+                            temp1 += (map[      i*WIDTH + j + 1] == 0) ? 4 : 0;
+                            temp1 += (map[      i*WIDTH + j - 1] == 0) ? 4 : 0;
+                            temp1 += (map[(i - 2)*WIDTH + j + 1] == 0) ? 4 : 0;
+                            temp1 += (map[(i - 2)*WIDTH + j - 1] == 0) ? 4 : 0;
+                            numFree += (temp1 > 0);
+                        }
+
+                        if (map[i * WIDTH + j - 1] == 0){
+                            temp1 = 0;
+                            temp1 += (map[    i  *WIDTH + j - 2] == 0) ? 3 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i - 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                            temp1 += (map[(i + 1)*WIDTH + j - 2] == 0) ? 4 : 0;
+                            temp1 += (map[(i - 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                            temp1 += (map[(i - 1)*WIDTH + j - 2] == 0) ? 4 : 0;
+                            numFree += (temp1 > 0);
+                        }
+
+                        if( numFree > 0 ) {
+                            targets.push_back(new int[2]{i,j});
+                        }
+                    }
+                }
+            }
+
+            {
+                for (int idx_target = targets.size()-1; idx_target >= 0; idx_target--) {
+                    
+                    float loc_x = targets[idx_target][1]*mapData.info.resolution + mapData.info.origin.position.x;
+                    float loc_y = targets[idx_target][0]*mapData.info.resolution + mapData.info.origin.position.y;
+                    int index_costmap = (loc_y - costmapData.info.origin.position.y)/costmapData.info.resolution * costmapData.info.width + (loc_x - costmapData.info.origin.position.x)/costmapData.info.resolution;
+                    if (costmapData.data[index_costmap] >0){
+                        targets.erase(targets.begin() + idx_target);
+                        continue;
+                    }
+                }
+                std::cout << "number targets after erase (costmap): " << targets.size() << std::endl;
+            }
+            
+            // ------------------------------------------ remove targets within the inflation radius of obstacles.
+            {
+                for(int idx_target = targets.size()-1; idx_target>=0; idx_target--) {
+                    for (int i = 0; i < obstacles.size(); i++) {
+                        if (abs(targets[idx_target][0] - obstacles[i][0]) +
+                            abs(targets[idx_target][1] - obstacles[i][1]) < inflation_radius) {
+                            targets.erase(targets.begin() + idx_target);
+                            break;
+                        }
+                    }
+                std::cout << "number targets after erase (obstacles): " << targets.size() << std::endl;
+                }
+            }
+
+            // ------------------------------------------ exploration finish detection
+            if(targets.size() == 0){
+                if(no_targets_count == 8){
+                    std::cout << "exploration done" << std::endl;
+                    std::vector<geometry_msgs::msg::PointStamped> path_list;
+
+                    request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
+                    request->trajectory_id = 0;
+                    result = trajectory_query_client->async_send_request(request);
+                    exploration_time = result.get()->trajectory[0].header.stamp.sec;
+                    exploration_time = result.get()->trajectory.back().header.stamp.sec - exploration_time;
+                    //std::cout <<  ns << "exploration_time is:" << exploration_time << " seconds" << std::endl;
+
+                    std::ofstream ofile(output_file);
+
+                    trajectory_x = result.get()->trajectory[0].pose.position.x;
+                    trajectory_y = result.get()->trajectory[0].pose.position.y;
+                                    
+                    ofile << "[";
+                    ofile << trajectory_x << "," << trajectory_y << std::endl;
+                    for (int i = 1; i < result.get()->trajectory.size(); i++){
+                        double temp_x = result.get()->trajectory[i].pose.position.x;
+                        double temp_y = result.get()->trajectory[i].pose.position.y;
+                        ofile << temp_x  << ", " <<  temp_y << ";" << std::endl;
+                        double delta_x = trajectory_x - temp_x;
+                        double delta_y = trajectory_y - temp_y;
+                        trajectory_length += sqrt(delta_x*delta_x + delta_y*delta_y);
+                        trajectory_x = temp_x;
+                        trajectory_y = temp_y; 
+                    }
+                    ofile << "]" << std::endl;
+                    ofile.close();
+                    //std::cout <<  ns << "exploration trajectory length = " << trajectory_length << " meters" << std::endl;
+                    
+                    std::ofstream ofile2(output_map_file);
+                    ofile2 <<  ns << "map Origin (" << mapData.info.origin.position.x << " ," << mapData.info.origin.position.y << ")" << std::endl;
+                    for(int i = 0; i < mapData.data.size(); i++){
+                        ofile2 << mapData.data[i] << " ";
+                    }
+                    ofile2.close();
+                    timer_main->cancel();
+                }   
+
+                no_targets_count ++;
+                std::cout << ns << "no targets count = " << no_targets_count << std::endl;
+                rate.sleep();
+                continue;
+            }
+            else{
+                no_targets_count = 0;
             }
 
 
-        }
 
 
-        else{
-            
 
 
-            /* Main While*/
-        }
 
-
+        } //Main while loop scope
+        
 
     }
         

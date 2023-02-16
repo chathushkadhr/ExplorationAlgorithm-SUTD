@@ -10,8 +10,14 @@
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
+#include "cartographer_ros_msgs/srv/trajectory_query.hpp"
 
+#include<fstream>
 #include<sstream>
+#include<iostream>
+#include<iomanip>
+#include<string>
+#include<cstdlib>
 
 #define LARGEST_MAP_DISTANCE 500000 
 
@@ -67,10 +73,23 @@ namespace exploration{
       rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub;
       rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub_centroid;
 
+      rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::SharedPtr trajectory_query_client;
 
-      bool map_data_received;
-      bool clicked_point;
-      bool init_point_line_frame;
+      bool map_data_received,clicked_point;
+
+      int HEIGHT,WIDTH;
+      std::vector<int* > obstacles, path, targets;
+      int currentLoc[2], goal[2]; //target[2], obstacle[2]
+      float  minDis2Frontier;
+      std::ifstream infile;
+      std::vector<int * > dismap_targets_ptr;
+
+      std::shared_ptr<cartographer_ros_msgs::srv::TrajectoryQuery_Request> request;
+      rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::FutureAndRequestId result;
+      double trajectory_length, exploration_time;
+      
+      
+    
 
   };
 }
