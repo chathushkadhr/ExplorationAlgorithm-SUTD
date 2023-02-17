@@ -1,7 +1,0 @@
-[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:24:1:[m[K [01;31m[Kerror: [m[K‘[01m[Kstring[m[K’ does not name a type; did you mean ‘[01m[Kstdin[m[K’?
-   24 | [01;31m[Kstring[m[K map_topic, costmap_topic, trajectory_query_name, output_file, output_map_file;
-      | [01;31m[K^~~~~~[m[K
-      | [32m[Kstdin[m[K
-gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
-gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
-gmake: *** [Makefile:146: all] Error 2

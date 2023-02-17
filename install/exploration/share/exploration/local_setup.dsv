@@ -1,1 +1,2 @@
-/home/chathushka-sutd/ros2_ws_exp/build/exploration/ament_cmake_environment_hooks/local_setup.dsv
+source;share/exploration/environment/ament_prefix_path.sh
+source;share/exploration/environment/path.sh

@@ -1,0 +1,16 @@
+package.xml
+setup.cfg
+setup.py
+../../build/tf_publish/tf_publish.egg-info/PKG-INFO
+../../build/tf_publish/tf_publish.egg-info/SOURCES.txt
+../../build/tf_publish/tf_publish.egg-info/dependency_links.txt
+../../build/tf_publish/tf_publish.egg-info/entry_points.txt
+../../build/tf_publish/tf_publish.egg-info/requires.txt
+../../build/tf_publish/tf_publish.egg-info/top_level.txt
+../../build/tf_publish/tf_publish.egg-info/zip-safe
+resource/tf_publish
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
+tf_publish/__init__.py
+tf_publish/publish_tf_for_two_robots.py
