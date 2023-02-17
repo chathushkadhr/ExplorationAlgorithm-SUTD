@@ -210,6 +210,30 @@ exec_exp/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/exec_exp.dir/build.make CMakeFiles/exec_exp.dir/build
 .PHONY : exec_exp/fast
 
+src/colored_noise.o: src/colored_noise.cpp.o
+.PHONY : src/colored_noise.o
+
+# target to build an object file
+src/colored_noise.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/exec_exp.dir/build.make CMakeFiles/exec_exp.dir/src/colored_noise.cpp.o
+.PHONY : src/colored_noise.cpp.o
+
+src/colored_noise.i: src/colored_noise.cpp.i
+.PHONY : src/colored_noise.i
+
+# target to preprocess a source file
+src/colored_noise.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/exec_exp.dir/build.make CMakeFiles/exec_exp.dir/src/colored_noise.cpp.i
+.PHONY : src/colored_noise.cpp.i
+
+src/colored_noise.s: src/colored_noise.cpp.s
+.PHONY : src/colored_noise.s
+
+# target to generate assembly for a file
+src/colored_noise.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/exec_exp.dir/build.make CMakeFiles/exec_exp.dir/src/colored_noise.cpp.s
+.PHONY : src/colored_noise.cpp.s
+
 src/exploration_code.o: src/exploration_code.cpp.o
 .PHONY : src/exploration_code.o
 
@@ -274,6 +298,9 @@ help:
 	@echo "... exploration_uninstall"
 	@echo "... uninstall"
 	@echo "... exec_exp"
+	@echo "... src/colored_noise.o"
+	@echo "... src/colored_noise.i"
+	@echo "... src/colored_noise.s"
 	@echo "... src/exploration_code.o"
 	@echo "... src/exploration_code.i"
 	@echo "... src/exploration_code.s"

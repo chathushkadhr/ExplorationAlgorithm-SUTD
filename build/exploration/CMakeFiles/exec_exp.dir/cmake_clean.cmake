@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/exec_exp.dir/src/colored_noise.cpp.o"
+  "CMakeFiles/exec_exp.dir/src/colored_noise.cpp.o.d"
   "CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o"
   "CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o.d"
   "CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o"

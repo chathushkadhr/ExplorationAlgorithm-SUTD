@@ -561,11 +561,191 @@ void MWFCN_Algo::explore(){
             int seed = 0;
             double *noise;
 
+            while(iteration < 3000 && minDis2Frontier > 1){
+                // ------------------------------------------
+                // ------------------------------------------
+                // ------------------------------------------ get the minimial potential of the points around currentLoc
+                {
+                    // ------------------------------------------ put locations around the current location into loc_around
+                    float potential[8];
+                    int min_idx = -1;
+                    float min_potential = 10000;
+                    int* loc_around[8];
 
+                    // up
+                    loc_around[0] = new int[2]{currentLoc[0]    , currentLoc[1] + 1};
+                    // up-left
+                    loc_around[1] = new int[2]{currentLoc[0] - 1, currentLoc[1] + 1};
+                    // left
+                    loc_around[2] = new int[2]{currentLoc[0] - 1, currentLoc[1]};
+                    // down-left
+                    loc_around[3] = new int[2]{currentLoc[0] - 1, currentLoc[1] - 1};
+                    // down
+                    loc_around[4] = new int[2]{currentLoc[0]    , currentLoc[1] - 1};
+                    // down-right
+                    loc_around[5] = new int[2]{currentLoc[0] + 1, currentLoc[1] - 1};
+                    // right
+                    loc_around[6] = new int[2]{currentLoc[0] + 1, currentLoc[1]};
+                    // up-right
+                    loc_around[7] = new int[2]{currentLoc[0] + 1, currentLoc[1] + 1};
 
+                    
 
+                    // ------------------------------------------ calculate potentials of four neighbors of currentLoc
+                    for (int i = 0; i < 8; i++){
+                        int curr_around[2]={loc_around[i][0], loc_around[i][1]};
 
+                        { // ------------------------------------ calculate current potential
+                            float attract = 0, repulsive = 0;
+                            for (int j = 0; j < cluster_center.size(); j++){
+                                // int temp_int = dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]];
+                                float temp = float(dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]]);
+                                if(temp < 1){
+                                    // std::cout << "zero loc: (" <<  cluster_center[j][0]   << ", " <<  cluster_center[j][1] << ")" << " temp" << temp << std::endl;
+                                    // std::cout << "curr loc: (" <<  curr_around[0]  << ", " << curr_around[1] << ")" << std::endl;
+                                    continue;
+                                }
+                                attract     = attract - K_ATTRACT*infoGain_cluster[j]/temp;
+                            }
 
+                            // there is no need to calculate potential of obstacles because information of obstacles have already been encoded in wave-front distance.
+                            // for (int j = 0; j < obstacles.size(); j++){
+                            //     float dis_obst = abs(obstacles[j][0]- curr_around[0]) + abs(obstacles[j][1]- curr_around[1]);
+                            //     if( dis_obst <= DIS_OBTSTACLE) {
+                            //         float temp = (1 / dis_obst - 1 / DIS_OBTSTACLE);
+                            //         repulsive = repulsive + 0.5 * ETA_REPLUSIVE * temp * temp;
+                            //     }
+                            // }
+
+                            // to increase the potential if currend point has been passed before
+                            for (int j =0; j < path.size(); j++){
+                                if(curr_around[0] == path[j][0] && curr_around[1] == path[j][1]){
+                                    attract += riverFlowPotentialGain*5;
+                                }
+                            }
+    
+
+                            // Add impact of robots.
+                            for(int i = 0; i < n_robot; i++){
+                                if(ifmapmerged_vec[i] ){
+                                    int index_[2] = {int(round((transform_robot[i].transform.translation.y- mapData.info.origin.position.y)/mapData.info.resolution)), int(round((transform_robot[i].transform.translation.x - mapData.info.origin.position.x)/mapData.info.resolution))};
+                                    int dis_ = abs(curr_around[0] - index_[0]) + abs(curr_around[1] - index_[1]);
+                                    //float sample = d(gen);
+                                    seed++;
+                                    noise = f_alpha ( n_robot, q_d, alpha, &seed );
+                                    if( dis_ < ROBOT_INTERFERE_RADIUS){
+                                        float temp_ = exp((dis_ - ROBOT_INTERFERE_RADIUS)/sigma) + noise[i];
+                                        attract += temp_;
+                                        std::cout << "sigma: " << sigma << std::endl;
+                                        std::cout << "noise: " << noise[i] << std::endl;
+                                        std::cout << "robot" << i+1 << " loc  :( " << index_[0] << ", " << index_[1] << ")" << std::endl;
+                                        std::cout << ns << " loc  :( " << curr_around[0] << ", " << curr_around[1] << ")" << std::endl;
+                                        std::cout << robot_frame << " add " << robots_frame_[i] <<"'s potential = " << temp_ << std::endl;
+                                    }
+                                }
+                            }
+
+                            // potential[i] = attract + repulsive;
+                            
+                            potential[i] = attract;
+                            if(min_potential > potential[i] ){
+                                min_potential = potential[i];
+                                min_idx = i;
+                            }
+                        }
+                    }
+                    if(currentPotential > min_potential){
+                        path.push_back(loc_around[min_idx]);
+                        currentPotential = min_potential;
+                        
+                    }
+                    else{
+                        riverFlowPotentialGain++;
+                    }
+
+                    for(int del_idx = 0; del_idx <8 ; del_idx++){
+                        if(del_idx != min_idx){
+                            delete [] loc_around[del_idx];
+                        }
+                    }
+                }
+
+                currentLoc[0] = (path.back())[0];
+                currentLoc[1] = (path.back())[1];
+                
+                for (int i = 0; i < cluster_center.size() ; i++){
+                    int temp_dis_ =  dismap_targets_ptr[i][(currentLoc[0])*WIDTH + currentLoc[1]];
+                    if( (temp_dis_ == 0) && (abs(currentLoc[0]-cluster_center[i][0]) + abs(currentLoc[1]-cluster_center[i][1])) > 0){
+                        continue;
+                    }
+
+                    if(minDis2Frontier > temp_dis_ ){
+                        minDis2Frontier = temp_dis_;
+                    }
+                }
+                iteration++;
+
+                // ---------------------------------------- publish path for displaying in rviz
+                if(iteration >= 1){
+                    p.x=(path[path.size()-2])[1] * mapData.info.resolution + mapData.info.origin.position.x; 
+                    p.y=(path[path.size()-2])[0] * mapData.info.resolution + mapData.info.origin.position.y;
+                    p.z=0.0;
+                    line.points.push_back(p);
+                    p.x=currentLoc[1] * mapData.info.resolution + mapData.info.origin.position.x;
+                    p.y=currentLoc[0] * mapData.info.resolution + mapData.info.origin.position.y;
+                    p.z=0.0;
+                    line.points.push_back(p);
+                    pub->publish(line); 
+                }
+            }
+
+            goal[0] = path.back()[0];
+            goal[1] = path.back()[1];
+        
+            if(start_condition){
+                geometry_msgs::msg::TransformStamped  transform;
+                int  temp=0;
+                while (temp==0){
+                    try{
+                    temp=1;
+                    transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
+                    }
+                    catch( const tf2::TransformException & ex){
+                        temp=0;
+                        rclcpp::sleep_for(100ms);
+                    }
+                }
+                int loc_x = transform.transform.translation.x;
+                int loc_y = transform.transform.translation.y;
+
+                robotGoal.pose.orientation.z = rotation_z[rotation_count];
+                robotGoal.pose.orientation.w = rotation_w[rotation_count];
+    
+                robotGoal.pose.position.x = loc_x + 0.2;
+                robotGoal.pose.position.y = loc_y + 0.2;
+            
+                start_condition = false;
+            }
+            else{
+                robotGoal.pose.orientation.z = 1;
+                robotGoal.pose.orientation.w = 0;
+                robotGoal.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
+                robotGoal.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
+                robotGoal.header.stamp    = rclcpp::Time(0);
+            
+                //ac.sendGoal(robotGoal);
+            }
+            line.points.clear();
+
+            // ------------------------------------------- clear memory
+            delete [] dismap_backup;
+            for (int i = 0; i<cluster_num; i++){
+                delete []  dismap_target[i];
+            }
+            delete [] dismap_target;
+
+            // ------------------------------------------- keep frequency stable
+            // _mt.unlock();
         } //Main while loop scope
         
 

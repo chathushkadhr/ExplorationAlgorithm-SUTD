@@ -44,7 +44,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_executable(exec_exp src/exploration_code.cpp src/exploration_node.cpp)
+add_executable(exec_exp src/exploration_code.cpp src/exploration_node.cpp src/colored_noise.cpp)
 ament_target_dependencies(exec_exp ${DEPENDENCIES})
 
 target_include_directories(exec_exp PUBLIC

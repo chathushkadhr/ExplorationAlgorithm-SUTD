@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 
+#include <exploration/colored_noise.h>
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "nav_msgs/msg/occupancy_grid.hpp"
@@ -20,6 +21,9 @@
 #include<cstdlib>
 
 #define LARGEST_MAP_DISTANCE 500000 
+#define K_ATTRACT 1
+#define ROBOT_INTERFERE_RADIUS 50
+
 
 using namespace std::chrono_literals;
 
