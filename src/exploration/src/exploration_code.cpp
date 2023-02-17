@@ -11,7 +11,7 @@ MWFCN_Algo:: MWFCN_Algo() :
     rotation_w{0.866,  0.500, 1.0},
     rotation_z{0.5  , -0.866, 0.0},
     map_data_received(false)
-{     
+{   
     std::string nodename=MWFCN_Algo::get_name();
 
     this->declare_parameter("map_topic", "/robot1/map");
@@ -43,6 +43,18 @@ MWFCN_Algo:: MWFCN_Algo() :
     this->declare_parameter("output_map_file", "$(find exploration)/data/robot1_MWFCN_explored_map.txt");
     output_map_file=this->get_parameter("output_map_file").get_parameter_value().get<std::string>();  
     
+    robots_frame_ = new std::string[n_robot];
+
+    for (int i = 1; i < n_robot+1; i++){
+
+        std::stringstream ss;              
+        ss << robot_ano_frame_preffix;
+        ss << i;
+        ss << robot_ano_frame_suffix;
+
+        robots_frame_[i-1] = ss.str();
+    }
+
     rclcpp::Rate rate(rateHz);
 
     // ------------------------------------- subscribe the map topics & clicked points
@@ -52,8 +64,6 @@ MWFCN_Algo:: MWFCN_Algo() :
     
     
     // ------------------------------------- subscribe the map topics & clicked points
-    tf2_ros::Buffer buffer(this->get_clock());
-    tf2_ros::TransformListener listener(buffer);
 
     // ------------------------------------- publish the detected points for following processing & display
     pub = this->create_publisher<visualization_msgs::msg::Marker>("_shapes", 100);
@@ -62,6 +72,9 @@ MWFCN_Algo:: MWFCN_Algo() :
     // publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     // timer_ = this->create_wall_timer(
     // 500ms, std::bind(&MWFCN_Algo::timer_callback, this));
+
+    buffer= std::make_unique<tf2_ros::Buffer>(this->get_clock());
+    listener= std::make_shared<tf2_ros::TransformListener>(*buffer);
 
     #ifdef DEBUG
     debug_param();
@@ -208,15 +221,7 @@ void MWFCN_Algo::check_map_data(){
         line.color.a 			= 1.0;
         line.lifetime           = rclcpp::Duration(0,0); // TODO : currently points are stored forever
         
-        // -------------------------------------Initialize all robots' frame;
-        std::string robots_frame[n_robot];
-        for (int i = 1; i < n_robot+1; i++){
-            std::stringstream ss;              
-            ss << robot_ano_frame_preffix;
-            ss << i;
-            ss << robot_ano_frame_suffix;
-            robots_frame[i-1] = ss.str();
-        }
+
 
     }
 
@@ -365,9 +370,9 @@ void MWFCN_Algo::explore(){
                     std::cout << "exploration done" << std::endl;
                     std::vector<geometry_msgs::msg::PointStamped> path_list;
 
-                    request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
+                    auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
                     request->trajectory_id = 0;
-                    result = trajectory_query_client->async_send_request(request);
+                    auto result = trajectory_query_client->async_send_request(request);
                     exploration_time = result.get()->trajectory[0].header.stamp.sec;
                     exploration_time = result.get()->trajectory.back().header.stamp.sec - exploration_time;
                     //std::cout <<  ns << "exploration_time is:" << exploration_time << " seconds" << std::endl;
@@ -404,13 +409,157 @@ void MWFCN_Algo::explore(){
 
                 no_targets_count ++;
                 std::cout << ns << "no targets count = " << no_targets_count << std::endl;
-                rate.sleep();
-                continue;
+                //
+                return;
             }
             else{
                 no_targets_count = 0;
             }
+            // ---------------------------------------- define the current point;
+            geometry_msgs::msg::TransformStamped transform;
+            int  temp=0;
+            while (temp==0){
+                try{
+                    temp=1;
+                    transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
+                }
+                catch( const tf2::TransformException & ex){
+                    temp=0;
+                    rclcpp::sleep_for(100ms);
+                }
+            }
+            currentLoc[0] = floor((transform.transform.translation.y  -mapData.info.origin.position.y)/mapData.info.resolution);
+            currentLoc[1] = floor((transform.transform.translation.x  -mapData.info.origin.position.x)/mapData.info.resolution);
+            path.push_back( currentLoc );
 
+            for(int i = 0; i< obstacles.size(); i++){
+                dismap_backup[(obstacles[i][0])*WIDTH + obstacles[i][1]] = -2;
+            }
+
+            // ------------------------------------------ cluster targets into different groups and find the center of each group.
+            // Note: x & y value of detected targets are in increasing order because of the detection is in laser scan order.
+            std::vector<int* > target_process(targets);
+            std::vector<int* > cluster_center;
+            std::vector<int>   infoGain_cluster;
+
+            while(target_process.size() > 0){
+                std::vector<int* > target_cluster;
+                target_cluster.push_back(target_process.back());
+                target_process.pop_back();
+
+                bool condition = true;
+                while(condition){
+                    condition = false;
+                    int size_target_process = target_process.size();
+                    for (int i = size_target_process-1; i >= 0 ; i--){
+                        for (int j = 0; j < target_cluster.size(); j++){
+                            int dis_ = abs(target_process[i][0] - target_cluster[j][0]) +  abs(target_process[i][1] - target_cluster[j][1]);
+                            if(dis_ < 3){
+                                target_cluster.push_back(target_process[i]);
+                                target_process.erase(target_process.begin() + i);
+                                condition = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                int center_[2]={0, 0};
+                int num_ = target_cluster.size();
+                for(int i = 0; i < num_; i++){
+                    center_[0] += target_cluster[i][0];
+                    center_[1] += target_cluster[i][1];
+                }
+
+                float center_float[2] = {float(center_[0]), float(center_[1])};
+                center_float[0] = center_float[0]/float(num_);
+                center_float[1] = center_float[1]/float(num_);
+
+                float min_dis_ = 100.0;
+                int min_idx_   = 10000;
+                for(int i = 0; i < num_; i++){
+                    float temp_dis_ = abs(center_float[0]-float(target_cluster[i][0])) + abs(center_float[1]-float(target_cluster[i][1]));
+                    if(temp_dis_ < min_dis_){
+                        min_dis_ = temp_dis_;
+                        min_idx_ = i;
+                    }
+                }
+
+                cluster_center.push_back(new int[2]{target_cluster[min_idx_][0], target_cluster[min_idx_][1]});
+                infoGain_cluster.push_back(num_);
+            }
+
+            // ------------------------------------------ Display Cluster centroids
+            points.points.clear();
+            for(int i = 0; i < cluster_center.size(); i++){
+                geometry_msgs::msg::Point temp;
+                temp.x = cluster_center[i][1] * mapData.info.resolution + mapData.info.origin.position.x;
+                temp.y = cluster_center[i][0] * mapData.info.resolution + mapData.info.origin.position.y;
+                temp.z = 0;
+                points.points.push_back(temp);
+            }
+            pub_centroid->publish(points);
+            
+            // ------------------------------------------ Generate Dismap starting from targets
+            int cluster_num = cluster_center.size();
+            int** dismap_target = new int* [cluster_num];
+            for (int i = 0; i<cluster_num; i++){
+                dismap_target[i] = new int[HEIGHT*WIDTH];
+            }
+
+            for(int i = 0; i< cluster_num; i++) {
+                dismapConstruction_start_target(dismap_target[i], dismap_backup, cluster_center[i], HEIGHT, WIDTH);   // dismap_target: target-generate potential dismap_backup: map info cluster_center: target pos 
+                dismap_targets_ptr.push_back(dismap_target[i]);
+            }
+
+            // ------------------------------------------ receive robots' locations
+            bool ifmapmerged_vec[n_robot];
+            geometry_msgs::msg::TransformStamped transform_robot[n_robot];
+            
+            for(int i = 0; i < n_robot; i++){
+
+                ifmapmerged_vec[i] = false;
+                if(i == this_robot_idx-1){
+                    continue;
+                }
+
+                geometry_msgs::msg::TransformStamped transform_;
+
+                try{
+                    transform = buffer->lookupTransform(robot_frame, robots_frame_[i],tf2::TimePointZero);
+                }
+                catch( const tf2::TransformException & ex){
+                    temp=0;
+                    rclcpp::sleep_for(100ms);
+                }
+
+        
+
+                //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_.getOrigin().getX() << ", "<<   transform_.getOrigin().getY()<< " )" << std::endl;
+                transform_robot[i] = transform_;
+                ifmapmerged_vec[i] = true;
+                //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_robot[i].getOrigin().getX() << ", "<<   transform_robot[i].getOrigin().getY()<< " )" << std::endl;
+
+            }
+
+            
+            // ------------------------------------------ calculate path.
+            int iteration = 1;
+            int currentPotential = 10000;
+            int riverFlowPotentialGain = 1;
+            minDis2Frontier  = 10000;  // a random initialized value greater than all possible distances.
+            //std::random_device rd{};
+            //std::mt19937 gen{rd()};
+            //std::normal_distribution<> d{0,0.01};
+            //std::map<int, int> hist{};
+
+            // ------------------------------------------ Colored noise (White: alpha = 0.0, Pink: alpha = 1.0, Brown: alpha = 2.0)
+            float sigma = 0.6; //for the potential function
+            double alpha = 2;
+            //int n = n_robot;
+            double q_d = 0.095;
+            int seed = 0;
+            double *noise;
 
 
 

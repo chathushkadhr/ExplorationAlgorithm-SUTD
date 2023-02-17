@@ -74,6 +74,9 @@
         "cfenv": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "*.ipp": "cpp",
+        "*.txx": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

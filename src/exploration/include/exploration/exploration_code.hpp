@@ -65,6 +65,7 @@ namespace exploration{
       int no_targets_count;
       float rotation_w[3];
       float rotation_z[3];
+      std::string* robots_frame_;
       
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr sub;
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costMapSub;
@@ -84,11 +85,16 @@ namespace exploration{
       std::ifstream infile;
       std::vector<int * > dismap_targets_ptr;
 
-      std::shared_ptr<cartographer_ros_msgs::srv::TrajectoryQuery_Request> request;
-      rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::FutureAndRequestId result;
       double trajectory_length, exploration_time;
+      double trajectory_x;
+      double trajectory_y;
       
+      // tf2_ros::Buffer buffer;
+      // tf2_ros::TransformListener listener{buffer};
+      std::unique_ptr<tf2_ros::Buffer> buffer;
+      std::shared_ptr<tf2_ros::TransformListener> listener{nullptr};
       
+
     
 
   };

@@ -680,6 +680,12 @@ CMakeFiles/exec_exp.dir/src/exploration_node.cpp.o: \
  /opt/ros/humble/include/tf2_msgs/tf2_msgs/srv/detail/frame_graph__struct.hpp \
  /opt/ros/humble/include/tf2_msgs/tf2_msgs/srv/detail/frame_graph__builder.hpp \
  /opt/ros/humble/include/tf2_msgs/tf2_msgs/srv/detail/frame_graph__traits.hpp \
+ /opt/ros/humble/include/cartographer_ros_msgs/cartographer_ros_msgs/srv/trajectory_query.hpp \
+ /opt/ros/humble/include/cartographer_ros_msgs/cartographer_ros_msgs/srv/detail/trajectory_query__struct.hpp \
+ /opt/ros/humble/include/cartographer_ros_msgs/cartographer_ros_msgs/msg/detail/status_response__struct.hpp \
+ /opt/ros/humble/include/cartographer_ros_msgs/cartographer_ros_msgs/srv/detail/trajectory_query__builder.hpp \
+ /opt/ros/humble/include/cartographer_ros_msgs/cartographer_ros_msgs/srv/detail/trajectory_query__traits.hpp \
+ /opt/ros/humble/include/cartographer_ros_msgs/cartographer_ros_msgs/msg/detail/status_response__traits.hpp \
  /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
