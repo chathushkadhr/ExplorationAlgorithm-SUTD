@@ -1,3 +1,0 @@
-[console_scripts]
-exec_tf_pub = tf_publish.publish_tf_for_two_robots:main
-

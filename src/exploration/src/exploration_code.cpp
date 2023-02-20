@@ -83,6 +83,8 @@ MWFCN_Algo:: MWFCN_Algo() :
     // trajectory_query_client =this->create_client<cartographer_ros_msgs::srv::TrajectoryQuery>(trajectory_query_name);
     // trajectory_query_client->wait_for_service();
 
+    this->client_ptr_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, ns + "/navigate_to_pose");
+
     timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
 
 }
@@ -190,9 +192,9 @@ void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backu
 void MWFCN_Algo::check_map_data(){
     if (!(mapData.data.size() < 1 || costmapData.data.size()<1)){
         map_data_received =true;
-        robotGoal.header.frame_id=robot_frame;
-        robotGoal.pose.position.z=0;
-        robotGoal.pose.orientation.z=1.0;
+        robotGoal.pose.header.frame_id=robot_frame;
+        robotGoal.pose.pose.position.z=0;
+        robotGoal.pose.pose.orientation.z=1.0;
 
         // ------------------------------------- initilize the visualized points & lines  
         points.header.frame_id = mapData.header.frame_id;
@@ -718,22 +720,22 @@ void MWFCN_Algo::explore(){
                 int loc_x = transform.transform.translation.x;
                 int loc_y = transform.transform.translation.y;
 
-                robotGoal.pose.orientation.z = rotation_z[rotation_count];
-                robotGoal.pose.orientation.w = rotation_w[rotation_count];
+                robotGoal.pose.pose.orientation.z = rotation_z[rotation_count];
+                robotGoal.pose.pose.orientation.w = rotation_w[rotation_count];
     
-                robotGoal.pose.position.x = loc_x + 0.2;
-                robotGoal.pose.position.y = loc_y + 0.2;
+                robotGoal.pose.pose.position.x = loc_x + 0.2;
+                robotGoal.pose.pose.position.y = loc_y + 0.2;
             
                 start_condition = false;
             }
             else{
-                robotGoal.pose.orientation.z = 1;
-                robotGoal.pose.orientation.w = 0;
-                robotGoal.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
-                robotGoal.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
-                robotGoal.header.stamp    = rclcpp::Time(0);
-            
-                //ac.sendGoal(robotGoal);
+                robotGoal.pose.pose.orientation.z = 1;
+                robotGoal.pose.pose.orientation.w = 0;
+                robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
+                robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
+                robotGoal.pose.header.stamp  = rclcpp::Time(0);
+
+                this->client_ptr_->async_send_goal(robotGoal);
             }
             line.points.clear();
 

@@ -11,7 +11,9 @@
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
-#include "cartographer_ros_msgs/srv/trajectory_query.hpp"
+#include "nav2_msgs/action/navigate_to_pose.hpp"
+#include "rclcpp_action/rclcpp_action.hpp"
+//#include "cartographer_ros_msgs/srv/trajectory_query.hpp"
 
 #include<fstream>
 #include<sstream>
@@ -52,8 +54,8 @@ namespace exploration{
       void check_map_data();  
       void explore();
 
-
-      geometry_msgs::msg::PoseStamped robotGoal;
+      nav2_msgs::action::NavigateToPose_Goal robotGoal;
+      //geometry_msgs::msg::PoseStamped robotGoal;
       rclcpp::TimerBase::SharedPtr timer_main;
       rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
       size_t count_;
@@ -78,7 +80,8 @@ namespace exploration{
       rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub;
       rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub_centroid;
 
-      rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::SharedPtr trajectory_query_client;
+      //rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::SharedPtr trajectory_query_client;
+      rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr client_ptr_;
 
       bool map_data_received,clicked_point;
 
