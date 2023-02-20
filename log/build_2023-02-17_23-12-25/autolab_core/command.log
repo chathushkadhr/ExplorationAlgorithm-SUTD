@@ -1,2 +1,0 @@
-Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/autolab_core': /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/autolab_core -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/autolab_core
-Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/autolab_core' returned '1': /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/autolab_core -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/autolab_core

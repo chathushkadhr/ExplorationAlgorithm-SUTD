@@ -4,15 +4,14 @@ import rclpy
 import tf2_ros
 from rclpy.node import Node
 from std_msgs.msg import String, Float32MultiArray
-from geometry_msgs.msg import Pose, Transform
-from autolab_core import RigidTransform
+from geometry_msgs.msg import Pose, Transform,TransformStamped
+
 
 class TestPublishTF(Node):
 
     def __init__(self):
         super().__init__('test_publish_tf')
-        
-        
+                
         self.robot1_pub = self.create_publisher(Float32MultiArray,'robot1/robot_pos', 10)
         self.robot2_pub = self.create_publisher(Float32MultiArray,'robot2/robot_pos', 10)
         self.br = tf2_ros.TransformBroadcaster(self)
@@ -25,18 +24,40 @@ class TestPublishTF(Node):
     
     def timer_callback(self):
         try:
+            
             #now = rospy.Time.now()
             #tf_listener.waitForTransform('robot1/map','robot1/odom', rospy.Time.now(), rospy.Duration(10.0))
             robot1_map_to_odom = self.tf_buffer.lookup_transform('robot1/map', 'robot1/odom',rclpy.time.Time())
-            robot2_map_to_odom = self.tf_buffer.lookup_transform('robot2/map', 'robot2/odom',rclpy.time.Time())
+            robot2_odom_to_map = self.tf_buffer.lookup_transform('robot2/odom', 'robot2/map',rclpy.time.Time())
         except:
             print('no tf')
             return
+        robot1_odom_to_robot2_odom_Rigidtrans = TransformStamped()
+        # Set the frame IDs
+        robot1_odom_to_robot2_odom_Rigidtrans.header.frame_id = 'robot2/odom'
+        robot1_odom_to_robot2_odom_Rigidtrans.child_frame_id = 'robot1/odom'
+
+        # Set the translation and rotation
+        robot1_odom_to_robot2_odom_Rigidtrans.transform.translation.x = 0
+        robot1_odom_to_robot2_odom_Rigidtrans.transform.translation.y = 0
+        robot1_odom_to_robot2_odom_Rigidtrans.transform.translation.z = 0
+        robot1_odom_to_robot2_odom_Rigidtrans.transform.rotation.x = 0
+        robot1_odom_to_robot2_odom_Rigidtrans.transform.rotation.y = 0
+        robot1_odom_to_robot2_odom_Rigidtrans.transform.rotation.z = 0
+        robot1_odom_to_robot2_odom_Rigidtrans.transform.rotation.w = 1
         
-        robot1_map_to_odom_Rigidtrans = self.tf2Rigidtrans(robot1_map_to_odom, 'robot1/odom', 'robot1/map')
-        robot2_map_to_odom_Rigidtrans = self.tf2Rigidtrans(robot2_map_to_odom, 'robot2/odom', 'robot2/map')
-        robot1_odom_to_robot2_odom_Rigidtrans = self.tf2Rigidtrans(([0,0,0],[0,0,0,1]), 'robot2/odom', 'robot1/odom')
-        robot1_map_to_robot2_map_Rigidtrans = robot1_map_to_odom_Rigidtrans*robot1_odom_to_robot2_odom_Rigidtrans*robot2_map_to_odom_Rigidtrans.inverse()   
+        mytf = robot1_map_to_odom * robot2_odom_to_map * robot1_odom_to_robot2_odom_Rigidtrans
+        
+        
+        
+        
+        
+        # robot1_map_to_odom_Rigidtrans = self.tf2Rigidtrans(robot1_map_to_odom, 'robot1/odom', 'robot1/map')
+        # robot2_map_to_odom_Rigidtrans = self.tf2Rigidtrans(robot2_map_to_odom, 'robot2/odom', 'robot2/map')
+        # robot1_odom_to_robot2_odom_Rigidtrans = self.tf2Rigidtrans(([0,0,0],[0,0,0,1]), 'robot2/odom', 'robot1/odom')
+        
+        
+        # robot1_map_to_robot2_map_Rigidtrans = robot1_map_to_odom_Rigidtrans*robot1_odom_to_robot2_odom_Rigidtrans*robot2_map_to_odom_Rigidtrans.inverse()   
 
         tf =  self.Rigidtrans2transstamped(robot1_map_to_robot2_map_Rigidtrans)
 

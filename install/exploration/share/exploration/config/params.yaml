@@ -1,6 +1,16 @@
 $(var namespace)/MWFCN_node:
   ros__parameters:
     # Map Topic discovery
-    map_topic: /$(var namespace)/map
+  map_topic: /$(var namespace)/map
+  costmap_topic: /$(var namespace)/move_base/global_costmap/costmap
+  robot_base_frame: /$(var namespace)/base_footprint
+  robot_frame: /$(var namespace)/map
+  namespace: /$(var namespace)
+  rate: 1
+  inflation_radius: 6.0
+  n_robot: 1
+  this_robot_idx: 1
+  robot_ano_frame_preffix: robot
+  robot_ano_frame_suffix: base_footprint
 
-   
+

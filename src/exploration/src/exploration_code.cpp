@@ -80,8 +80,8 @@ MWFCN_Algo:: MWFCN_Algo() :
     debug_param();
     
     #endif
-    trajectory_query_client =this->create_client<cartographer_ros_msgs::srv::TrajectoryQuery>(trajectory_query_name);
-    trajectory_query_client->wait_for_service();
+    // trajectory_query_client =this->create_client<cartographer_ros_msgs::srv::TrajectoryQuery>(trajectory_query_name);
+    // trajectory_query_client->wait_for_service();
 
     timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
 
@@ -370,32 +370,32 @@ void MWFCN_Algo::explore(){
                     std::cout << "exploration done" << std::endl;
                     std::vector<geometry_msgs::msg::PointStamped> path_list;
 
-                    auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
-                    request->trajectory_id = 0;
-                    auto result = trajectory_query_client->async_send_request(request);
-                    exploration_time = result.get()->trajectory[0].header.stamp.sec;
-                    exploration_time = result.get()->trajectory.back().header.stamp.sec - exploration_time;
+                    // auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
+                    // request->trajectory_id = 0;
+                    // auto result = trajectory_query_client->async_send_request(request);
+                    // exploration_time = result.get()->trajectory[0].header.stamp.sec;
+                    // exploration_time = result.get()->trajectory.back().header.stamp.sec - exploration_time;
                     //std::cout <<  ns << "exploration_time is:" << exploration_time << " seconds" << std::endl;
 
-                    std::ofstream ofile(output_file);
+                    // std::ofstream ofile(output_file);
 
-                    trajectory_x = result.get()->trajectory[0].pose.position.x;
-                    trajectory_y = result.get()->trajectory[0].pose.position.y;
+                    // trajectory_x = result.get()->trajectory[0].pose.position.x;
+                    // trajectory_y = result.get()->trajectory[0].pose.position.y;
                                     
-                    ofile << "[";
-                    ofile << trajectory_x << "," << trajectory_y << std::endl;
-                    for (int i = 1; i < result.get()->trajectory.size(); i++){
-                        double temp_x = result.get()->trajectory[i].pose.position.x;
-                        double temp_y = result.get()->trajectory[i].pose.position.y;
-                        ofile << temp_x  << ", " <<  temp_y << ";" << std::endl;
-                        double delta_x = trajectory_x - temp_x;
-                        double delta_y = trajectory_y - temp_y;
-                        trajectory_length += sqrt(delta_x*delta_x + delta_y*delta_y);
-                        trajectory_x = temp_x;
-                        trajectory_y = temp_y; 
-                    }
-                    ofile << "]" << std::endl;
-                    ofile.close();
+                    // ofile << "[";
+                    // ofile << trajectory_x << "," << trajectory_y << std::endl;
+                    // for (int i = 1; i < result.get()->trajectory.size(); i++){
+                    //     double temp_x = result.get()->trajectory[i].pose.position.x;
+                    //     double temp_y = result.get()->trajectory[i].pose.position.y;
+                    //     ofile << temp_x  << ", " <<  temp_y << ";" << std::endl;
+                    //     double delta_x = trajectory_x - temp_x;
+                    //     double delta_y = trajectory_y - temp_y;
+                    //     trajectory_length += sqrt(delta_x*delta_x + delta_y*delta_y);
+                    //     trajectory_x = temp_x;
+                    //     trajectory_y = temp_y; 
+                    // }
+                    // ofile << "]" << std::endl;
+                    // ofile.close();
                     //std::cout <<  ns << "exploration trajectory length = " << trajectory_length << " meters" << std::endl;
                     
                     std::ofstream ofile2(output_map_file);
@@ -784,8 +784,3 @@ void MWFCN_Algo:: timer_callback()
        RCLCPP_INFO(this->get_logger(), "I'm here");
       publisher_->publish(message);
 }
-
-
- 
-
-    
