@@ -9,14 +9,14 @@ MWFCN_Algo:: MWFCN_Algo() :
     start_condition(true),
     no_targets_count(0),
     rotation_w{0.866,  0.500, 1.0},
-    rotation_z{0.5  , -0.866, 0.0},
-    map_data_received(false)
+    rotation_z{0.5  , -0.866, 0.0}
+
 {   
     std::string nodename=MWFCN_Algo::get_name();
 
     this->declare_parameter("map_topic", "/robot1/map");
     map_topic=this->get_parameter("map_topic").get_parameter_value().get<std::string>();
-    this->declare_parameter("costmap_topic", "/robot1/move_base/global_costmap/costmap");
+    this->declare_parameter("costmap_topic", "/robot1/global_costmap/costmap");
     costmap_topic=this->get_parameter("costmap_topic").get_parameter_value().get<std::string>();
     this->declare_parameter("robot_base_frame", "/robot1/base_footprint");
     robot_base_frame=this->get_parameter("robot_base_frame").get_parameter_value().get<std::string>();
@@ -60,8 +60,6 @@ MWFCN_Algo:: MWFCN_Algo() :
     // ------------------------------------- subscribe the map topics & clicked points
     sub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic, 10, std::bind(&MWFCN_Algo::mapCallBack, this, _1));
     costMapSub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic, 20, std::bind(&MWFCN_Algo::costmapMergedCallBack, this, _1));
-    rviz_sub = this->create_subscription<geometry_msgs::msg::PointStamped>("/clicked_point", 10, std::bind(&MWFCN_Algo::rvizCallBack, this, _1));
-    
     
     // ------------------------------------- subscribe the map topics & clicked points
 
@@ -84,12 +82,525 @@ MWFCN_Algo:: MWFCN_Algo() :
     // trajectory_query_client->wait_for_service();
 
     this->client_ptr_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, ns + "/navigate_to_pose");
-
+    
     timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
 
 }
 
 
+void MWFCN_Algo::explore(){
+    
+    //Return if maps are not available
+    if (!map_data_available()) return;
+
+    //Return if self map to base_foot_print transform is not available
+    geometry_msgs::msg::TransformStamped map_to_baseframe;
+    try{
+        map_to_baseframe = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
+    }
+    catch( const tf2::TransformException & ex){
+        RCLCPP_WARN_STREAM(this->get_logger(), robot_base_frame + " to " + mapData.header.frame_id + " transform is not available : " + ex.what());
+        return;
+    }
+    RCLCPP_INFO_STREAM(this->get_logger(), "map data received");
+
+        // ---------------------------------------- variables from ROS input;
+    HEIGHT = mapData.info.height;
+    WIDTH  = mapData.info.width;
+
+
+    int* dismap_backup = new int[HEIGHT*WIDTH];
+    int map[HEIGHT*WIDTH];
+
+    // ---------------------------------------- initialize the map & dismap
+    for (int i=0; i<HEIGHT; i++)
+    {
+        for (int j=0; j<WIDTH; j++)
+        {
+            map[i*WIDTH + j] = (int) mapData.data[i*mapData.info.width + j];
+            dismap_backup[i*WIDTH + j] = map[i*WIDTH + j];
+        }
+    }
+
+    // ------------------------------------------ find the obstacles & targets
+    for (int i = 2; i < HEIGHT-2; i++){
+        for (int j = 2; j < WIDTH-2; j++){
+            if(map[i*WIDTH + j] == 100){
+                obstacles.push_back(new int[2]{i,j});
+            }
+            else if(map[i*WIDTH + j] == -1){
+                // accessiable frontiers
+                int numFree = 0, temp1 = 0;
+
+                if (map[(i + 1)*WIDTH + j] == 0){
+                    temp1 += (map[(i + 2)*WIDTH + j    ] == 0) ? 3 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i + 2)*WIDTH + j + 1] == 0) ? 4 : 0;
+                    temp1 += (map[(i + 2)*WIDTH + j - 1] == 0) ? 4 : 0;
+                    temp1 += (map[      i*WIDTH + j + 1] == 0) ? 4 : 0;
+                    temp1 += (map[      i*WIDTH + j - 1] == 0) ? 4 : 0;
+                    numFree += (temp1 > 0);
+                }
+
+                if (map[i*WIDTH + j + 1] == 0){
+                    temp1 = 0;
+                    temp1 += (map[      i*WIDTH + j + 2] == 0) ? 3 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i - 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j + 2] == 0) ? 4 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                    temp1 += (map[(i - 1)*WIDTH + j + 2] == 0) ? 4 : 0;
+                    temp1 += (map[(i - 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                    numFree += (temp1 > 0);
+                }
+
+                if (map[(i - 1) *WIDTH + j] == 0){
+                    temp1 = 0;
+                    temp1 += (map[(i - 1)*WIDTH + j + 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i - 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i - 2)*WIDTH + j    ] == 0) ? 3 : 0;
+                    temp1 += (map[      i*WIDTH + j + 1] == 0) ? 4 : 0;
+                    temp1 += (map[      i*WIDTH + j - 1] == 0) ? 4 : 0;
+                    temp1 += (map[(i - 2)*WIDTH + j + 1] == 0) ? 4 : 0;
+                    temp1 += (map[(i - 2)*WIDTH + j - 1] == 0) ? 4 : 0;
+                    numFree += (temp1 > 0);
+                }
+
+                if (map[i * WIDTH + j - 1] == 0){
+                    temp1 = 0;
+                    temp1 += (map[    i  *WIDTH + j - 2] == 0) ? 3 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i - 1)*WIDTH + j - 1] == 0) ? 3 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                    temp1 += (map[(i + 1)*WIDTH + j - 2] == 0) ? 4 : 0;
+                    temp1 += (map[(i - 1)*WIDTH + j    ] == 0) ? 4 : 0;
+                    temp1 += (map[(i - 1)*WIDTH + j - 2] == 0) ? 4 : 0;
+                    numFree += (temp1 > 0);
+                }
+
+                if( numFree > 0 ) {
+                    targets.push_back(new int[2]{i,j});
+                }
+            }
+        }
+    }
+
+    {
+        for (int idx_target = targets.size()-1; idx_target >= 0; idx_target--) {
+            
+            float loc_x = targets[idx_target][1]*mapData.info.resolution + mapData.info.origin.position.x;
+            float loc_y = targets[idx_target][0]*mapData.info.resolution + mapData.info.origin.position.y;
+            int index_costmap = (loc_y - costmapData.info.origin.position.y)/costmapData.info.resolution * costmapData.info.width + (loc_x - costmapData.info.origin.position.x)/costmapData.info.resolution;
+            if (costmapData.data[index_costmap] >0){
+                targets.erase(targets.begin() + idx_target);
+                continue;
+            }
+        }
+        std::cout << "number targets after erase (costmap): " << targets.size() << std::endl;
+    }
+
+    // ------------------------------------------ remove targets within the inflation radius of obstacles.
+    {
+        for(int idx_target = targets.size()-1; idx_target>=0; idx_target--) {
+            for (int i = 0; i < obstacles.size(); i++) {
+                if (abs(targets[idx_target][0] - obstacles[i][0]) +
+                    abs(targets[idx_target][1] - obstacles[i][1]) < inflation_radius) {
+                    targets.erase(targets.begin() + idx_target);
+                    break;
+                }
+            }
+        std::cout << "number targets after erase (obstacles): " << targets.size() << std::endl;
+        }
+    }
+
+    // ------------------------------------------ exploration finish detection
+    if(targets.size() == 0){
+        if(no_targets_count == 8){
+            std::cout << "exploration done" << std::endl;
+            std::vector<geometry_msgs::msg::PointStamped> path_list;
+
+            // auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
+            // request->trajectory_id = 0;
+            // auto result = trajectory_query_client->async_send_request(request);
+            // exploration_time = result.get()->trajectory[0].header.stamp.sec;
+            // exploration_time = result.get()->trajectory.back().header.stamp.sec - exploration_time;
+            //std::cout <<  ns << "exploration_time is:" << exploration_time << " seconds" << std::endl;
+
+            // std::ofstream ofile(output_file);
+
+            // trajectory_x = result.get()->trajectory[0].pose.position.x;
+            // trajectory_y = result.get()->trajectory[0].pose.position.y;
+                            
+            // ofile << "[";
+            // ofile << trajectory_x << "," << trajectory_y << std::endl;
+            // for (int i = 1; i < result.get()->trajectory.size(); i++){
+            //     double temp_x = result.get()->trajectory[i].pose.position.x;
+            //     double temp_y = result.get()->trajectory[i].pose.position.y;
+            //     ofile << temp_x  << ", " <<  temp_y << ";" << std::endl;
+            //     double delta_x = trajectory_x - temp_x;
+            //     double delta_y = trajectory_y - temp_y;
+            //     trajectory_length += sqrt(delta_x*delta_x + delta_y*delta_y);
+            //     trajectory_x = temp_x;
+            //     trajectory_y = temp_y; 
+            // }
+            // ofile << "]" << std::endl;
+            // ofile.close();
+            //std::cout <<  ns << "exploration trajectory length = " << trajectory_length << " meters" << std::endl;
+            
+            // std::ofstream ofile2(output_map_file);
+            // ofile2 <<  ns << "map Origin (" << mapData.info.origin.position.x << " ," << mapData.info.origin.position.y << ")" << std::endl;
+            // for(int i = 0; i < mapData.data.size(); i++){
+            //     ofile2 << mapData.data[i] << " ";
+            // }
+            // ofile2.close();
+            timer_main->cancel();
+        }   
+
+        no_targets_count ++;
+        std::cout << ns << "no targets count = " << no_targets_count << std::endl;
+        //
+        return;
+    }
+    else{
+        
+        no_targets_count = 0;
+    }
+    
+    // ---------------------------------------- define the current point;
+    currentLoc[0] = floor((map_to_baseframe.transform.translation.y  -mapData.info.origin.position.y)/mapData.info.resolution);
+    currentLoc[1] = floor((map_to_baseframe.transform.translation.x  -mapData.info.origin.position.x)/mapData.info.resolution);
+    path.push_back( currentLoc );
+
+    for(int i = 0; i< obstacles.size(); i++){
+        dismap_backup[(obstacles[i][0])*WIDTH + obstacles[i][1]] = -2;
+    }
+
+    // ------------------------------------------ cluster targets into different groups and find the center of each group.
+    // Note: x & y value of detected targets are in increasing order because of the detection is in laser scan order.
+    std::vector<int* > target_process(targets);
+    std::vector<int* > cluster_center;
+    std::vector<int>   infoGain_cluster;
+
+    while(target_process.size() > 0){
+        std::vector<int* > target_cluster;
+        target_cluster.push_back(target_process.back());
+        target_process.pop_back();
+
+        bool condition = true;
+        while(condition){
+            condition = false;
+            int size_target_process = target_process.size();
+            for (int i = size_target_process-1; i >= 0 ; i--){
+                for (int j = 0; j < target_cluster.size(); j++){
+                    int dis_ = abs(target_process[i][0] - target_cluster[j][0]) +  abs(target_process[i][1] - target_cluster[j][1]);
+                    if(dis_ < 3){
+                        target_cluster.push_back(target_process[i]);
+                        target_process.erase(target_process.begin() + i);
+                        condition = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        int center_[2]={0, 0};
+        int num_ = target_cluster.size();
+        for(int i = 0; i < num_; i++){
+            center_[0] += target_cluster[i][0];
+            center_[1] += target_cluster[i][1];
+        }
+
+        float center_float[2] = {float(center_[0]), float(center_[1])};
+        center_float[0] = center_float[0]/float(num_);
+        center_float[1] = center_float[1]/float(num_);
+
+        float min_dis_ = 100.0;
+        int min_idx_   = 10000;
+        for(int i = 0; i < num_; i++){
+            float temp_dis_ = abs(center_float[0]-float(target_cluster[i][0])) + abs(center_float[1]-float(target_cluster[i][1]));
+            if(temp_dis_ < min_dis_){
+                min_dis_ = temp_dis_;
+                min_idx_ = i;
+            }
+        }
+
+        cluster_center.push_back(new int[2]{target_cluster[min_idx_][0], target_cluster[min_idx_][1]});
+        infoGain_cluster.push_back(num_);
+    }
+
+    // ------------------------------------------ Display Cluster centroids
+    points.points.clear();
+    for(int i = 0; i < cluster_center.size(); i++){
+        geometry_msgs::msg::Point temp;
+        temp.x = cluster_center[i][1] * mapData.info.resolution + mapData.info.origin.position.x;
+        temp.y = cluster_center[i][0] * mapData.info.resolution + mapData.info.origin.position.y;
+        temp.z = 0;
+        points.points.push_back(temp);
+    }
+    pub_centroid->publish(points);
+
+    // ------------------------------------------ Generate Dismap starting from targets
+    int cluster_num = cluster_center.size();
+    int** dismap_target = new int* [cluster_num];
+    for (int i = 0; i<cluster_num; i++){
+        dismap_target[i] = new int[HEIGHT*WIDTH];
+    }
+
+    for(int i = 0; i< cluster_num; i++) {
+        dismapConstruction_start_target(dismap_target[i], dismap_backup, cluster_center[i], HEIGHT, WIDTH);   // dismap_target: target-generate potential dismap_backup: map info cluster_center: target pos 
+        dismap_targets_ptr.push_back(dismap_target[i]);
+    }
+
+    // ------------------------------------------ receive robots' locations
+    bool ifmapmerged_vec[n_robot];
+    geometry_msgs::msg::TransformStamped transform_robot[n_robot];
+
+    for(int i = 0; i < n_robot; i++){
+
+        ifmapmerged_vec[i] = false;
+        if(i == this_robot_idx-1){
+            continue;
+        }
+
+        geometry_msgs::msg::TransformStamped transform_;
+
+        try{
+            transform_= buffer->lookupTransform(robot_frame, robots_frame_[i],tf2::TimePointZero);
+        }
+        catch( const tf2::TransformException & ex){
+            RCLCPP_WARN_STREAM(this->get_logger(), robots_frame_[i] + " to " + robot_frame + " transform is not available : " + ex.what());
+        }
+
+
+
+        //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_.getOrigin().getX() << ", "<<   transform_.getOrigin().getY()<< " )" << std::endl;
+        transform_robot[i] = transform_;
+        ifmapmerged_vec[i] = true;
+        //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_robot[i].getOrigin().getX() << ", "<<   transform_robot[i].getOrigin().getY()<< " )" << std::endl;
+
+    }
+
+
+    // ------------------------------------------ calculate path.
+    int iteration = 1;
+    int currentPotential = 10000;
+    int riverFlowPotentialGain = 1;
+    minDis2Frontier  = 10000;  // a random initialized value greater than all possible distances.
+    //std::random_device rd{};
+    //std::mt19937 gen{rd()};
+    //std::normal_distribution<> d{0,0.01};
+    //std::map<int, int> hist{};
+
+    // ------------------------------------------ Colored noise (White: alpha = 0.0, Pink: alpha = 1.0, Brown: alpha = 2.0)
+    float sigma = 0.6; //for the potential function
+    double alpha = 2;
+    //int n = n_robot;
+    double q_d = 0.095;
+    int seed = 0;
+    double *noise;
+
+    while(iteration < 3000 && minDis2Frontier > 1){
+        // ------------------------------------------
+        // ------------------------------------------
+        // ------------------------------------------ get the minimial potential of the points around currentLoc
+        {
+            // ------------------------------------------ put locations around the current location into loc_around
+            float potential[8];
+            int min_idx = -1;
+            float min_potential = 10000;
+            int* loc_around[8];
+
+            // up
+            loc_around[0] = new int[2]{currentLoc[0]    , currentLoc[1] + 1};
+            // up-left
+            loc_around[1] = new int[2]{currentLoc[0] - 1, currentLoc[1] + 1};
+            // left
+            loc_around[2] = new int[2]{currentLoc[0] - 1, currentLoc[1]};
+            // down-left
+            loc_around[3] = new int[2]{currentLoc[0] - 1, currentLoc[1] - 1};
+            // down
+            loc_around[4] = new int[2]{currentLoc[0]    , currentLoc[1] - 1};
+            // down-right
+            loc_around[5] = new int[2]{currentLoc[0] + 1, currentLoc[1] - 1};
+            // right
+            loc_around[6] = new int[2]{currentLoc[0] + 1, currentLoc[1]};
+            // up-right
+            loc_around[7] = new int[2]{currentLoc[0] + 1, currentLoc[1] + 1};
+
+            
+
+            // ------------------------------------------ calculate potentials of four neighbors of currentLoc
+            for (int i = 0; i < 8; i++){
+                int curr_around[2]={loc_around[i][0], loc_around[i][1]};
+
+                { // ------------------------------------ calculate current potential
+                    float attract = 0, repulsive = 0;
+                    for (int j = 0; j < cluster_center.size(); j++){
+                        // int temp_int = dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]];
+                        float temp = float(dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]]);
+                        if(temp < 1){
+                            // std::cout << "zero loc: (" <<  cluster_center[j][0]   << ", " <<  cluster_center[j][1] << ")" << " temp" << temp << std::endl;
+                            // std::cout << "curr loc: (" <<  curr_around[0]  << ", " << curr_around[1] << ")" << std::endl;
+                            continue;
+                        }
+                        attract     = attract - K_ATTRACT*infoGain_cluster[j]/temp;
+                    }
+
+                    // there is no need to calculate potential of obstacles because information of obstacles have already been encoded in wave-front distance.
+                    // for (int j = 0; j < obstacles.size(); j++){
+                    //     float dis_obst = abs(obstacles[j][0]- curr_around[0]) + abs(obstacles[j][1]- curr_around[1]);
+                    //     if( dis_obst <= DIS_OBTSTACLE) {
+                    //         float temp = (1 / dis_obst - 1 / DIS_OBTSTACLE);
+                    //         repulsive = repulsive + 0.5 * ETA_REPLUSIVE * temp * temp;
+                    //     }
+                    // }
+
+                    // to increase the potential if currend point has been passed before
+                    for (int j =0; j < path.size(); j++){
+                        if(curr_around[0] == path[j][0] && curr_around[1] == path[j][1]){
+                            attract += riverFlowPotentialGain*5;
+                        }
+                    }
+
+
+                    // Add impact of robots.
+                    for(int i = 0; i < n_robot; i++){
+                        if(ifmapmerged_vec[i] ){
+                            int index_[2] = {int(round((transform_robot[i].transform.translation.y- mapData.info.origin.position.y)/mapData.info.resolution)), int(round((transform_robot[i].transform.translation.x - mapData.info.origin.position.x)/mapData.info.resolution))};
+                            int dis_ = abs(curr_around[0] - index_[0]) + abs(curr_around[1] - index_[1]);
+                            //float sample = d(gen);
+                            seed++;
+                            noise = f_alpha ( n_robot, q_d, alpha, &seed );
+                            if( dis_ < ROBOT_INTERFERE_RADIUS){
+                                float temp_ = exp((dis_ - ROBOT_INTERFERE_RADIUS)/sigma) + noise[i];
+                                attract += temp_;
+                                std::cout << "sigma: " << sigma << std::endl;
+                                std::cout << "noise: " << noise[i] << std::endl;
+                                std::cout << "robot" << i+1 << " loc  :( " << index_[0] << ", " << index_[1] << ")" << std::endl;
+                                std::cout << ns << " loc  :( " << curr_around[0] << ", " << curr_around[1] << ")" << std::endl;
+                                std::cout << robot_frame << " add " << robots_frame_[i] <<"'s potential = " << temp_ << std::endl;
+                            }
+                        }
+                    }
+
+                    // potential[i] = attract + repulsive;
+                    
+                    potential[i] = attract;
+                    if(min_potential > potential[i] ){
+                        min_potential = potential[i];
+                        min_idx = i;
+                    }
+                }
+            }
+            if(currentPotential > min_potential){
+                path.push_back(loc_around[min_idx]);
+                currentPotential = min_potential;
+                
+            }
+            else{
+                riverFlowPotentialGain++;
+            }
+
+            for(int del_idx = 0; del_idx <8 ; del_idx++){
+                if(del_idx != min_idx){
+                    delete [] loc_around[del_idx];
+                }
+            }
+        }
+
+        currentLoc[0] = (path.back())[0];
+        currentLoc[1] = (path.back())[1];
+        
+        for (int i = 0; i < cluster_center.size() ; i++){
+            int temp_dis_ =  dismap_targets_ptr[i][(currentLoc[0])*WIDTH + currentLoc[1]];
+            if( (temp_dis_ == 0) && (abs(currentLoc[0]-cluster_center[i][0]) + abs(currentLoc[1]-cluster_center[i][1])) > 0){
+                continue;
+            }
+
+            if(minDis2Frontier > temp_dis_ ){
+                minDis2Frontier = temp_dis_;
+            }
+        }
+        iteration++;
+
+        // ---------------------------------------- publish path for displaying in rviz
+        if(iteration >= 1){
+            p.x=(path[path.size()-2])[1] * mapData.info.resolution + mapData.info.origin.position.x; 
+            p.y=(path[path.size()-2])[0] * mapData.info.resolution + mapData.info.origin.position.y;
+            p.z=0.0;
+            line.points.push_back(p);
+            p.x=currentLoc[1] * mapData.info.resolution + mapData.info.origin.position.x;
+            p.y=currentLoc[0] * mapData.info.resolution + mapData.info.origin.position.y;
+            p.z=0.0;
+            line.points.push_back(p);
+            pub->publish(line); 
+        }
+    }
+
+    goal[0] = path.back()[0];
+    goal[1] = path.back()[1];
+
+    robotGoal.pose.pose.orientation.z = 1;
+    robotGoal.pose.pose.orientation.w = 0;
+    robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
+    robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
+    robotGoal.pose.header.stamp  = rclcpp::Time(0);
+
+    this->client_ptr_->async_send_goal(robotGoal);
+
+    // TODO Delete following block
+    // if(start_condition){
+    //     geometry_msgs::msg::TransformStamped  transform;
+    //     int  temp=0;
+    //     while (temp==0){
+    //         try{
+    //         temp=1;
+    //         transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
+    //         }
+    //         catch( const tf2::TransformException & ex){
+    //             temp=0;
+    //             rclcpp::sleep_for(100ms);
+    //         }
+    //     }
+    //     int loc_x = transform.transform.translation.x;
+    //     int loc_y = transform.transform.translation.y;
+
+    //     robotGoal.pose.pose.orientation.z = rotation_z[rotation_count];
+    //     robotGoal.pose.pose.orientation.w = rotation_w[rotation_count];
+
+    //     robotGoal.pose.pose.position.x = loc_x + 0.2;
+    //     robotGoal.pose.pose.position.y = loc_y + 0.2;
+
+    //     start_condition = false;
+    // }
+    // else{
+    //     robotGoal.pose.pose.orientation.z = 1;
+    //     robotGoal.pose.pose.orientation.w = 0;
+    //     robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
+    //     robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
+    //     robotGoal.pose.header.stamp  = rclcpp::Time(0);
+
+    //     this->client_ptr_->async_send_goal(robotGoal);
+    // }
+
+    line.points.clear();
+
+    // ------------------------------------------- clear memory
+    delete [] dismap_backup;
+    for (int i = 0; i<cluster_num; i++){
+        delete []  dismap_target[i];
+    }
+    delete [] dismap_target;
+
+    // ------------------------------------------- keep frequency stable
+    // _mt.unlock();
+    //Main while loop scope
+    
+
+
+        
+}
 
 void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg)
 {
@@ -189,9 +700,8 @@ void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backu
 }
 
 
-void MWFCN_Algo::check_map_data(){
+bool MWFCN_Algo::map_data_available(){
     if (!(mapData.data.size() < 1 || costmapData.data.size()<1)){
-        map_data_received =true;
         robotGoal.pose.header.frame_id=robot_frame;
         robotGoal.pose.pose.position.z=0;
         robotGoal.pose.pose.orientation.z=1.0;
@@ -223,539 +733,13 @@ void MWFCN_Algo::check_map_data(){
         line.color.a 			= 1.0;
         line.lifetime           = rclcpp::Duration(0,0); // TODO : currently points are stored forever
         
-
-
+        return true;
     }
 
+    RCLCPP_WARN_STREAM(this->get_logger(), "map data is not available");
+    return false;
 }  
-
-void MWFCN_Algo::check_clicked_points(){
-    if (!(points.points.size()<1)){
-        clicked_point=true;
-        points.points.clear();
-        pub->publish(points);
-
-
-        
-    }
-    else{
-        pub->publish(points);
-    }
-}  
-
-
-void MWFCN_Algo::explore(){
-    if (!map_data_received){
-        check_map_data();
-    }
-
-    else{
-        if(!clicked_point){
-            check_clicked_points();
-        }
-        else{
-            //Main While Loop
-
-             // ---------------------------------------- variables from ROS input;
-            HEIGHT = mapData.info.height;
-            WIDTH  = mapData.info.width;
-            
-            
-            int* dismap_backup = new int[HEIGHT*WIDTH];
-            int map[HEIGHT*WIDTH];
-
-            // ---------------------------------------- initialize the map & dismap
-            for (int i=0; i<HEIGHT; i++)
-            {
-                for (int j=0; j<WIDTH; j++)
-                {
-                    map[i*WIDTH + j] = (int) mapData.data[i*mapData.info.width + j];
-                    dismap_backup[i*WIDTH + j] = map[i*WIDTH + j];
-                }
-            }
-
-            // ------------------------------------------ find the obstacles & targets
-            for (int i = 2; i < HEIGHT-2; i++){
-                for (int j = 2; j < WIDTH-2; j++){
-                    if(map[i*WIDTH + j] == 100){
-                        obstacles.push_back(new int[2]{i,j});
-                    }
-                    else if(map[i*WIDTH + j] == -1){
-                        // accessiable frontiers
-                        int numFree = 0, temp1 = 0;
-
-                        if (map[(i + 1)*WIDTH + j] == 0){
-                            temp1 += (map[(i + 2)*WIDTH + j    ] == 0) ? 3 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j + 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j - 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i + 2)*WIDTH + j + 1] == 0) ? 4 : 0;
-                            temp1 += (map[(i + 2)*WIDTH + j - 1] == 0) ? 4 : 0;
-                            temp1 += (map[      i*WIDTH + j + 1] == 0) ? 4 : 0;
-                            temp1 += (map[      i*WIDTH + j - 1] == 0) ? 4 : 0;
-                            numFree += (temp1 > 0);
-                        }
-
-                        if (map[i*WIDTH + j + 1] == 0){
-                            temp1 = 0;
-                            temp1 += (map[      i*WIDTH + j + 2] == 0) ? 3 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j + 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i - 1)*WIDTH + j + 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j + 2] == 0) ? 4 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j    ] == 0) ? 4 : 0;
-                            temp1 += (map[(i - 1)*WIDTH + j + 2] == 0) ? 4 : 0;
-                            temp1 += (map[(i - 1)*WIDTH + j    ] == 0) ? 4 : 0;
-                            numFree += (temp1 > 0);
-                        }
-
-                        if (map[(i - 1) *WIDTH + j] == 0){
-                            temp1 = 0;
-                            temp1 += (map[(i - 1)*WIDTH + j + 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i - 1)*WIDTH + j - 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i - 2)*WIDTH + j    ] == 0) ? 3 : 0;
-                            temp1 += (map[      i*WIDTH + j + 1] == 0) ? 4 : 0;
-                            temp1 += (map[      i*WIDTH + j - 1] == 0) ? 4 : 0;
-                            temp1 += (map[(i - 2)*WIDTH + j + 1] == 0) ? 4 : 0;
-                            temp1 += (map[(i - 2)*WIDTH + j - 1] == 0) ? 4 : 0;
-                            numFree += (temp1 > 0);
-                        }
-
-                        if (map[i * WIDTH + j - 1] == 0){
-                            temp1 = 0;
-                            temp1 += (map[    i  *WIDTH + j - 2] == 0) ? 3 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j - 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i - 1)*WIDTH + j - 1] == 0) ? 3 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j    ] == 0) ? 4 : 0;
-                            temp1 += (map[(i + 1)*WIDTH + j - 2] == 0) ? 4 : 0;
-                            temp1 += (map[(i - 1)*WIDTH + j    ] == 0) ? 4 : 0;
-                            temp1 += (map[(i - 1)*WIDTH + j - 2] == 0) ? 4 : 0;
-                            numFree += (temp1 > 0);
-                        }
-
-                        if( numFree > 0 ) {
-                            targets.push_back(new int[2]{i,j});
-                        }
-                    }
-                }
-            }
-
-            {
-                for (int idx_target = targets.size()-1; idx_target >= 0; idx_target--) {
-                    
-                    float loc_x = targets[idx_target][1]*mapData.info.resolution + mapData.info.origin.position.x;
-                    float loc_y = targets[idx_target][0]*mapData.info.resolution + mapData.info.origin.position.y;
-                    int index_costmap = (loc_y - costmapData.info.origin.position.y)/costmapData.info.resolution * costmapData.info.width + (loc_x - costmapData.info.origin.position.x)/costmapData.info.resolution;
-                    if (costmapData.data[index_costmap] >0){
-                        targets.erase(targets.begin() + idx_target);
-                        continue;
-                    }
-                }
-                std::cout << "number targets after erase (costmap): " << targets.size() << std::endl;
-            }
-            
-            // ------------------------------------------ remove targets within the inflation radius of obstacles.
-            {
-                for(int idx_target = targets.size()-1; idx_target>=0; idx_target--) {
-                    for (int i = 0; i < obstacles.size(); i++) {
-                        if (abs(targets[idx_target][0] - obstacles[i][0]) +
-                            abs(targets[idx_target][1] - obstacles[i][1]) < inflation_radius) {
-                            targets.erase(targets.begin() + idx_target);
-                            break;
-                        }
-                    }
-                std::cout << "number targets after erase (obstacles): " << targets.size() << std::endl;
-                }
-            }
-
-            // ------------------------------------------ exploration finish detection
-            if(targets.size() == 0){
-                if(no_targets_count == 8){
-                    std::cout << "exploration done" << std::endl;
-                    std::vector<geometry_msgs::msg::PointStamped> path_list;
-
-                    // auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
-                    // request->trajectory_id = 0;
-                    // auto result = trajectory_query_client->async_send_request(request);
-                    // exploration_time = result.get()->trajectory[0].header.stamp.sec;
-                    // exploration_time = result.get()->trajectory.back().header.stamp.sec - exploration_time;
-                    //std::cout <<  ns << "exploration_time is:" << exploration_time << " seconds" << std::endl;
-
-                    // std::ofstream ofile(output_file);
-
-                    // trajectory_x = result.get()->trajectory[0].pose.position.x;
-                    // trajectory_y = result.get()->trajectory[0].pose.position.y;
-                                    
-                    // ofile << "[";
-                    // ofile << trajectory_x << "," << trajectory_y << std::endl;
-                    // for (int i = 1; i < result.get()->trajectory.size(); i++){
-                    //     double temp_x = result.get()->trajectory[i].pose.position.x;
-                    //     double temp_y = result.get()->trajectory[i].pose.position.y;
-                    //     ofile << temp_x  << ", " <<  temp_y << ";" << std::endl;
-                    //     double delta_x = trajectory_x - temp_x;
-                    //     double delta_y = trajectory_y - temp_y;
-                    //     trajectory_length += sqrt(delta_x*delta_x + delta_y*delta_y);
-                    //     trajectory_x = temp_x;
-                    //     trajectory_y = temp_y; 
-                    // }
-                    // ofile << "]" << std::endl;
-                    // ofile.close();
-                    //std::cout <<  ns << "exploration trajectory length = " << trajectory_length << " meters" << std::endl;
-                    
-                    std::ofstream ofile2(output_map_file);
-                    ofile2 <<  ns << "map Origin (" << mapData.info.origin.position.x << " ," << mapData.info.origin.position.y << ")" << std::endl;
-                    for(int i = 0; i < mapData.data.size(); i++){
-                        ofile2 << mapData.data[i] << " ";
-                    }
-                    ofile2.close();
-                    timer_main->cancel();
-                }   
-
-                no_targets_count ++;
-                std::cout << ns << "no targets count = " << no_targets_count << std::endl;
-                //
-                return;
-            }
-            else{
-                no_targets_count = 0;
-            }
-            // ---------------------------------------- define the current point;
-            geometry_msgs::msg::TransformStamped transform;
-            int  temp=0;
-            while (temp==0){
-                try{
-                    temp=1;
-                    transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
-                }
-                catch( const tf2::TransformException & ex){
-                    temp=0;
-                    rclcpp::sleep_for(100ms);
-                }
-            }
-            currentLoc[0] = floor((transform.transform.translation.y  -mapData.info.origin.position.y)/mapData.info.resolution);
-            currentLoc[1] = floor((transform.transform.translation.x  -mapData.info.origin.position.x)/mapData.info.resolution);
-            path.push_back( currentLoc );
-
-            for(int i = 0; i< obstacles.size(); i++){
-                dismap_backup[(obstacles[i][0])*WIDTH + obstacles[i][1]] = -2;
-            }
-
-            // ------------------------------------------ cluster targets into different groups and find the center of each group.
-            // Note: x & y value of detected targets are in increasing order because of the detection is in laser scan order.
-            std::vector<int* > target_process(targets);
-            std::vector<int* > cluster_center;
-            std::vector<int>   infoGain_cluster;
-
-            while(target_process.size() > 0){
-                std::vector<int* > target_cluster;
-                target_cluster.push_back(target_process.back());
-                target_process.pop_back();
-
-                bool condition = true;
-                while(condition){
-                    condition = false;
-                    int size_target_process = target_process.size();
-                    for (int i = size_target_process-1; i >= 0 ; i--){
-                        for (int j = 0; j < target_cluster.size(); j++){
-                            int dis_ = abs(target_process[i][0] - target_cluster[j][0]) +  abs(target_process[i][1] - target_cluster[j][1]);
-                            if(dis_ < 3){
-                                target_cluster.push_back(target_process[i]);
-                                target_process.erase(target_process.begin() + i);
-                                condition = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                int center_[2]={0, 0};
-                int num_ = target_cluster.size();
-                for(int i = 0; i < num_; i++){
-                    center_[0] += target_cluster[i][0];
-                    center_[1] += target_cluster[i][1];
-                }
-
-                float center_float[2] = {float(center_[0]), float(center_[1])};
-                center_float[0] = center_float[0]/float(num_);
-                center_float[1] = center_float[1]/float(num_);
-
-                float min_dis_ = 100.0;
-                int min_idx_   = 10000;
-                for(int i = 0; i < num_; i++){
-                    float temp_dis_ = abs(center_float[0]-float(target_cluster[i][0])) + abs(center_float[1]-float(target_cluster[i][1]));
-                    if(temp_dis_ < min_dis_){
-                        min_dis_ = temp_dis_;
-                        min_idx_ = i;
-                    }
-                }
-
-                cluster_center.push_back(new int[2]{target_cluster[min_idx_][0], target_cluster[min_idx_][1]});
-                infoGain_cluster.push_back(num_);
-            }
-
-            // ------------------------------------------ Display Cluster centroids
-            points.points.clear();
-            for(int i = 0; i < cluster_center.size(); i++){
-                geometry_msgs::msg::Point temp;
-                temp.x = cluster_center[i][1] * mapData.info.resolution + mapData.info.origin.position.x;
-                temp.y = cluster_center[i][0] * mapData.info.resolution + mapData.info.origin.position.y;
-                temp.z = 0;
-                points.points.push_back(temp);
-            }
-            pub_centroid->publish(points);
-            
-            // ------------------------------------------ Generate Dismap starting from targets
-            int cluster_num = cluster_center.size();
-            int** dismap_target = new int* [cluster_num];
-            for (int i = 0; i<cluster_num; i++){
-                dismap_target[i] = new int[HEIGHT*WIDTH];
-            }
-
-            for(int i = 0; i< cluster_num; i++) {
-                dismapConstruction_start_target(dismap_target[i], dismap_backup, cluster_center[i], HEIGHT, WIDTH);   // dismap_target: target-generate potential dismap_backup: map info cluster_center: target pos 
-                dismap_targets_ptr.push_back(dismap_target[i]);
-            }
-
-            // ------------------------------------------ receive robots' locations
-            bool ifmapmerged_vec[n_robot];
-            geometry_msgs::msg::TransformStamped transform_robot[n_robot];
-            
-            for(int i = 0; i < n_robot; i++){
-
-                ifmapmerged_vec[i] = false;
-                if(i == this_robot_idx-1){
-                    continue;
-                }
-
-                geometry_msgs::msg::TransformStamped transform_;
-
-                try{
-                    transform = buffer->lookupTransform(robot_frame, robots_frame_[i],tf2::TimePointZero);
-                }
-                catch( const tf2::TransformException & ex){
-                    temp=0;
-                    rclcpp::sleep_for(100ms);
-                }
-
-        
-
-                //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_.getOrigin().getX() << ", "<<   transform_.getOrigin().getY()<< " )" << std::endl;
-                transform_robot[i] = transform_;
-                ifmapmerged_vec[i] = true;
-                //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_robot[i].getOrigin().getX() << ", "<<   transform_robot[i].getOrigin().getY()<< " )" << std::endl;
-
-            }
-
-            
-            // ------------------------------------------ calculate path.
-            int iteration = 1;
-            int currentPotential = 10000;
-            int riverFlowPotentialGain = 1;
-            minDis2Frontier  = 10000;  // a random initialized value greater than all possible distances.
-            //std::random_device rd{};
-            //std::mt19937 gen{rd()};
-            //std::normal_distribution<> d{0,0.01};
-            //std::map<int, int> hist{};
-
-            // ------------------------------------------ Colored noise (White: alpha = 0.0, Pink: alpha = 1.0, Brown: alpha = 2.0)
-            float sigma = 0.6; //for the potential function
-            double alpha = 2;
-            //int n = n_robot;
-            double q_d = 0.095;
-            int seed = 0;
-            double *noise;
-
-            while(iteration < 3000 && minDis2Frontier > 1){
-                // ------------------------------------------
-                // ------------------------------------------
-                // ------------------------------------------ get the minimial potential of the points around currentLoc
-                {
-                    // ------------------------------------------ put locations around the current location into loc_around
-                    float potential[8];
-                    int min_idx = -1;
-                    float min_potential = 10000;
-                    int* loc_around[8];
-
-                    // up
-                    loc_around[0] = new int[2]{currentLoc[0]    , currentLoc[1] + 1};
-                    // up-left
-                    loc_around[1] = new int[2]{currentLoc[0] - 1, currentLoc[1] + 1};
-                    // left
-                    loc_around[2] = new int[2]{currentLoc[0] - 1, currentLoc[1]};
-                    // down-left
-                    loc_around[3] = new int[2]{currentLoc[0] - 1, currentLoc[1] - 1};
-                    // down
-                    loc_around[4] = new int[2]{currentLoc[0]    , currentLoc[1] - 1};
-                    // down-right
-                    loc_around[5] = new int[2]{currentLoc[0] + 1, currentLoc[1] - 1};
-                    // right
-                    loc_around[6] = new int[2]{currentLoc[0] + 1, currentLoc[1]};
-                    // up-right
-                    loc_around[7] = new int[2]{currentLoc[0] + 1, currentLoc[1] + 1};
-
-                    
-
-                    // ------------------------------------------ calculate potentials of four neighbors of currentLoc
-                    for (int i = 0; i < 8; i++){
-                        int curr_around[2]={loc_around[i][0], loc_around[i][1]};
-
-                        { // ------------------------------------ calculate current potential
-                            float attract = 0, repulsive = 0;
-                            for (int j = 0; j < cluster_center.size(); j++){
-                                // int temp_int = dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]];
-                                float temp = float(dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]]);
-                                if(temp < 1){
-                                    // std::cout << "zero loc: (" <<  cluster_center[j][0]   << ", " <<  cluster_center[j][1] << ")" << " temp" << temp << std::endl;
-                                    // std::cout << "curr loc: (" <<  curr_around[0]  << ", " << curr_around[1] << ")" << std::endl;
-                                    continue;
-                                }
-                                attract     = attract - K_ATTRACT*infoGain_cluster[j]/temp;
-                            }
-
-                            // there is no need to calculate potential of obstacles because information of obstacles have already been encoded in wave-front distance.
-                            // for (int j = 0; j < obstacles.size(); j++){
-                            //     float dis_obst = abs(obstacles[j][0]- curr_around[0]) + abs(obstacles[j][1]- curr_around[1]);
-                            //     if( dis_obst <= DIS_OBTSTACLE) {
-                            //         float temp = (1 / dis_obst - 1 / DIS_OBTSTACLE);
-                            //         repulsive = repulsive + 0.5 * ETA_REPLUSIVE * temp * temp;
-                            //     }
-                            // }
-
-                            // to increase the potential if currend point has been passed before
-                            for (int j =0; j < path.size(); j++){
-                                if(curr_around[0] == path[j][0] && curr_around[1] == path[j][1]){
-                                    attract += riverFlowPotentialGain*5;
-                                }
-                            }
-    
-
-                            // Add impact of robots.
-                            for(int i = 0; i < n_robot; i++){
-                                if(ifmapmerged_vec[i] ){
-                                    int index_[2] = {int(round((transform_robot[i].transform.translation.y- mapData.info.origin.position.y)/mapData.info.resolution)), int(round((transform_robot[i].transform.translation.x - mapData.info.origin.position.x)/mapData.info.resolution))};
-                                    int dis_ = abs(curr_around[0] - index_[0]) + abs(curr_around[1] - index_[1]);
-                                    //float sample = d(gen);
-                                    seed++;
-                                    noise = f_alpha ( n_robot, q_d, alpha, &seed );
-                                    if( dis_ < ROBOT_INTERFERE_RADIUS){
-                                        float temp_ = exp((dis_ - ROBOT_INTERFERE_RADIUS)/sigma) + noise[i];
-                                        attract += temp_;
-                                        std::cout << "sigma: " << sigma << std::endl;
-                                        std::cout << "noise: " << noise[i] << std::endl;
-                                        std::cout << "robot" << i+1 << " loc  :( " << index_[0] << ", " << index_[1] << ")" << std::endl;
-                                        std::cout << ns << " loc  :( " << curr_around[0] << ", " << curr_around[1] << ")" << std::endl;
-                                        std::cout << robot_frame << " add " << robots_frame_[i] <<"'s potential = " << temp_ << std::endl;
-                                    }
-                                }
-                            }
-
-                            // potential[i] = attract + repulsive;
-                            
-                            potential[i] = attract;
-                            if(min_potential > potential[i] ){
-                                min_potential = potential[i];
-                                min_idx = i;
-                            }
-                        }
-                    }
-                    if(currentPotential > min_potential){
-                        path.push_back(loc_around[min_idx]);
-                        currentPotential = min_potential;
-                        
-                    }
-                    else{
-                        riverFlowPotentialGain++;
-                    }
-
-                    for(int del_idx = 0; del_idx <8 ; del_idx++){
-                        if(del_idx != min_idx){
-                            delete [] loc_around[del_idx];
-                        }
-                    }
-                }
-
-                currentLoc[0] = (path.back())[0];
-                currentLoc[1] = (path.back())[1];
-                
-                for (int i = 0; i < cluster_center.size() ; i++){
-                    int temp_dis_ =  dismap_targets_ptr[i][(currentLoc[0])*WIDTH + currentLoc[1]];
-                    if( (temp_dis_ == 0) && (abs(currentLoc[0]-cluster_center[i][0]) + abs(currentLoc[1]-cluster_center[i][1])) > 0){
-                        continue;
-                    }
-
-                    if(minDis2Frontier > temp_dis_ ){
-                        minDis2Frontier = temp_dis_;
-                    }
-                }
-                iteration++;
-
-                // ---------------------------------------- publish path for displaying in rviz
-                if(iteration >= 1){
-                    p.x=(path[path.size()-2])[1] * mapData.info.resolution + mapData.info.origin.position.x; 
-                    p.y=(path[path.size()-2])[0] * mapData.info.resolution + mapData.info.origin.position.y;
-                    p.z=0.0;
-                    line.points.push_back(p);
-                    p.x=currentLoc[1] * mapData.info.resolution + mapData.info.origin.position.x;
-                    p.y=currentLoc[0] * mapData.info.resolution + mapData.info.origin.position.y;
-                    p.z=0.0;
-                    line.points.push_back(p);
-                    pub->publish(line); 
-                }
-            }
-
-            goal[0] = path.back()[0];
-            goal[1] = path.back()[1];
-        
-            if(start_condition){
-                geometry_msgs::msg::TransformStamped  transform;
-                int  temp=0;
-                while (temp==0){
-                    try{
-                    temp=1;
-                    transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
-                    }
-                    catch( const tf2::TransformException & ex){
-                        temp=0;
-                        rclcpp::sleep_for(100ms);
-                    }
-                }
-                int loc_x = transform.transform.translation.x;
-                int loc_y = transform.transform.translation.y;
-
-                robotGoal.pose.pose.orientation.z = rotation_z[rotation_count];
-                robotGoal.pose.pose.orientation.w = rotation_w[rotation_count];
-    
-                robotGoal.pose.pose.position.x = loc_x + 0.2;
-                robotGoal.pose.pose.position.y = loc_y + 0.2;
-            
-                start_condition = false;
-            }
-            else{
-                robotGoal.pose.pose.orientation.z = 1;
-                robotGoal.pose.pose.orientation.w = 0;
-                robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
-                robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
-                robotGoal.pose.header.stamp  = rclcpp::Time(0);
-
-                this->client_ptr_->async_send_goal(robotGoal);
-            }
-            line.points.clear();
-
-            // ------------------------------------------- clear memory
-            delete [] dismap_backup;
-            for (int i = 0; i<cluster_num; i++){
-                delete []  dismap_target[i];
-            }
-            delete [] dismap_target;
-
-            // ------------------------------------------- keep frequency stable
-            // _mt.unlock();
-        } //Main while loop scope
-        
-
-    }
-        
-}
-
-
+  
 
 
 void MWFCN_Algo::debug_param(){

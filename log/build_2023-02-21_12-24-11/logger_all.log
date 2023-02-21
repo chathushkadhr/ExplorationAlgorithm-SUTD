@@ -1,0 +1,334 @@
+[0.384s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.384s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=16, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f23963fd690>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f2396bee410>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f2396bee410>>)
+[0.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.427s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.427s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/chathushka-sutd/ros2_ws_exp'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.427s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.436s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extensions ['ignore', 'ignore_ament_install']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extension 'ignore'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extension 'ignore_ament_install'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extensions ['colcon_pkg']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extension 'colcon_pkg'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extensions ['colcon_meta']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extension 'colcon_meta'
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extensions ['ros']
+[0.437s] Level 1:colcon.colcon_core.package_identification:_identify(src/exploration) by extension 'ros'
+[0.439s] DEBUG:colcon.colcon_core.package_identification:Package 'src/exploration' with type 'ros.ament_cmake' and name 'exploration'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extensions ['ignore', 'ignore_ament_install']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extension 'ignore'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extension 'ignore_ament_install'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extensions ['colcon_pkg']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extension 'colcon_pkg'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extensions ['colcon_meta']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extension 'colcon_meta'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extensions ['ros']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/map_merge_2d) by extension 'ros'
+[0.440s] DEBUG:colcon.colcon_core.package_identification:Package 'src/map_merge_2d' with type 'ros.ament_cmake' and name 'map_merge_2d'
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extensions ['ignore', 'ignore_ament_install']
+[0.440s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extension 'ignore'
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extension 'ignore_ament_install'
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extensions ['colcon_pkg']
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extension 'colcon_pkg'
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extensions ['colcon_meta']
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extension 'colcon_meta'
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extensions ['ros']
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/sim_env) by extension 'ros'
+[0.441s] DEBUG:colcon.colcon_core.package_identification:Package 'src/sim_env' with type 'ros.ament_cmake' and name 'sim_env'
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extensions ['ignore', 'ignore_ament_install']
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extension 'ignore'
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extension 'ignore_ament_install'
+[0.441s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extensions ['colcon_pkg']
+[0.442s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extension 'colcon_pkg'
+[0.442s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extensions ['colcon_meta']
+[0.442s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extension 'colcon_meta'
+[0.442s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extensions ['ros']
+[0.442s] Level 1:colcon.colcon_core.package_identification:_identify(src/tb3_sim) by extension 'ros'
+[0.442s] DEBUG:colcon.colcon_core.package_identification:Package 'src/tb3_sim' with type 'ros.ament_cmake' and name 'tb3_sim'
+[0.442s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.442s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.442s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.442s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.442s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.464s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.464s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.467s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 2 installed packages in /home/chathushka-sutd/ros2_ws_exp/install
+[0.468s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 3 installed packages in /home/chathushka-sutd/ros2_ws/install
+[0.469s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 387 installed packages in /opt/ros/humble
+[0.470s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'cmake_args' from command line to 'None'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'cmake_target' from command line to 'None'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'cmake_clean_cache' from command line to 'False'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'cmake_clean_first' from command line to 'False'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'cmake_force_configure' from command line to 'False'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'ament_cmake_args' from command line to 'None'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'catkin_cmake_args' from command line to 'None'
+[0.523s] Level 5:colcon.colcon_core.verb:set package 'exploration' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.523s] DEBUG:colcon.colcon_core.verb:Building package 'exploration' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/chathushka-sutd/ros2_ws_exp/build/exploration', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/chathushka-sutd/ros2_ws_exp/install/exploration', 'merge_install': False, 'path': '/home/chathushka-sutd/ros2_ws_exp/src/exploration', 'symlink_install': False, 'test_result_base': None}
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'cmake_args' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'cmake_target' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'cmake_clean_cache' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'cmake_clean_first' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'cmake_force_configure' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'ament_cmake_args' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'catkin_cmake_args' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'map_merge_2d' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.524s] DEBUG:colcon.colcon_core.verb:Building package 'map_merge_2d' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d', 'merge_install': False, 'path': '/home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d', 'symlink_install': False, 'test_result_base': None}
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'cmake_args' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'cmake_target' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'cmake_clean_cache' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'cmake_clean_first' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'cmake_force_configure' from command line to 'False'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'ament_cmake_args' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'catkin_cmake_args' from command line to 'None'
+[0.524s] Level 5:colcon.colcon_core.verb:set package 'sim_env' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.524s] DEBUG:colcon.colcon_core.verb:Building package 'sim_env' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/chathushka-sutd/ros2_ws_exp/build/sim_env', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/chathushka-sutd/ros2_ws_exp/install/sim_env', 'merge_install': False, 'path': '/home/chathushka-sutd/ros2_ws_exp/src/sim_env', 'symlink_install': False, 'test_result_base': None}
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'cmake_args' from command line to 'None'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'cmake_target' from command line to 'None'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'cmake_clean_cache' from command line to 'False'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'cmake_clean_first' from command line to 'False'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'cmake_force_configure' from command line to 'False'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'ament_cmake_args' from command line to 'None'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'catkin_cmake_args' from command line to 'None'
+[0.525s] Level 5:colcon.colcon_core.verb:set package 'tb3_sim' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.525s] DEBUG:colcon.colcon_core.verb:Building package 'tb3_sim' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim', 'merge_install': False, 'path': '/home/chathushka-sutd/ros2_ws_exp/src/tb3_sim', 'symlink_install': False, 'test_result_base': None}
+[0.526s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.528s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.528s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/chathushka-sutd/ros2_ws_exp/src/exploration' with build type 'ament_cmake'
+[0.528s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/chathushka-sutd/ros2_ws_exp/src/exploration'
+[0.535s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.535s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.535s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.540s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d' with build type 'ament_cmake'
+[0.540s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d'
+[0.540s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.540s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.544s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/chathushka-sutd/ros2_ws_exp/src/sim_env' with build type 'ament_cmake'
+[0.544s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/chathushka-sutd/ros2_ws_exp/src/sim_env'
+[0.545s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.545s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.548s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/chathushka-sutd/ros2_ws_exp/src/tb3_sim' with build type 'ament_cmake'
+[0.548s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/chathushka-sutd/ros2_ws_exp/src/tb3_sim'
+[0.549s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.549s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.556s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[0.560s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d
+[0.562s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/sim_env -- -j16 -l16
+[0.564s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/tb3_sim -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim
+[0.608s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/sim_env -- -j16 -l16
+[0.631s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/sim_env
+[0.638s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sim_env)
+[0.640s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/sim_env' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/sim_env
+[0.649s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env' for CMake module files
+[0.650s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env' for CMake config files
+[0.650s] Level 1:colcon.colcon_core.shell:create_environment_hook('sim_env', 'cmake_prefix_path')
+[0.652s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/hook/cmake_prefix_path.ps1'
+[0.653s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/hook/cmake_prefix_path.dsv'
+[0.653s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/hook/cmake_prefix_path.sh'
+[0.655s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/bin'
+[0.655s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/lib/pkgconfig/sim_env.pc'
+[0.656s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/lib/python3.10/site-packages'
+[0.656s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/bin'
+[0.657s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.ps1'
+[0.658s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.dsv'
+[0.659s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.sh'
+[0.659s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.bash'
+[0.660s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.zsh'
+[0.661s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/colcon-core/packages/sim_env)
+[0.675s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sim_env)
+[0.677s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env' for CMake module files
+[0.677s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env' for CMake config files
+[0.677s] Level 1:colcon.colcon_core.shell:create_environment_hook('sim_env', 'cmake_prefix_path')
+[0.678s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/hook/cmake_prefix_path.ps1'
+[0.678s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/hook/cmake_prefix_path.dsv'
+[0.678s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/hook/cmake_prefix_path.sh'
+[0.679s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/bin'
+[0.679s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/lib/pkgconfig/sim_env.pc'
+[0.679s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/lib/python3.10/site-packages'
+[0.679s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/bin'
+[0.680s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.ps1'
+[0.680s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.dsv'
+[0.681s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.sh'
+[0.681s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.bash'
+[0.681s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/sim_env/package.zsh'
+[0.681s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/sim_env/share/colcon-core/packages/sim_env)
+[1.937s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/tb3_sim -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim
+[1.938s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim -- -j16 -l16
+[1.965s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim -- -j16 -l16
+[1.979s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim
+[1.987s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(tb3_sim)
+[1.989s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim' for CMake module files
+[1.989s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim
+[1.990s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim' for CMake config files
+[1.990s] Level 1:colcon.colcon_core.shell:create_environment_hook('tb3_sim', 'cmake_prefix_path')
+[1.991s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/hook/cmake_prefix_path.ps1'
+[1.991s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/hook/cmake_prefix_path.dsv'
+[1.991s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/hook/cmake_prefix_path.sh'
+[1.992s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/bin'
+[1.992s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/lib/pkgconfig/tb3_sim.pc'
+[1.992s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/lib/python3.10/site-packages'
+[1.992s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/bin'
+[1.993s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.ps1'
+[1.993s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.dsv'
+[1.993s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.sh'
+[1.993s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.bash'
+[1.994s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.zsh'
+[1.994s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/colcon-core/packages/tb3_sim)
+[2.000s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d
+[2.002s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d -- -j16 -l16
+[2.009s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(tb3_sim)
+[2.010s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim' for CMake module files
+[2.010s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim' for CMake config files
+[2.010s] Level 1:colcon.colcon_core.shell:create_environment_hook('tb3_sim', 'cmake_prefix_path')
+[2.011s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/hook/cmake_prefix_path.ps1'
+[2.011s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/hook/cmake_prefix_path.dsv'
+[2.011s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/hook/cmake_prefix_path.sh'
+[2.012s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/bin'
+[2.012s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/lib/pkgconfig/tb3_sim.pc'
+[2.012s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/lib/python3.10/site-packages'
+[2.012s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/bin'
+[2.013s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.ps1'
+[2.013s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.dsv'
+[2.013s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.sh'
+[2.014s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.bash'
+[2.014s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.zsh'
+[2.014s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/colcon-core/packages/tb3_sim)
+[11.281s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d -- -j16 -l16
+[11.305s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d
+[11.323s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(map_merge_2d)
+[11.324s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d' for CMake module files
+[11.324s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d
+[11.325s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d' for CMake config files
+[11.325s] Level 1:colcon.colcon_core.shell:create_environment_hook('map_merge_2d', 'cmake_prefix_path')
+[11.325s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/hook/cmake_prefix_path.ps1'
+[11.326s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/hook/cmake_prefix_path.dsv'
+[11.326s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/hook/cmake_prefix_path.sh'
+[11.326s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib'
+[11.326s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/bin'
+[11.326s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib/pkgconfig/map_merge_2d.pc'
+[11.326s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib/python3.10/site-packages'
+[11.327s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/bin'
+[11.327s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.ps1'
+[11.328s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.dsv'
+[11.328s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.sh'
+[11.328s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.bash'
+[11.328s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.zsh'
+[11.328s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/colcon-core/packages/map_merge_2d)
+[11.352s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(map_merge_2d)
+[11.354s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d' for CMake module files
+[11.354s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d' for CMake config files
+[11.354s] Level 1:colcon.colcon_core.shell:create_environment_hook('map_merge_2d', 'cmake_prefix_path')
+[11.355s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/hook/cmake_prefix_path.ps1'
+[11.355s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/hook/cmake_prefix_path.dsv'
+[11.355s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/hook/cmake_prefix_path.sh'
+[11.355s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib'
+[11.356s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/bin'
+[11.356s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib/pkgconfig/map_merge_2d.pc'
+[11.356s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib/python3.10/site-packages'
+[11.356s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/bin'
+[11.357s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.ps1'
+[11.357s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.dsv'
+[11.357s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.sh'
+[11.357s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.bash'
+[11.358s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.zsh'
+[11.358s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/colcon-core/packages/map_merge_2d)
+[11.807s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/exploration -- -j16 -l16
+[11.826s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/exploration
+[11.837s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(exploration)
+[11.839s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration' for CMake module files
+[11.839s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/exploration' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/exploration
+[11.839s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration' for CMake config files
+[11.839s] Level 1:colcon.colcon_core.shell:create_environment_hook('exploration', 'cmake_prefix_path')
+[11.840s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/hook/cmake_prefix_path.ps1'
+[11.840s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/hook/cmake_prefix_path.dsv'
+[11.841s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/hook/cmake_prefix_path.sh'
+[11.841s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/lib'
+[11.841s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/bin'
+[11.841s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/lib/pkgconfig/exploration.pc'
+[11.841s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/lib/python3.10/site-packages'
+[11.841s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/bin'
+[11.842s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.ps1'
+[11.842s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.dsv'
+[11.842s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.sh'
+[11.843s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.bash'
+[11.843s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.zsh'
+[11.843s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/colcon-core/packages/exploration)
+[11.860s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(exploration)
+[11.861s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration' for CMake module files
+[11.861s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration' for CMake config files
+[11.862s] Level 1:colcon.colcon_core.shell:create_environment_hook('exploration', 'cmake_prefix_path')
+[11.862s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/hook/cmake_prefix_path.ps1'
+[11.863s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/hook/cmake_prefix_path.dsv'
+[11.863s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/hook/cmake_prefix_path.sh'
+[11.863s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/lib'
+[11.863s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/bin'
+[11.863s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/lib/pkgconfig/exploration.pc'
+[11.863s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/lib/python3.10/site-packages'
+[11.863s] Level 1:colcon.colcon_core.environment:checking '/home/chathushka-sutd/ros2_ws_exp/install/exploration/bin'
+[11.864s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.ps1'
+[11.865s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.dsv'
+[11.865s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.sh'
+[11.865s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.bash'
+[11.865s] INFO:colcon.colcon_core.shell:Creating package script '/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/exploration/package.zsh'
+[11.866s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/chathushka-sutd/ros2_ws_exp/install/exploration/share/colcon-core/packages/exploration)
+[11.866s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[11.866s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[11.866s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[11.866s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[11.872s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[11.872s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[11.872s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[11.882s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[11.883s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/chathushka-sutd/ros2_ws_exp/install/local_setup.ps1'
+[11.887s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/chathushka-sutd/ros2_ws_exp/install/_local_setup_util_ps1.py'
+[11.889s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/chathushka-sutd/ros2_ws_exp/install/setup.ps1'
+[11.890s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/chathushka-sutd/ros2_ws_exp/install/local_setup.sh'
+[11.891s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/chathushka-sutd/ros2_ws_exp/install/_local_setup_util_sh.py'
+[11.891s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/chathushka-sutd/ros2_ws_exp/install/setup.sh'
+[11.892s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/chathushka-sutd/ros2_ws_exp/install/local_setup.bash'
+[11.893s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/chathushka-sutd/ros2_ws_exp/install/setup.bash'
+[11.894s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/chathushka-sutd/ros2_ws_exp/install/local_setup.zsh'
+[11.894s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/chathushka-sutd/ros2_ws_exp/install/setup.zsh'

@@ -1,0 +1,3 @@
+$(var namespace)/tf_merger:
+  ros__parameters:
+    map_topic: [1, 2, 3]

@@ -1,0 +1,1 @@
+/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d/ament_cmake_environment_hooks/local_setup.zsh

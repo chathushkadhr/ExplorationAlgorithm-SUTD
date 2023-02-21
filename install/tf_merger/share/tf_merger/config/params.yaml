@@ -1,0 +1,10 @@
+ignore_transforms:
+    robot1_world_to_map:
+        parent_frame: world
+        child_frame: /robot1/map
+    robot2_world_to_map:
+        parent_frame: world
+        child_frame: /robot2/map
+    robot3_world_to_map:
+        parent_frame: world
+        child_frame: /robot3/map

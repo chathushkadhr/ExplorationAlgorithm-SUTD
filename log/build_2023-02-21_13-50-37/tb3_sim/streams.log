@@ -1,0 +1,38 @@
+[0.013s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim -- -j16 -l16
+[0.034s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim -- -j16 -l16
+[0.046s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim
+[0.053s] -- Install configuration: ""
+[0.053s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/launch
+[0.053s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/launch/multi_tb3_simulation_launch.py
+[0.053s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/launch/slam_toolbox.launch.py
+[0.053s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/launch/navigation.launch.py
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/launch/tb3_simulation_launch.py
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/launch/mapping.launch.py
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/config
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/config/nav2_params.yaml
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/config/mapper_params.yaml
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/config/mapper_params_bak.yaml
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/include
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/include/ssugv_bringup
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/include/ssugv_bringup/odom_filter.hpp
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/rviz
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/rviz/nav2_.rviz
+[0.054s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/rviz/default_view.rviz
+[0.055s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/worlds
+[0.055s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/worlds/willow_garage.world
+[0.055s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/ament_index/resource_index/package_run_dependencies/tb3_sim
+[0.055s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/ament_index/resource_index/parent_prefix_path/tb3_sim
+[0.055s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/environment/ament_prefix_path.sh
+[0.055s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/environment/ament_prefix_path.dsv
+[0.055s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/environment/path.sh
+[0.056s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/environment/path.dsv
+[0.056s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/local_setup.bash
+[0.056s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/local_setup.sh
+[0.056s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/local_setup.zsh
+[0.056s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/local_setup.dsv
+[0.056s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.dsv
+[0.058s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/ament_index/resource_index/packages/tb3_sim
+[0.058s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/cmake/tb3_simConfig.cmake
+[0.058s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/cmake/tb3_simConfig-version.cmake
+[0.058s] -- Up-to-date: /home/chathushka-sutd/ros2_ws_exp/install/tb3_sim/share/tb3_sim/package.xml
+[0.064s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/tb3_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/tb3_sim

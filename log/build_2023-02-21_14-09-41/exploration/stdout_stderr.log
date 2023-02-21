@@ -1,0 +1,110 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o[0m
+In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:49:74:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+   49 |       void mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K;
+      |                                                                          [01;35m[K^[m[K
+In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+  124 |     [01;36m[KConstPtr[m[K;
+      |     [01;36m[K^~~~~~~~[m[K
+In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:50:84:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+   50 |       void costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K;
+      |                                                                                    [01;35m[K^[m[K
+In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+  124 |     [01;36m[KConstPtr[m[K;
+      |     [01;36m[K^~~~~~~~[m[K
+In file included from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:51:79:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+   51 |       void rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg[01;35m[K)[m[K;
+      |                                                                               [01;35m[K^[m[K
+In file included from [01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:10[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:[m[K [01;36m[Knote: [m[Kdeclared here
+  115 |     [01;36m[KConstPtr[m[K;
+      |     [01;36m[K^~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In constructor ‘[01m[Kexploration::MWFCN_Algo::MWFCN_Algo()[m[K’:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:88:5:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ before ‘[01m[Ktimer_main[m[K’
+   88 |     [01;31m[Ktimer_main[m[K = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
+      |     [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K At global scope:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:94:80:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+   94 | void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K
+      |                                                                                [01;35m[K^[m[K
+In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+  124 |     [01;36m[KConstPtr[m[K;
+      |     [01;36m[K^~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:102:90:[m[K [01;35m[Kwarning: [m[K‘[01m[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+  102 | void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg[01;35m[K)[m[K
+      |                                                                                          [01;35m[K^[m[K
+In file included from [01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:[m[K [01;36m[Knote: [m[Kdeclared here
+  124 |     [01;36m[KConstPtr[m[K;
+      |     [01;36m[K^~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:111:85:[m[K [01;35m[Kwarning: [m[K‘[01m[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr[m[K’ is deprecated [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+  111 | void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg[01;35m[K)[m[K
+      |                                                                                     [01;35m[K^[m[K
+In file included from [01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:10[m[K,
+                 from [01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:[m[K [01;36m[Knote: [m[Kdeclared here
+  115 |     [01;36m[KConstPtr[m[K;
+      |     [01;36m[K^~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In member function ‘[01m[Kvoid exploration::MWFCN_Algo::dismapConstruction_start_target(int*, int*, int*, int, int)[m[K’:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:138:27:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  138 |         for (int i = 0; [01;35m[Ki < curr_iter.size()[m[K; i++) {
+      |                         [01;35m[K~~^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:180:41:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  180 |         for (int curr_idx = 0; [01;35m[Kcurr_idx < curr_iter.size()[m[K; curr_idx++){
+      |                                [01;35m[K~~~~~~~~~^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:[m[K In member function ‘[01m[Kvoid exploration::MWFCN_Algo::explore()[m[K’:
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:265:17:[m[K [01;35m[Kwarning: [m[KISO C++ forbids variable length array ‘[01m[Kmap[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wvla-Wvla]8;;[m[K]
+  265 |             int [01;35m[Kmap[m[K[HEIGHT*WIDTH];
+      |                 [01;35m[K^~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:358:39:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  358 |                     for (int i = 0; [01;35m[Ki < obstacles.size()[m[K; i++) {
+      |                                     [01;35m[K~~^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:405:38:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<signed char, std::allocator<signed char> >::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  405 |                     for(int i = 0; [01;35m[Ki < mapData.data.size()[m[K; i++){
+      |                                    [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:437:29:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  437 |             for(int i = 0; [01;35m[Ki< obstacles.size()[m[K; i++){
+      |                            [01;35m[K~^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:457:43:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  457 |                         for (int j = 0; [01;35m[Kj < target_cluster.size()[m[K; j++){
+      |                                         [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:496:30:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  496 |             for(int i = 0; [01;35m[Ki < cluster_center.size()[m[K; i++){
+      |                            [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:518:18:[m[K [01;35m[Kwarning: [m[KISO C++ forbids variable length array ‘[01m[Kifmapmerged_vec[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wvla-Wvla]8;;[m[K]
+  518 |             bool [01;35m[Kifmapmerged_vec[m[K[n_robot];
+      |                  [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:519:50:[m[K [01;35m[Kwarning: [m[KISO C++ forbids variable length array ‘[01m[Ktransform_robot[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wvla-Wvla]8;;[m[K]
+  519 |             geometry_msgs::msg::TransformStamped [01;35m[Ktransform_robot[m[K[n_robot];
+      |                                                  [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:602:47:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  602 |                             for (int j = 0; [01;35m[Kj < cluster_center.size()[m[K; j++){
+      |                                             [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:623:46:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  623 |                             for (int j =0; [01;35m[Kj < path.size()[m[K; j++){
+      |                                            [01;35m[K~~^~~~~~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:601:48:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Krepulsive[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+  601 |                             float attract = 0, [01;35m[Krepulsive[m[K = 0;
+      |                                                [01;35m[K^~~~~~~~~[m[K
+[01m[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:678:35:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<int*>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  678 |                 for (int i = 0; [01;35m[Ki < cluster_center.size()[m[K ; i++){
+      |                                 [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

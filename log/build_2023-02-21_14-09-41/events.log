@@ -1,0 +1,166 @@
+[0.000000] (-) TimerEvent: {}
+[0.000427] (-) JobUnselected: {'identifier': 'map_merge_2d'}
+[0.000689] (-) JobUnselected: {'identifier': 'sim_env'}
+[0.000823] (-) JobUnselected: {'identifier': 'tb3_sim'}
+[0.000844] (exploration) JobQueued: {'identifier': 'exploration', 'dependencies': OrderedDict()}
+[0.000861] (exploration) JobStarted: {'identifier': 'exploration'}
+[0.007677] (exploration) JobProgress: {'identifier': 'exploration', 'progress': 'cmake'}
+[0.008123] (exploration) JobProgress: {'identifier': 'exploration', 'progress': 'build'}
+[0.008512] (exploration) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/chathushka-sutd/ros2_ws_exp/build/exploration', '--', '-j16', '-l16'], 'cwd': '/home/chathushka-sutd/ros2_ws_exp/build/exploration', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_SG:en'), ('USER', 'chathushka-sutd'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/chathushka-sutd'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '6601'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws_exp/install:/home/chathushka-sutd/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'chathushka-sutd'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'chathushka-sutd'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', ':/opt/ros/humble/share/turtlebot3_gazebo/models'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/home/chathushka-sutd/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:@/tmp/.ICE-unix/2118,unix/chathushkasutd-ROG-Zephyrus-G14-GA401QM-GA401QM:/tmp/.ICE-unix/2118'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/27e81090_4b5a_4563_828c_e806290227cb'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.137'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package2:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/chathushka-sutd/ros2_ws_exp/build/exploration'), ('TURTLEBOT3_MODEL', 'waffle'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/chathushka-sutd/ros2_ws/install/my_package2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/chathushka-sutd/ros2_ws/install/simple_publisher:/home/chathushka-sutd/ros2_ws/install/my_package:/home/chathushka-sutd/ros2_ws_exp/install/tb3_sim:/home/chathushka-sutd/ros2_ws_exp/install/sim_env:/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d:/home/chathushka-sutd/ros2_ws_exp/install/exploration:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble')]), 'shell': False}
+[0.043272] (exploration) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o\x1b[0m\n'}
+[0.099180] (-) TimerEvent: {}
+[0.199444] (-) TimerEvent: {}
+[0.300129] (-) TimerEvent: {}
+[0.400907] (-) TimerEvent: {}
+[0.501662] (-) TimerEvent: {}
+[0.601938] (-) TimerEvent: {}
+[0.702215] (-) TimerEvent: {}
+[0.802578] (-) TimerEvent: {}
+[0.902977] (-) TimerEvent: {}
+[1.003377] (-) TimerEvent: {}
+[1.103821] (-) TimerEvent: {}
+[1.204081] (-) TimerEvent: {}
+[1.304621] (-) TimerEvent: {}
+[1.404891] (-) TimerEvent: {}
+[1.505149] (-) TimerEvent: {}
+[1.605416] (-) TimerEvent: {}
+[1.705648] (-) TimerEvent: {}
+[1.803991] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.804304] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:49:74:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.804371] (exploration) StderrLine: {'line': b'   49 |       void mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K;\n'}
+[1.804424] (exploration) StderrLine: {'line': b'      |                                                                          \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.804471] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.804517] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8\x1b[m\x1b[K,\n'}
+[1.804565] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.804610] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.804665] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.804712] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.804756] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.804801] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:50:84:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.804852] (exploration) StderrLine: {'line': b'   50 |       void costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K;\n'}
+[1.804899] (exploration) StderrLine: {'line': b'      |                                                                                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.804944] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.804989] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8\x1b[m\x1b[K,\n'}
+[1.805033] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.805076] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.805120] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.805164] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.805206] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.805248] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:51:79:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.805293] (exploration) StderrLine: {'line': b'   51 |       void rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K;\n'}
+[1.805336] (exploration) StderrLine: {'line': b'      |                                                                               \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.805378] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7\x1b[m\x1b[K,\n'}
+[1.805421] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:10\x1b[m\x1b[K,\n'}
+[1.805465] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.805529] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.805576] (exploration) StderrLine: {'line': b'  115 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.805649] (-) TimerEvent: {}
+[1.805724] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.905923] (-) TimerEvent: {}
+[1.909620] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:\x1b[m\x1b[K In constructor \xe2\x80\x98\x1b[01m\x1b[Kexploration::MWFCN_Algo::MWFCN_Algo()\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[1.909967] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:88:5:\x1b[m\x1b[K \x1b[01;31m\x1b[Kerror: \x1b[m\x1b[Kexpected \xe2\x80\x98\x1b[01m\x1b[K;\x1b[m\x1b[K\xe2\x80\x99 before \xe2\x80\x98\x1b[01m\x1b[Ktimer_main\x1b[m\x1b[K\xe2\x80\x99\n'}
+[1.910083] (exploration) StderrLine: {'line': b'   88 |     \x1b[01;31m\x1b[Ktimer_main\x1b[m\x1b[K = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403\n'}
+[1.910136] (exploration) StderrLine: {'line': b'      |     \x1b[01;31m\x1b[K^~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.917497] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:\x1b[m\x1b[K At global scope:\n'}
+[1.917625] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:94:80:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.917696] (exploration) StderrLine: {'line': b'   94 | void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K\n'}
+[1.917746] (exploration) StderrLine: {'line': b'      |                                                                                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.917794] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.917840] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8\x1b[m\x1b[K,\n'}
+[1.917889] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.917936] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.917980] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.918023] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.918891] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:102:90:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Knav_msgs::msg::OccupancyGrid_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.919057] (exploration) StderrLine: {'line': b'  102 | void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K\n'}
+[1.919124] (exploration) StderrLine: {'line': b'      |                                                                                          \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.919179] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:7\x1b[m\x1b[K,\n'}
+[1.919228] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:8\x1b[m\x1b[K,\n'}
+[1.919286] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.919332] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__struct.hpp:124:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.919377] (exploration) StderrLine: {'line': b'  124 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.919421] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.919464] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:111:85:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kgeometry_msgs::msg::PointStamped_<std::allocator<void> >::ConstPtr\x1b[m\x1b[K\xe2\x80\x99 is deprecated [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations\x07-Wdeprecated-declarations\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.919510] (exploration) StderrLine: {'line': b'  111 | void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg\x1b[01;35m\x1b[K)\x1b[m\x1b[K\n'}
+[1.919553] (exploration) StderrLine: {'line': b'      |                                                                                     \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[1.919601] (exploration) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/point_stamped.hpp:7\x1b[m\x1b[K,\n'}
+[1.919646] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/include/exploration/exploration_code.hpp:10\x1b[m\x1b[K,\n'}
+[1.919689] (exploration) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:1\x1b[m\x1b[K:\n'}
+[1.919732] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__struct.hpp:115:5:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[Kdeclared here\n'}
+[1.919776] (exploration) StderrLine: {'line': b'  115 |     \x1b[01;36m\x1b[KConstPtr\x1b[m\x1b[K;\n'}
+[1.919820] (exploration) StderrLine: {'line': b'      |     \x1b[01;36m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[1.920601] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid exploration::MWFCN_Algo::dismapConstruction_start_target(int*, int*, int*, int, int)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[1.920695] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:138:27:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.920766] (exploration) StderrLine: {'line': b'  138 |         for (int i = 0; \x1b[01;35m\x1b[Ki < curr_iter.size()\x1b[m\x1b[K; i++) {\n'}
+[1.920822] (exploration) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.921423] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:180:41:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.921520] (exploration) StderrLine: {'line': b'  180 |         for (int curr_idx = 0; \x1b[01;35m\x1b[Kcurr_idx < curr_iter.size()\x1b[m\x1b[K; curr_idx++){\n'}
+[1.921584] (exploration) StderrLine: {'line': b'      |                                \x1b[01;35m\x1b[K~~~~~~~~~^~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.922647] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid exploration::MWFCN_Algo::explore()\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[1.922731] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:265:17:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids variable length array \xe2\x80\x98\x1b[01m\x1b[Kmap\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wvla\x07-Wvla\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.922795] (exploration) StderrLine: {'line': b'  265 |             int \x1b[01;35m\x1b[Kmap\x1b[m\x1b[K[HEIGHT*WIDTH];\n'}
+[1.922847] (exploration) StderrLine: {'line': b'      |                 \x1b[01;35m\x1b[K^~~\x1b[m\x1b[K\n'}
+[1.924031] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:358:39:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.924118] (exploration) StderrLine: {'line': b'  358 |                     for (int i = 0; \x1b[01;35m\x1b[Ki < obstacles.size()\x1b[m\x1b[K; i++) {\n'}
+[1.924179] (exploration) StderrLine: {'line': b'      |                                     \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.926385] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:405:38:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<signed char, std::allocator<signed char> >::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.926479] (exploration) StderrLine: {'line': b'  405 |                     for(int i = 0; \x1b[01;35m\x1b[Ki < mapData.data.size()\x1b[m\x1b[K; i++){\n'}
+[1.926537] (exploration) StderrLine: {'line': b'      |                                    \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.927232] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:437:29:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.927326] (exploration) StderrLine: {'line': b'  437 |             for(int i = 0; \x1b[01;35m\x1b[Ki< obstacles.size()\x1b[m\x1b[K; i++){\n'}
+[1.927391] (exploration) StderrLine: {'line': b'      |                            \x1b[01;35m\x1b[K~^~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.927664] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:457:43:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.927754] (exploration) StderrLine: {'line': b'  457 |                         for (int j = 0; \x1b[01;35m\x1b[Kj < target_cluster.size()\x1b[m\x1b[K; j++){\n'}
+[1.927821] (exploration) StderrLine: {'line': b'      |                                         \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.928058] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:496:30:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.928144] (exploration) StderrLine: {'line': b'  496 |             for(int i = 0; \x1b[01;35m\x1b[Ki < cluster_center.size()\x1b[m\x1b[K; i++){\n'}
+[1.928202] (exploration) StderrLine: {'line': b'      |                            \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.928313] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:518:18:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids variable length array \xe2\x80\x98\x1b[01m\x1b[Kifmapmerged_vec\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wvla\x07-Wvla\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.928377] (exploration) StderrLine: {'line': b'  518 |             bool \x1b[01;35m\x1b[Kifmapmerged_vec\x1b[m\x1b[K[n_robot];\n'}
+[1.928425] (exploration) StderrLine: {'line': b'      |                  \x1b[01;35m\x1b[K^~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.928470] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:519:50:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids variable length array \xe2\x80\x98\x1b[01m\x1b[Ktransform_robot\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wvla\x07-Wvla\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.928516] (exploration) StderrLine: {'line': b'  519 |             geometry_msgs::msg::TransformStamped \x1b[01;35m\x1b[Ktransform_robot\x1b[m\x1b[K[n_robot];\n'}
+[1.928564] (exploration) StderrLine: {'line': b'      |                                                  \x1b[01;35m\x1b[K^~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.928979] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:602:47:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.929071] (exploration) StderrLine: {'line': b'  602 |                             for (int j = 0; \x1b[01;35m\x1b[Kj < cluster_center.size()\x1b[m\x1b[K; j++){\n'}
+[1.929150] (exploration) StderrLine: {'line': b'      |                                             \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.929201] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:623:46:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.929251] (exploration) StderrLine: {'line': b'  623 |                             for (int j =0; \x1b[01;35m\x1b[Kj < path.size()\x1b[m\x1b[K; j++){\n'}
+[1.929296] (exploration) StderrLine: {'line': b'      |                                            \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[1.930463] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:601:48:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused variable \xe2\x80\x98\x1b[01m\x1b[Krepulsive\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable\x07-Wunused-variable\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.930573] (exploration) StderrLine: {'line': b'  601 |                             float attract = 0, \x1b[01;35m\x1b[Krepulsive\x1b[m\x1b[K = 0;\n'}
+[1.930637] (exploration) StderrLine: {'line': b'      |                                                \x1b[01;35m\x1b[K^~~~~~~~~\x1b[m\x1b[K\n'}
+[1.930687] (exploration) StderrLine: {'line': b'\x1b[01m\x1b[K/home/chathushka-sutd/ros2_ws_exp/src/exploration/src/exploration_code.cpp:678:35:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Kstd::vector<int*>::size_type\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare\x07-Wsign-compare\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[1.930738] (exploration) StderrLine: {'line': b'  678 |                 for (int i = 0; \x1b[01;35m\x1b[Ki < cluster_center.size()\x1b[m\x1b[K ; i++){\n'}
+[1.930784] (exploration) StderrLine: {'line': b'      |                                 \x1b[01;35m\x1b[K~~^~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[2.005985] (-) TimerEvent: {}
+[2.106252] (-) TimerEvent: {}
+[2.206528] (-) TimerEvent: {}
+[2.306799] (-) TimerEvent: {}
+[2.407067] (-) TimerEvent: {}
+[2.507731] (-) TimerEvent: {}
+[2.607991] (-) TimerEvent: {}
+[2.708242] (-) TimerEvent: {}
+[2.808507] (-) TimerEvent: {}
+[2.909229] (-) TimerEvent: {}
+[3.009535] (-) TimerEvent: {}
+[3.109805] (-) TimerEvent: {}
+[3.210697] (-) TimerEvent: {}
+[3.310974] (-) TimerEvent: {}
+[3.411256] (-) TimerEvent: {}
+[3.511528] (-) TimerEvent: {}
+[3.611795] (-) TimerEvent: {}
+[3.712669] (-) TimerEvent: {}
+[3.812972] (-) TimerEvent: {}
+[3.913238] (-) TimerEvent: {}
+[4.013499] (-) TimerEvent: {}
+[4.113791] (-) TimerEvent: {}
+[4.214081] (-) TimerEvent: {}
+[4.314384] (-) TimerEvent: {}
+[4.414669] (-) TimerEvent: {}
+[4.461700] (exploration) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/exec_exp.dir/build.make:76: CMakeFiles/exec_exp.dir/src/exploration_code.cpp.o] Error 1\n'}
+[4.462047] (exploration) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/exec_exp.dir/all] Error 2\n'}
+[4.462155] (exploration) StderrLine: {'line': b'gmake: *** [Makefile:146: all] Error 2\n'}
+[4.463879] (exploration) CommandEnded: {'returncode': 2}
+[4.489981] (exploration) JobEnded: {'identifier': 'exploration', 'rc': 2}
+[4.500596] (-) EventReactorShutdown: {}

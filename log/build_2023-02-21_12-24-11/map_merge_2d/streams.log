@@ -1,0 +1,101 @@
+[0.019s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d
+[0.114s] -- The C compiler identification is GNU 11.3.0
+[0.174s] -- The CXX compiler identification is GNU 11.3.0
+[0.182s] -- Detecting C compiler ABI info
+[0.229s] -- Detecting C compiler ABI info - done
+[0.234s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.234s] -- Detecting C compile features
+[0.234s] -- Detecting C compile features - done
+[0.237s] -- Detecting CXX compiler ABI info
+[0.288s] -- Detecting CXX compiler ABI info - done
+[0.293s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.294s] -- Detecting CXX compile features
+[0.294s] -- Detecting CXX compile features - done
+[0.297s] -- Found ament_cmake: 1.3.3 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.420s] -- Found Python3: /usr/bin/python3.10 (found version "3.10.6") found components: Interpreter 
+[0.495s] -- Found rclcpp: 16.0.3 (/opt/ros/humble/share/rclcpp/cmake)
+[0.545s] -- Found rosidl_generator_c: 3.1.4 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.550s] -- Found rosidl_adapter: 3.1.4 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.559s] -- Found rosidl_generator_cpp: 3.1.4 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.572s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.590s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.647s] -- Found rmw_implementation_cmake: 6.1.1 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.650s] -- Found rmw_fastrtps_cpp: 6.2.2 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.723s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.743s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.778s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.787s] -- Looking for pthread.h
+[0.835s] -- Looking for pthread.h - found
+[0.835s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.883s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.883s] -- Found Threads: TRUE  
+[1.003s] -- Found tf2: 0.25.2 (/opt/ros/humble/share/tf2/cmake)
+[1.051s] -- Found tf2_ros: 0.25.2 (/opt/ros/humble/share/tf2_ros/cmake)
+[1.306s] -- Found nav_msgs: 4.2.3 (/opt/ros/humble/share/nav_msgs/cmake)
+[1.373s] -- Found OpenCV: /usr (found version "4.5.4") 
+[1.377s] -- Found ament_lint_auto: 0.12.5 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.434s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.435s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d/include>
+[1.435s] -- Configured cppcheck exclude dirs and/or files: 
+[1.435s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.435s] -- Added test 'lint_cmake' to check CMake code style
+[1.436s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.437s] -- Added test 'uncrustify' to check C / C++ code style
+[1.437s] -- Configured uncrustify additional arguments: 
+[1.437s] -- Added test 'xmllint' to check XML markup files
+[1.439s] -- Configuring done
+[1.450s] -- Generating done
+[1.452s] -- Build files have been written to: /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d
+[1.459s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake /home/chathushka-sutd/ros2_ws_exp/src/map_merge_2d -DCMAKE_INSTALL_PREFIX=/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d
+[1.461s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d -- -j16 -l16
+[1.493s] [ 60%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/map_merger_node.cpp.o[0m
+[1.493s] [ 60%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/map_merger.cpp.o[0m
+[1.493s] [ 60%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/util/topic_name_utils.cpp.o[0m
+[1.493s] [ 60%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/submaps/submap.cpp.o[0m
+[1.493s] [ 60%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/map_discovery/topic_discovery.cpp.o[0m
+[1.493s] [ 70%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/util/tf_utils.cpp.o[0m
+[1.493s] [ 70%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/submaps/submap_merger.cpp.o[0m
+[1.493s] [ 80%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/cv_core/cv_core.cpp.o[0m
+[1.493s] [ 90%] [32mBuilding CXX object CMakeFiles/map_merger.dir/src/submaps/submap_matcher.cpp.o[0m
+[10.121s] [100%] [32m[1mLinking CXX executable map_merger[0m
+[10.734s] [100%] Built target map_merger
+[10.740s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --build /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d -- -j16 -l16
+[10.764s] Invoking command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d
+[10.768s] -- Install configuration: ""
+[10.768s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib/map_merge_2d/map_merger
+[10.779s] -- Set runtime path of "/home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/lib/map_merge_2d/map_merger" to ""
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/submaps
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/submaps/submap.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/submaps/submap_merger.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/submaps/submap_matcher.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/cv_core
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/cv_core/cv_helpers.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/cv_core/cv_core.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/map_merger.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/map_discovery
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/map_discovery/topic_discovery.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/util
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/util/tf_utils.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/include/map_merge_2d/util/topic_name_utils.hpp
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/config
+[10.780s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/config/params.yaml
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/launch
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/launch/map_merge_2d.launch.py
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/ament_index/resource_index/package_run_dependencies/map_merge_2d
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/ament_index/resource_index/parent_prefix_path/map_merge_2d
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/environment/ament_prefix_path.sh
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/environment/ament_prefix_path.dsv
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/environment/path.sh
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/environment/path.dsv
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/local_setup.bash
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/local_setup.sh
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/local_setup.zsh
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/local_setup.dsv
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.dsv
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/ament_index/resource_index/packages/map_merge_2d
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/cmake/map_merge_2dConfig.cmake
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/cmake/map_merge_2dConfig-version.cmake
+[10.781s] -- Installing: /home/chathushka-sutd/ros2_ws_exp/install/map_merge_2d/share/map_merge_2d/package.xml
+[10.783s] Invoked command in '/home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/chathushka-sutd/ros2_ws/install/my_package2:/opt/ros/humble /usr/bin/cmake --install /home/chathushka-sutd/ros2_ws_exp/build/map_merge_2d

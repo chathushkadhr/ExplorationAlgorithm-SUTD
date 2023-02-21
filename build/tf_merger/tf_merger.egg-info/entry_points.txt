@@ -1,0 +1,3 @@
+[console_scripts]
+tf_merger = tf_merger.tf_merger:main
+

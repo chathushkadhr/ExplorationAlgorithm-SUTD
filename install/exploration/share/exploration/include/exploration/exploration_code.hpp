@@ -51,7 +51,7 @@ namespace exploration{
       void rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg);
       void dismapConstruction_start_target(int* dismap_, int* dismap_backup_, int* curr, int HEIGHT, int WIDTH);
       void check_clicked_points();
-      void check_map_data();  
+      bool map_data_available();  
       void explore();
 
       nav2_msgs::action::NavigateToPose_Goal robotGoal;
@@ -82,8 +82,6 @@ namespace exploration{
 
       //rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::SharedPtr trajectory_query_client;
       rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr client_ptr_;
-
-      bool map_data_received,clicked_point;
 
       int HEIGHT,WIDTH;
       std::vector<int* > obstacles, path, targets;

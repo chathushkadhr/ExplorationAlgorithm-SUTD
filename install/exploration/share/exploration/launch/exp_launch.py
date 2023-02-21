@@ -14,9 +14,9 @@ def generate_launch_description():
     
     pkg_dir = get_package_share_directory("exploration")
 
-    # Declare arguments
+    #Declare arguments
     declare_arg_namespace = DeclareLaunchArgument('namespace',
-        default_value='robot2',
+        default_value='robot1',
         description='Host Name / Namespace')
 
     # Create Launch configurations
@@ -39,11 +39,12 @@ def generate_launch_description():
         # arguments=['--ros-args', '--log-level', 'debug'],
         #emulate_tty=True)
         )
-    
+   
     
     ld = LaunchDescription()
     ld.add_action(declare_arg_namespace)
     ld.add_action(node)
+
     
     return ld
     
