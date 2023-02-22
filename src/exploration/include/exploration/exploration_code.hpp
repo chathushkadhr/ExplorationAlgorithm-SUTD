@@ -13,6 +13,7 @@
 #include "tf2_ros/buffer.h"
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
+#include "tf2_ros/transform_broadcaster.h"
 //#include "cartographer_ros_msgs/srv/trajectory_query.hpp"
 
 #include<fstream>
@@ -21,6 +22,8 @@
 #include<iomanip>
 #include<string>
 #include<cstdlib>
+
+#include <mutex>
 
 #define LARGEST_MAP_DISTANCE 500000 
 #define K_ATTRACT 1
@@ -37,11 +40,14 @@ namespace exploration{
   class MWFCN_Algo : public rclcpp::Node
   {
     public:
+      enum VisualizationType 
+      { 
+        POINTS = 0,
+        LINE = 1
+      };
+
       MWFCN_Algo();
-      nav_msgs::msg::OccupancyGrid mapData,costmapData;
-      geometry_msgs::msg::PointStamped clickedpoint;
-      visualization_msgs::msg::Marker points,line;
-      geometry_msgs::msg::Point p;
+ 
       
     private:
       void timer_callback();
@@ -54,13 +60,20 @@ namespace exploration{
       bool map_data_available();  
       void explore();
 
+      void set_costmap_data(nav_msgs::msg::OccupancyGrid costmapData);
+      nav_msgs::msg::OccupancyGrid get_costmap_data();
+      void set_map_data(nav_msgs::msg::OccupancyGrid mapData);
+      nav_msgs::msg::OccupancyGrid get_map_data();
+      visualization_msgs::msg::Marker create_visualization_msg(int type);
+      
+
       nav2_msgs::action::NavigateToPose_Goal robotGoal;
       //geometry_msgs::msg::PoseStamped robotGoal;
       rclcpp::TimerBase::SharedPtr timer_main;
       rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
       size_t count_;
 
-
+      nav_msgs::msg::OccupancyGrid mapData_,costmapData_;
       std::string map_topic,costmap_topic,trajectory_query_name, output_file, output_map_file;
       std::string robot_frame, robot_base_frame;
       int rateHz;  
@@ -71,7 +84,7 @@ namespace exploration{
       int no_targets_count;
       float rotation_w[3];
       float rotation_z[3];
-      std::string* robots_frame_;
+      std::string* robots_base_frame_;
       
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr sub;
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costMapSub;
@@ -83,24 +96,24 @@ namespace exploration{
       //rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::SharedPtr trajectory_query_client;
       rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr client_ptr_;
 
-      int HEIGHT,WIDTH;
-      std::vector<int* > obstacles, path, targets;
-      int currentLoc[2], goal[2]; //target[2], obstacle[2]
-      float  minDis2Frontier;
-      std::ifstream infile;
-      std::vector<int * > dismap_targets_ptr;
+      // int HEIGHT,WIDTH;
+      // std::vector<int* > obstacles, path, targets;
+      // int currentLoc[2], goal[2]; //target[2], obstacle[2]
+      // float  minDis2Frontier;
+      // std::ifstream infile;
+      // std::vector<int * > dismap_targets_ptr;
 
-      double trajectory_length, exploration_time;
-      double trajectory_x;
-      double trajectory_y;
+      // double trajectory_length, exploration_time;
+      // double trajectory_x;
+      // double trajectory_y;
       
       // tf2_ros::Buffer buffer;
       // tf2_ros::TransformListener listener{buffer};
       std::unique_ptr<tf2_ros::Buffer> buffer;
       std::shared_ptr<tf2_ros::TransformListener> listener{nullptr};
       
-
-    
+      std::mutex mtx_map; 
+      std::mutex mtx_costmap; 
 
   };
 }
