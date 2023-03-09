@@ -205,8 +205,10 @@ std::vector<MWFCN::Cluster> MWFCN::cluster_2D(std::vector<MWFCN::Pixel> points, 
         /*-------  Create a new cluster ------*/
         point_clusters.emplace_back();
         point_clusters.back().push_back(point_list.back());
+        double center_x = point_list.back().x;
+        double center_y = point_list.back().y;
         point_list.pop_back();
-        double center_x, center_y;
+        
 
         /*------- Traverse current cluster while checking points in close proximity  ------*/
         for (auto clustered_point=point_clusters.back().begin(); clustered_point!=point_clusters.back().end(); clustered_point++)
@@ -220,6 +222,7 @@ std::vector<MWFCN::Cluster> MWFCN::cluster_2D(std::vector<MWFCN::Pixel> points, 
                     // Add to cluster center value total
                     center_x += unclustered_point->x;
                     center_y += unclustered_point->y;
+
                     // Erase point from unclustered list and get iterator to next unclustered point
                     unclustered_point = point_list.erase(unclustered_point);
                 }
