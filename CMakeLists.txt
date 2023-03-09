@@ -29,6 +29,10 @@ set(
   cartographer_ros_msgs
   nav2_msgs
   rclcpp_action
+set(
+  SOURCES
+  src/exploration_node.cpp
+  src/mwfcn.cpp
 )
 
 
@@ -49,7 +53,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_executable(exec_exp src/exploration_code.cpp src/exploration_node.cpp src/colored_noise.cpp)
+add_executable(exec_exp ${SOURCES})
 ament_target_dependencies(exec_exp ${DEPENDENCIES})
 
 target_include_directories(exec_exp PUBLIC

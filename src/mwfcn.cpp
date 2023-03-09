@@ -1,4 +1,4 @@
-#include <exploration/exploration_code.hpp>
+#include <exploration/mwfcn.hpp>
 
 using namespace exploration;
 using std::placeholders::_1;
