@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include <mutex>
+#include <map>
 
 #include "rclcpp/rclcpp.hpp"
 #include "nav_msgs/msg/occupancy_grid.hpp"
@@ -77,6 +78,9 @@ namespace exploration{
                                             std::vector<Pixel> &discovered_pixels,
                                             int unit_potential);
       float calculate_attraction(std::vector<std::vector<int>> robot_potential_maps, int map_width, Cluster target);
+      std::map<int, Pixel> find_optimal_targets(std::vector<std::vector<int>> robot_potential_maps, 
+                                                std::vector<Cluster> target_clusters, 
+                                                nav_msgs::msg::OccupancyGrid map);
       visualization_msgs::msg::Marker create_visualization_msg(int type);
       bool get_ros_parameters(void);
 
@@ -93,6 +97,7 @@ namespace exploration{
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr map_subscriber_;
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costmap_subscriber_;
       rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr target_publisher_;
+      std::vector<rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr> potential_map_publishers_;
       rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr navigation_client_;
 
       // ROS TF2

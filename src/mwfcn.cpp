@@ -12,7 +12,12 @@ MWFCN:: MWFCN() :
     /*------- Create Subscribers and publishers ------*/
     map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
     costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
-    target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 10);
+    target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
+    for (int i = 1; i <= robot_count_; i++)
+    {
+        potential_map_publishers_.push_back(this->create_publisher<nav_msgs::msg::OccupancyGrid>(
+                                            robot_frame_prefix_ + std::to_string(i) + "/potential_map", 2));
+    }
 
     /*------- Create navigation_stack action client ------*/
     navigation_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose");
@@ -79,19 +84,30 @@ void MWFCN::explore(){
         robot_potential_maps.push_back(distance_map);
     }
 
-    /*------- Calculate attraction to each target cluster ------*/
-    Pixel best_cluster(target_clusters.back().center());
-    float max_attraction = calculate_attraction(robot_potential_maps, mapData.info.width, target_clusters.back());
-    target_clusters.pop_back();
-    for (auto &cluster : target_clusters)
+    /*------- Publish distance maps ------*/
+    for (uint i = 0; i < robot_potential_maps.size(); i++)
     {
-        float attraction = calculate_attraction(robot_potential_maps, mapData.info.width, cluster);
-        if (attraction > max_attraction)
-        {
-            best_cluster = cluster.center();
-            max_attraction = attraction;
-        }
+        nav_msgs::msg::OccupancyGrid potential_map_msg;
+        potential_map_msg.header = mapData.header;
+        potential_map_msg.info = mapData.info;
+        potential_map_msg.data.resize(robot_potential_maps[i].size());
+
+        std::transform(robot_potential_maps[i].begin(), robot_potential_maps[i].end(), 
+                        potential_map_msg.data.begin(), [](int val) -> uint8_t { return val / 10; });
+        potential_map_publishers_[i]->publish(potential_map_msg);
     }
+
+    /*------- Calculate best target for each robot ------*/
+    std::map<int, Pixel> optimal_targets = find_optimal_targets(robot_potential_maps, target_clusters, mapData);
+    // Get host robot best target
+    std::vector<int>::iterator robot_map_id_itr = std::find(available_robots.begin(), available_robots.end(), (robot_id_ -1 )); // Robot ids start from 1. Map ids start from 0. Hence -1
+    if (robot_map_id_itr == available_robots.cend()) 
+        {
+        RCLCPP_ERROR_STREAM(this->get_logger(), "Host robot not available! Exploration internal error");
+        return;
+        }
+    uint robot_map_id = std::distance(available_robots.begin(), robot_map_id_itr);
+    Pixel best_cluster(optimal_targets[robot_map_id]); 
 
     // Display clusters and attraction
     visualization_msgs::msg::MarkerArray target_cluster_markers;
@@ -105,18 +121,40 @@ void MWFCN::explore(){
             cluster.x * mapData.info.resolution + mapData.info.origin.position.x).set__y(
             cluster.y * mapData.info.resolution + mapData.info.origin.position.y));
 
-        float attraction = calculate_attraction(robot_potential_maps, mapData.info.width, cluster);
-        target_cluster_markers.markers.back().scale.x = attraction / max_attraction;
-        target_cluster_markers.markers.back().scale.y = attraction / max_attraction;
-        target_cluster_markers.markers.back().scale.z = attraction / max_attraction;
+        // Highlight robots' targets in blue
+        for (auto &optimal_target : optimal_targets)
+        {
+            if (cluster.center() == optimal_target.second)
+            {
+                target_cluster_markers.markers.back().color.r = 0.0;
+                target_cluster_markers.markers.back().color.g = 0.0;
+                target_cluster_markers.markers.back().color.b = 1.0;
+            }
+        }
 
         // Highlight best target in green
-        if (attraction == max_attraction)
+        if (cluster.center() == best_cluster)
         {
             target_cluster_markers.markers.back().color.r = 0.0;
             target_cluster_markers.markers.back().color.g = 1.0;
             target_cluster_markers.markers.back().color.b = 0.0;
         }
+        
+    }
+    // Display Robot locations
+    for (auto &robot_transform : robot_transforms)
+    {
+        target_cluster_markers.markers.push_back(create_visualization_msg(SPHERES));
+        target_cluster_markers.markers.back().id = id++;
+        target_cluster_markers.markers.back().points.push_back(geometry_msgs::msg::Point().set__x(
+            robot_transform.transform.translation.x).set__y(
+            robot_transform.transform.translation.y));
+
+        target_cluster_markers.markers.back().color.r = 0.9;
+        target_cluster_markers.markers.back().color.g = 1.0;
+        target_cluster_markers.markers.back().color.b = 0.3;
+        target_cluster_markers.markers.back().scale = geometry_msgs::msg::Vector3().set__x(0.5).set__y(0.5).set__z(0.5);
+        // RCLCPP_INFO_STREAM(this->get_logger(), "Robot location: " << robot_transform.transform.translation.x << ", " << robot_transform.transform.translation.y);
     }
     target_publisher_->publish(target_cluster_markers);
 
@@ -431,6 +469,70 @@ inline void MWFCN::process_pixel_potential(Pixel source_pixel,
         map[target_pixel.x + target_pixel.y * map_width] = MAP_PIXEL_OCCUPIED;
     }
     return;
+}
+
+/**
+ * @brief Given a set of robot potential maps (distance maps) and target clusters, finds best target cluster for each robot
+ * 
+ * @param robot_potential_maps 
+ * @param target_clusters 
+ * @param map 
+ * @return std::map<int, Pixel>  {Robot id, optimal target cluster}
+ */
+std::map<int, MWFCN::Pixel> MWFCN::find_optimal_targets(std::vector<std::vector<int>> robot_potential_maps, std::vector<Cluster> target_clusters, nav_msgs::msg::OccupancyGrid map)
+{
+    std::map<int, Pixel> optimal_target_clusters;
+
+    uint optimal_target_id = 0;
+    do
+    {
+        // Find {robot, cluster} pair with highest attraction
+        float max_attraction = 0.0;
+        Cluster best_target;
+        int robot_id;
+        for (auto &target : target_clusters)
+        {
+            float cluster_size_attraction = 1.0; // - 0.9 * exp(-target.size / 100.0); // Slow varying function from 0.1 to 1
+
+            for (uint i = 0; i < robot_potential_maps.size(); i++)
+            {   
+                // Check if optimal target for robot 'i' has already been found
+                if (optimal_target_clusters.count(i)) continue; // Skip robot if optimal target is available
+
+                float attraction = cluster_size_attraction / robot_potential_maps[i][target.x + target.y * map.info.width];
+                if (attraction > max_attraction)
+                {
+                    max_attraction = attraction;
+                    best_target = target;
+                    robot_id = i;
+                }
+            }
+        }
+
+        // Add best {robot, cluster} pair to optimal list
+        optimal_target_clusters[robot_id] = best_target.center();
+
+        // Generate potential map based around the found best_target
+        std::vector<int> optimal_point_potential_map;
+        create_potential_map(map, best_target.center(), optimal_point_potential_map);
+
+        // Add extra potentials to robot_potential maps
+        /*
+            Once a robot reaches a target, other targets in close vicinity shall be allocated to the same robot. 
+            Hence, the target point should apply a potential field to repel other robots from selecting nearby targets.
+        */
+        for (auto &target : target_clusters)
+        {
+            for (uint i = 0; i < robot_potential_maps.size(); i++)
+            {
+                robot_potential_maps[i][target.x + target.y * map.info.width] /= optimal_point_potential_map[target.x + target.y * map.info.width];
+            }
+        }
+
+        optimal_target_id++;
+    } while (optimal_target_id < robot_potential_maps.size());
+
+    return optimal_target_clusters;
 }
 
 /**
