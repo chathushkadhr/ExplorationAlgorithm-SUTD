@@ -14,7 +14,6 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
-find_package(cartographer_ros_msgs)
 find_package(rclcpp_action REQUIRED)
 find_package(nav2_msgs REQUIRED)
 
@@ -26,7 +25,6 @@ set(
   geometry_msgs
   visualization_msgs
   tf2_ros
-  cartographer_ros_msgs
   nav2_msgs
   rclcpp_action
 set(
