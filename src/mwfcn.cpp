@@ -30,12 +30,10 @@ MWFCN:: MWFCN() :
     timer_main_ = this->create_wall_timer( std::chrono::duration<double>( 1.0 / rate_ ), std::bind(&MWFCN::explore, this));
 }
 
-
-void MWFCN_Algo::explore(){
+void MWFCN::explore(){
     
     /*------- Return if maps are not available ------*/
     if (!map_data_available()) return;
-    RCLCPP_INFO_STREAM(this->get_logger(), "map data received");
 
     /*------- Return if self map to base_foot_print transform is not available ------*/
     geometry_msgs::msg::TransformStamped map_to_baseframe;
@@ -531,12 +529,15 @@ inline void MWFCN_Algo::process_pixel_potential(Pixel source_pixel,
 }
 
 
-bool MWFCN_Algo::map_data_available(){
+bool MWFCN::map_data_available(){
+    // TODO Testing only
+    // if (!(get_map_data().data.size() < 1 || get_costmap_data().data.size()<1)){
 
-    if (!(get_map_data().data.size() < 1 || get_costmap_data().data.size()<1)){
-        robotGoal.pose.header.frame_id=robot_frame;
-        robotGoal.pose.pose.position.z=0;
-        robotGoal.pose.pose.orientation.z=1.0;
+        if (!(get_map_data().data.size() < 1)){
+        map_frame_ = get_map_data().header.frame_id;
+        robot_goal_.pose.header.frame_id = map_frame_;
+        robot_goal_.pose.pose.position.z = 0;
+        robot_goal_.pose.pose.orientation.z = 1.0;
         return true;
     }
 
@@ -544,10 +545,10 @@ bool MWFCN_Algo::map_data_available(){
     return false;
 }  
  
-visualization_msgs::msg::Marker MWFCN_Algo::create_visualization_msg(int type){
+visualization_msgs::msg::Marker MWFCN::create_visualization_msg(int type){
 
     visualization_msgs::msg::Marker marker;
-    marker.header.frame_id = robot_frame;
+    marker.header.frame_id = map_frame_;
     marker.header.stamp = rclcpp::Time(0);
     marker.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
 

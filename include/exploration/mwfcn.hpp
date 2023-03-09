@@ -52,21 +52,14 @@ namespace exploration{
  
       
     private:
-      void timer_callback();
-      void debug_param();
-      void mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg);
-      void costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg);
-      void rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg);
-      void check_clicked_points();
-      bool map_data_available();  
-      void explore();
+      void map_callback(const nav_msgs::msg::OccupancyGrid msg);
+      void costmap_callback(const nav_msgs::msg::OccupancyGrid msg);
 
       void set_costmap_data(nav_msgs::msg::OccupancyGrid costmapData);
       nav_msgs::msg::OccupancyGrid get_costmap_data();
       void set_map_data(nav_msgs::msg::OccupancyGrid mapData);
       nav_msgs::msg::OccupancyGrid get_map_data();
-
-      visualization_msgs::msg::Marker create_visualization_msg(int type);
+      bool map_data_available(void);
 
       bool get_transform(std::string target_frame, std::string source_frame, geometry_msgs::msg::TransformStamped &transform);
       std::vector<Cluster> cluster_2D(std::vector<Pixel> points, int proximity_threshold = 10); // changed from 3
