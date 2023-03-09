@@ -75,7 +75,7 @@ namespace exploration{
                                             int unit_potential);
       float calculate_attraction(std::vector<std::vector<int>> robot_potential_maps, int map_width, Cluster target);
       visualization_msgs::msg::Marker create_visualization_msg(int type);
-      void get_ros_parameters(void);
+      bool get_ros_parameters(void);
 
       // Parameters
       std::string map_topic_, costmap_topic_; 

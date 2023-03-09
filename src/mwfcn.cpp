@@ -7,7 +7,7 @@ MWFCN:: MWFCN() :
     Node("MWFCN_node")
 {   
     /*------- Fetch parameters ------*/
-    get_ros_parameters();
+    if (!get_ros_parameters()) return; // Exit if parameters fetching failure
 
     /*------- Create Subscribers and publishers ------*/
     map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
@@ -547,4 +547,6 @@ void MWFCN::get_ros_parameters(void)
         <<"\robot_frame_prefix: " << robot_frame_prefix_
         );
     #endif
+
+    return true;
 }
