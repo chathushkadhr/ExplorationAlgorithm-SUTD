@@ -56,13 +56,14 @@ void MWFCN::explore(){
 
     /*------- Receive robots' locations ------*/
     std::vector<geometry_msgs::msg::TransformStamped> robot_transforms;
-    robot_transforms.push_back(map_to_baseframe); // Insert current robot's location
-    for (int i = 1; i < robot_count_; i++)
+    std::vector<int> available_robots;
+    for (int i = 0; i < robot_count_; i++)
     {
         geometry_msgs::msg::TransformStamped transform;
         if (get_transform(map_frame_, robot_base_frames_[i], transform))
         {
             robot_transforms.push_back(transform);
+            available_robots.push_back(i);
         }
     }
 
@@ -536,6 +537,19 @@ void MWFCN::get_ros_parameters(void)
         robot_base_frames_.push_back(robot_frame_prefix_ + std::to_string(i) + "/" + robot_base_frame_);
     }
 
+    // Extract robot id from node namespace
+    std::string ns = this->get_namespace();
+    RCLCPP_INFO_STREAM(this->get_logger(), "Running exploration in namespace: " << ns);
+    try{
+        std::string id_string = ns.substr(robot_frame_prefix_.size() + 1);
+        robot_id_ = std::stoi(id_string);
+        RCLCPP_INFO_STREAM(this->get_logger(), "Robot ID: " << robot_id_);
+    }
+    catch( ... ){
+        RCLCPP_ERROR_STREAM(this->get_logger(), "Cannot extract robot id from node namespace {" << ns 
+                                                    << "} with prefix {" << robot_frame_prefix_ << "}");
+        return false;
+    }
 
     #ifdef DEBUG
         RCLCPP_INFO_STREAM(MWFCN::get_logger(), "map topic: " << map_topic_
