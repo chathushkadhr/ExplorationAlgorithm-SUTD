@@ -13,6 +13,7 @@ MWFCN:: MWFCN() :
     map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
     costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
     target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
+    inflated_map_publisher = this->create_publisher<nav_msgs::msg::OccupancyGrid>("inflated_map", 1);
     for (int i = 1; i <= robot_count_; i++)
     {
         potential_map_publishers_.push_back(this->create_publisher<nav_msgs::msg::OccupancyGrid>(
@@ -43,10 +44,13 @@ void MWFCN::explore(){
     nav_msgs::msg::OccupancyGrid mapData = get_map_data();  
     nav_msgs::msg::OccupancyGrid costmapData = get_costmap_data(); 
 
-    /*------- Extract obstacles and exploration targets from maps ------*/
-    std::vector<Pixel> obstacles;
+    /*------- Inflate and Extract obstacles from map ------*/
+    std::vector<Pixel> obstacles = inflate_obstacles(mapData, obstacle_inflation_radius_);
+    inflated_map_publisher->publish(mapData);
+
+    /*------- Extract frontiers from maps ------*/
     std::vector<Pixel> targets;
-    process_maps(mapData, costmapData, obstacles, targets);
+    find_frontiers(mapData, costmapData, targets);
     RCLCPP_DEBUG_STREAM(this->get_logger(), "Targets count: " << std::to_string(targets.size()));
 
     /*-------Check exploration stop condition ------*/
@@ -102,10 +106,10 @@ void MWFCN::explore(){
     // Get host robot best target
     std::vector<int>::iterator robot_map_id_itr = std::find(available_robots.begin(), available_robots.end(), (robot_id_ -1 )); // Robot ids start from 1. Map ids start from 0. Hence -1
     if (robot_map_id_itr == available_robots.cend()) 
-        {
+    {
         RCLCPP_ERROR_STREAM(this->get_logger(), "Host robot not available! Exploration internal error");
         return;
-        }
+    }
     uint robot_map_id = std::distance(available_robots.begin(), robot_map_id_itr);
     Pixel best_cluster(optimal_targets[robot_map_id]); 
 
@@ -303,29 +307,45 @@ std::vector<MWFCN::Cluster> MWFCN::cluster_2D(std::vector<MWFCN::Pixel> points, 
  * @param obstacles 
  * @param targets 
  */
-void MWFCN::process_maps(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::OccupancyGrid costmapData, 
-                                      std::vector<Pixel> &obstacles, std::vector<Pixel> &targets)
+void MWFCN::find_frontiers(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::OccupancyGrid costmapData, std::vector<Pixel> &targets)
 {
      /*------- Initialize the map ------*/
     int map_height = mapData.info.height;
     int map_width = mapData.info.width;
     std::vector<int> map(mapData.data.begin(), mapData.data.end());
     
-    /*-------  Find the obstacles & targets ------*/
+    /*-------  Find targets ------*/
     // Reserve max sizes for vectors to prevent relocation
-    obstacles.reserve(map_height * map_width);
     targets.reserve(map_height * map_width);
 
-    // Traverse map row, column wise while checking each pixel for obstacles and free regions
+    {// TODO copy costmap obstacles also
+        (void)costmapData;
+        // geometry_msgs::msg::TransformStamped costmap_to_map;
+        // bool costmap_available =  false; // TODO testing only get_transform(costmapData.header.frame_id, mapData.header.frame_id, costmap_to_map);
+        // if (costmap_available)
+        // {
+        //     /* TODO consider about worldmap  / robot frame to costmap frame rotation also */
+        //     geometry_msgs::msg::Vector3 map_location, costmap_location;
+        //     map_location.x = j * mapData.info.resolution + mapData.info.origin.position.x;
+        //     map_location.y = i * mapData.info.resolution + mapData.info.origin.position.y;
+        //     costmap_location = map_location; // TODO convert using transform
+
+        //     Pixel costmap_pixel( ((map_location.x - costmapData.info.origin.position.x) / costmapData.info.resolution),
+        //                         ((map_location.y - costmapData.info.origin.position.y) / costmapData.info.resolution));
+
+        //     if ( (costmap_pixel.x > 0) && (costmap_pixel.x < (int)costmapData.info.width) &&
+        //         (costmap_pixel.y > 0) && (costmap_pixel.y < (int)costmapData.info.height) &&
+        //         (costmapData.data[costmap_pixel.y * costmapData.info.width +  costmap_pixel.x] > 0)) continue; // (j,i) pixel has high cost. End current iteration
+        // }
+    }
+
+    
+    // Traverse map row, column wise while checking each pixel for free regions
     for (int i = 1; i < (map_height - 1); i++)
     {
         for (int j = 1; j < (map_width - 1); j++)
         {
-            if (map[i*map_width + j] == MAP_PIXEL_OCCUPIED)
-            {
-                obstacles.emplace_back(j,i);
-            }
-            else if (map[i*map_width + j] == MAP_PIXEL_UNKNOWN)
+            if (map[i*map_width + j] == MAP_PIXEL_UNKNOWN)
             {
                 // Check if there are free neighbouring pixels around the unknown pixel
                 if (    (map[ i*map_width + (j+1)] == MAP_PIXEL_FREE) ||
@@ -337,36 +357,112 @@ void MWFCN::process_maps(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::Oc
                         (map[ (i-1)*map_width + (j+1)] == MAP_PIXEL_FREE) ||
                         (map[ (i-1)*map_width + (j-1)] == MAP_PIXEL_FREE))
                 {
-                    // Potential target found at (j,i) pixel. 
-                    /*------- Check if target has lower cost in costmap  ------*/
-                    (void)costmapData;
-                    /* TODO consider about worldmap  / robot frame to costmap frame rotation also. And map bound checking
-                    float loc_x = j * mapData.info.resolution + mapData.info.origin.position.x;
-                    float loc_y = i * mapData.info.resolution + mapData.info.origin.position.y;
-                    int costmap_pixel_index = ((loc_y - costmapData.info.origin.position.y) / costmapData.info.resolution) * costmapData.info.width +
-                                                ((loc_x - costmapData.info.origin.position.x) / costmapData.info.resolution);
-                    if (costmapData.data[costmap_pixel_index] > 0) continue;    // (j,i) pixel has high cost. End current iteration
-                    */
-
-                    /*------- Search for obstacles within inflation radius of the (j,i) pixel  ------*/
-                    auto obstacle = obstacles.begin();
-                    for (; obstacle != obstacles.end(); obstacle++)
-                    {
-                        if (abs(obstacle->x - j) + abs(obstacle->y - i) < obstacle_inflation_radius_) break;
-                    }
-                    if (obstacle == obstacles.end())
-                    {
-                        // Search completed without any obstacle. Add (j,i) to targets
-                        targets.emplace_back(j,i);
-                    }
+                    // Potential target found at (j,i) pixel. Add (j,i) to targets
+                    targets.emplace_back(j,i);
                 }
             }
         }
     }
     // Adjust vector sizes (reserve and shrink used for performance optimization)
-    obstacles.shrink_to_fit();
     targets.shrink_to_fit();
     return;
+}
+
+/**
+ * @brief Inflates obstacles in the map by the given inflation radius
+ * 
+ * @param map           Map
+ * @param inflation     Inflation radius in meters
+ * @return std::vector<MWFCN::Pixel> Vector of obstacles, after inflation (including the inflated regions)
+ */
+std::vector<MWFCN::Pixel> MWFCN::inflate_obstacles(nav_msgs::msg::OccupancyGrid &map, float inflation)
+{
+     /*------- Initialize the map parameters ------*/
+    int map_height = map.info.height;
+    int map_width = map.info.width;
+
+    uint inflation_iterations = int(inflation / map.info.resolution);
+    std::list<Pixel> processing_obstacles, adjacent_pixels;
+    std::vector<Pixel> obstacles;
+    obstacles.reserve(map.info.height * map.info.width);
+
+    /*------- Find all obstacles in the map  ------*/
+    for (int i = 1; i < (map_height - 1); i++)
+    {
+        for (int j = 1; j < (map_width - 1); j++)
+        {
+            if ( (map.data[i*map_width + j] != MAP_PIXEL_FREE) && (map.data[i*map_width + j] != MAP_PIXEL_UNKNOWN) )
+            // if (map[i*map_width + j] == MAP_PIXEL_OCCUPIED) // TODO changed obstacle threshold from 100 to >0
+            {
+                processing_obstacles.emplace_back(j,i);
+            }
+        }
+    }
+    // Add initial obstacles to obstacles vector to be returned
+    std::copy(std::begin(processing_obstacles), std::end(processing_obstacles), std::back_inserter(obstacles));
+
+    /*
+        Find all obstacles in map and store them in processing_obstacles.
+        For all obstacles in processing_obstacles, check if adjacent pixels are occupied. If not, inflate them and add them to adjacent_pixels list
+        Clear processing_obstacles and copy new data from adjacent_pixels
+        Repeat until inflation iteration count is met
+    */
+    uint iteration = 0;
+    while (iteration < inflation_iterations)
+    {
+        for (auto &obstacle : processing_obstacles)
+        {
+
+            // Check right pixel
+            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            // Check left pixel
+            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            // Check up pixel
+            process_pixel_inflation(Pixel(obstacle.x, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            // Check down pixel
+            process_pixel_inflation(Pixel(obstacle.x, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            // Check upper right pixel
+            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            // Check upper left pixel
+            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            // Check lower right pixel
+            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            // Check lower left pixel
+            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+        }
+        processing_obstacles = adjacent_pixels;
+        std::copy(std::begin(adjacent_pixels), std::end(adjacent_pixels), std::back_inserter(obstacles));   // Add inflated pixels to obstacles vector to be returned
+        adjacent_pixels.clear();
+        iteration++;
+    }
+
+    obstacles.shrink_to_fit();
+    return obstacles; 
+}
+
+/**
+ * @brief Given a map and a target pixel; if the pixel is not occupied, inflates it with the given inflation value and adds the pixel to inflated_pixels list
+ * 
+ * @param target_pixel              Target pixel (x, y)
+ * @param map                       Map
+ * @param inflated_pixels           List of inflated pixels
+ * @param inflation                 Inflation value
+ */
+inline void MWFCN::process_pixel_inflation(Pixel target_pixel, nav_msgs::msg::OccupancyGrid &map, std::list<Pixel> &inflated_pixels, int inflation)
+{
+    // Check map bounds
+    int map_width = map.info.width;
+    if ( ((target_pixel.x + target_pixel.y * map_width) < 0) || ((target_pixel.x + target_pixel.y * map_width) >= (int)map.data.size()) )
+    {
+        return;
+    }
+
+    if ( (map.data[target_pixel.x + target_pixel.y * map.info.width] == MAP_PIXEL_FREE) || 
+            (map.data[target_pixel.x + target_pixel.y * map.info.width] == MAP_PIXEL_UNKNOWN)  )
+    {
+        map.data[target_pixel.x + target_pixel.y * map.info.width] = inflation;
+        inflated_pixels.emplace_back(target_pixel);
+    }
 }
 
 /**
@@ -383,7 +479,7 @@ bool MWFCN::create_potential_map(nav_msgs::msg::OccupancyGrid mapData, Pixel sou
 {
     /*------- Initialize potential map with maximum potential ------*/
     potential_map.resize(mapData.data.size());
-    potential_map.assign(potential_map.size(), 1000); //LARGEST_MAP_DISTANCE
+    potential_map.assign(potential_map.size(), LARGEST_MAP_DISTANCE);
 
     /*------- Initialize map and current processing points ------*/
     std::vector<int> map(mapData.data.begin(), mapData.data.end());
@@ -554,8 +650,7 @@ float MWFCN::calculate_attraction(std::vector<std::vector<int>> robot_potential_
     float attraction_factor = 1.0;
     for (uint i = 1; i < robot_potential_maps.size(); i++)
     {   
-        //attraction_factor *= ( 1 - exp( -robot_potential_maps[i][target.y * map_width + target.x] / 1000.0 )); // Slow varying function from 0 to 1
-        attraction_factor *= 
+        attraction_factor *= ( 1 - exp( -robot_potential_maps[i][target.y * map_width + target.x] / 1000.0 )); // Slow varying function from 0 to 1
     }
 
     float attraction = size_attraction * distance_attraction * attraction_factor;
@@ -563,8 +658,10 @@ float MWFCN::calculate_attraction(std::vector<std::vector<int>> robot_potential_
 }
 
 bool MWFCN::map_data_available(){
+    // TODO Testing only
+    // if (!(get_map_data().data.size() < 1 || get_costmap_data().data.size()<1)){
 
-    if (!(get_map_data().data.size() < 1 || get_costmap_data().data.size()<1)){
+        if (!(get_map_data().data.size() < 1)){
         map_frame_ = get_map_data().header.frame_id;
         robot_goal_.pose.header.frame_id = map_frame_;
         robot_goal_.pose.pose.position.z = 0;
