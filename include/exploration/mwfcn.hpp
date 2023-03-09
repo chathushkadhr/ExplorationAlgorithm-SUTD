@@ -80,7 +80,16 @@ namespace exploration{
                                             int map_width, 
                                             std::vector<Pixel> &discovered_pixels,
                                             int unit_potential);
+      bool get_ros_parameters(void);
       
+      // Parameters
+      std::string map_topic_, costmap_topic_; 
+      std::string robot_base_frame_, map_frame_, robot_frame_prefix_;
+      float rate_;
+      float obstacle_inflation_radius_;
+      int robot_count_;
+      uint robot_id_;
+      std::vector<std::string> robot_base_frames_;  // Fully qualified frame names
       
 
       nav2_msgs::action::NavigateToPose_Goal robotGoal;
