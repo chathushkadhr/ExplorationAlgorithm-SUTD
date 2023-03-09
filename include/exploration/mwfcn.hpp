@@ -14,31 +14,12 @@
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "tf2_ros/transform_broadcaster.h"
-//#include "cartographer_ros_msgs/srv/trajectory_query.hpp"
-
-#include<fstream>
-#include<sstream>
-#include<iostream>
-#include<iomanip>
 #include<string>
-#include<cstdlib>
-
-#include <list>
-#include <mutex>
-
-#define LARGEST_MAP_DISTANCE 500000 
-#define K_ATTRACT 1
-#define ROBOT_INTERFERE_RADIUS 50
-
-
-using namespace std::chrono_literals;
 
 //#define DEBUG
 
 namespace exploration{
-
-
-  class MWFCN_Algo : public rclcpp::Node
+  class MWFCN : public rclcpp::Node
   {
     public:
       enum VisualizationType 
@@ -67,7 +48,7 @@ namespace exploration{
         Pixel center() { return Pixel(x, y); };
       };
 
-      MWFCN_Algo();
+      MWFCN();
  
       
     private:
