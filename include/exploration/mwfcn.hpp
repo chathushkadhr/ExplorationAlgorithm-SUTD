@@ -91,49 +91,23 @@ namespace exploration{
       uint robot_id_;
       std::vector<std::string> robot_base_frames_;  // Fully qualified frame names
       
+      // ROS Subscribers, Publishers and Action clients
+      rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr map_subscriber_;
+      rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costmap_subscriber_;
+      rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr target_publisher_;
+      std::vector<rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr> potential_map_publishers_;
+      rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr navigation_client_;
 
-      nav2_msgs::action::NavigateToPose_Goal robotGoal;
-      //geometry_msgs::msg::PoseStamped robotGoal;
-      rclcpp::TimerBase::SharedPtr timer_main;
-      rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
-      size_t count_;
+      // ROS TF2
+      std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
+      std::shared_ptr<tf2_ros::TransformListener> tf_listener_{nullptr};
 
-      nav_msgs::msg::OccupancyGrid mapData_,costmapData_;
-      std::string map_topic,costmap_topic,trajectory_query_name, output_file, output_map_file;
-      std::string robot_frame, robot_base_frame;
-      int rateHz;  
-      std::string  ns, robot_ano_frame_suffix, robot_ano_frame_preffix;
-      int rotation_count, n_robot, this_robot_idx;
-      float inflation_radius;    // max 4 degree;
-      bool start_condition;
-      int no_targets_count;
-      float rotation_w[3];
-      float rotation_z[3];
-      std::string* robots_base_frame_;
+      // Attributes
+      rclcpp::TimerBase::SharedPtr timer_main_;
       
-      rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr sub;
-      rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costMapSub;
-      rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr rviz_sub;
-
-      rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub;
-      rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub_centroid;
-
-      //rclcpp::Client<cartographer_ros_msgs::srv::TrajectoryQuery>::SharedPtr trajectory_query_client;
-      rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr client_ptr_;
-
-      int goal[2]; //target[2], obstacle[2]
-      float  minDis2Frontier;
-      std::ifstream infile;
-
-      double trajectory_length, exploration_time;
-      double trajectory_x;
-      double trajectory_y;
-      
-      // tf2_ros::Buffer buffer;
-      // tf2_ros::TransformListener listener{buffer};
-      std::unique_ptr<tf2_ros::Buffer> buffer;
-      std::shared_ptr<tf2_ros::TransformListener> listener{nullptr};
-      
+      // Shared variables
+      nav_msgs::msg::OccupancyGrid mapData_, costmapData_;
+      nav2_msgs::action::NavigateToPose_Goal robot_goal_;
       std::mutex mtx_map; 
       std::mutex mtx_costmap; 
 

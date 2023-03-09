@@ -9,37 +9,25 @@ MWFCN:: MWFCN() :
     /*------- Fetch parameters ------*/
     if (!get_ros_parameters()) return; // Exit if parameters fetching failure
 
+    /*------- Create Subscribers and publishers ------*/
+    map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
+    costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
+    target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
+    for (int i = 1; i <= robot_count_; i++)
+    {
+        potential_map_publishers_.push_back(this->create_publisher<nav_msgs::msg::OccupancyGrid>(
                                             robot_frame_prefix_ + std::to_string(i) + "/potential_map", 2));
     }
 
-    // ------------------------------------- subscribe the map topics & clicked points
-    sub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic, 10, std::bind(&MWFCN_Algo::mapCallBack, this, _1));
-    costMapSub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic, 20, std::bind(&MWFCN_Algo::costmapMergedCallBack, this, _1));
+    /*------- Create navigation_stack action client ------*/
+    navigation_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose");
     
-    // ------------------------------------- subscribe the map topics & clicked points
+    /*------- Initialize TF listener ------*/
+    tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 
-    // ------------------------------------- publish the detected points for following processing & display
-    pub = this->create_publisher<visualization_msgs::msg::Marker>("_shapes", 100);
-    pub_centroid = this->create_publisher<visualization_msgs::msg::Marker>("_detected_frontier_centroid", 10);
-        
-    // publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
-    // timer_ = this->create_wall_timer(
-    // 500ms, std::bind(&MWFCN_Algo::timer_callback, this));
-
-    buffer= std::make_unique<tf2_ros::Buffer>(this->get_clock());
-    listener= std::make_shared<tf2_ros::TransformListener>(*buffer);
-
-    #ifdef DEBUG
-    debug_param();
-    
-    #endif
-    // trajectory_query_client =this->create_client<cartographer_ros_msgs::srv::TrajectoryQuery>(trajectory_query_name);
-    // trajectory_query_client->wait_for_service();
-
-    this->client_ptr_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose");
-    
-    timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
-
+    /*------- Create main callback timer ------*/
+    timer_main_ = this->create_wall_timer( std::chrono::duration<double>( 1.0 / rate_ ), std::bind(&MWFCN::explore, this));
 }
 
 
@@ -245,179 +233,35 @@ void MWFCN_Algo::explore(){
                 continue;
             }
 
-            if(minDis2Frontier > temp_dis_ ){
-                minDis2Frontier = temp_dis_;
-            }
-        }
-        iteration++;
-
-        // ---------------------------------------- publish path for displaying in rviz
-        if(iteration >= 1){
-            visualization_msgs::msg::Marker path_msg = create_visualization_msg(LINE);
-            geometry_msgs::msg::Point p;
-            p.x=(path[path.size()-2]).x * mapData.info.resolution + mapData.info.origin.position.x; 
-            p.y=(path[path.size()-2]).y * mapData.info.resolution + mapData.info.origin.position.y;
-            p.z=0.0;
-            path_msg.points.push_back(p);
-            p.x=currentLoc[0] * mapData.info.resolution + mapData.info.origin.position.x;
-            p.y=currentLoc[1] * mapData.info.resolution + mapData.info.origin.position.y;
-            p.z=0.0;
-            path_msg.points.push_back(p);
-            pub->publish(path_msg); 
-        }
-    }
-    goal[0] = path.back().x;
-    goal[1] = path.back().y;
-
-    robotGoal.pose.pose.orientation.z = 1;
-    robotGoal.pose.pose.orientation.w = 0;
-    robotGoal.pose.pose.position.x = goal[0]*mapData.info.resolution + mapData.info.origin.position.x;
-    robotGoal.pose.pose.position.y = goal[1]*mapData.info.resolution + mapData.info.origin.position.y;
-    robotGoal.pose.header.stamp  = rclcpp::Time(0);
-    RCLCPP_INFO_STREAM(this->get_logger(), "Sent goal: " << robotGoal.pose.pose.position.x << ", " << robotGoal.pose.pose.position.y);
-    this->client_ptr_->async_send_goal(robotGoal);
-
-    // TODO Delete following block
-    // if(start_condition){
-    //     geometry_msgs::msg::TransformStamped  transform;
-    //     int  temp=0;
-    //     while (temp==0){
-    //         try{
-    //         temp=1;
-    //         transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
-    //         }
-    //         catch( const tf2::TransformException & ex){
-    //             temp=0;
-    //             rclcpp::sleep_for(100ms);
-    //         }
-    //     }
-    //     int loc_x = transform.transform.translation.x;
-    //     int loc_y = transform.transform.translation.y;
-
-    //     robotGoal.pose.pose.orientation.z = rotation_z[rotation_count];
-    //     robotGoal.pose.pose.orientation.w = rotation_w[rotation_count];
-
-    //     robotGoal.pose.pose.position.x = loc_x + 0.2;
-    //     robotGoal.pose.pose.position.y = loc_y + 0.2;
-
-    //     start_condition = false;
-    // }
-    // else{
-    //     robotGoal.pose.pose.orientation.z = 1;
-    //     robotGoal.pose.pose.orientation.w = 0;
-    //     robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
-    //     robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
-    //     robotGoal.pose.header.stamp  = rclcpp::Time(0);
-
-    //     this->client_ptr_->async_send_goal(robotGoal);
-    // }
-
-    // ------------------------------------------- keep frequency stable
-    // _mt.unlock();
-    //Main while loop scope
-
-
-    // TODO This was done before creating distance map. But doesn't seem needed, hence removed
-    // for(int i = 0; i< obstacles.size(); i++){
-    //     dismap_backup[(obstacles[i][0])*WIDTH + obstacles[i][1]] = -2;
-    // }
-
-    // ------------------------------------------ exploration finish detection
-    if(targets.size() == 0){
-        RCLCPP_INFO_STREAM(this->get_logger(), "targe size=0");
-        if(no_targets_count == 8){
-            std::cout << "exploration done" << std::endl;
-            std::vector<geometry_msgs::msg::PointStamped> path_list;
-
-            // auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
-            // request->trajectory_id = 0;
-            // auto result = trajectory_query_client->async_send_request(request);
-            // exploration_time = result.get()->trajectory[0].header.stamp.sec;
-            // exploration_time = result.get()->trajectory.back().header.stamp.sec - exploration_time;
-            //std::cout <<  ns << "exploration_time is:" << exploration_time << " seconds" << std::endl;
-
-            // std::ofstream ofile(output_file);
-
-            // trajectory_x = result.get()->trajectory[0].pose.position.x;
-            // trajectory_y = result.get()->trajectory[0].pose.position.y;
-                            
-            // ofile << "[";
-            // ofile << trajectory_x << "," << trajectory_y << std::endl;
-            // for (int i = 1; i < result.get()->trajectory.size(); i++){
-            //     double temp_x = result.get()->trajectory[i].pose.position.x;
-            //     double temp_y = result.get()->trajectory[i].pose.position.y;
-            //     ofile << temp_x  << ", " <<  temp_y << ";" << std::endl;
-            //     double delta_x = trajectory_x - temp_x;
-            //     double delta_y = trajectory_y - temp_y;
-            //     trajectory_length += sqrt(delta_x*delta_x + delta_y*delta_y);
-            //     trajectory_x = temp_x;
-            //     trajectory_y = temp_y; 
-            // }
-            // ofile << "]" << std::endl;
-            // ofile.close();
-            //std::cout <<  ns << "exploration trajectory length = " << trajectory_length << " meters" << std::endl;
-            
-            // std::ofstream ofile2(output_map_file);
-            // ofile2 <<  ns << "map Origin (" << mapData.info.origin.position.x << " ," << mapData.info.origin.position.y << ")" << std::endl;
-            // for(int i = 0; i < mapData.data.size(); i++){
-            //     ofile2 << mapData.data[i] << " ";
-            // }
-            // ofile2.close();
-            RCLCPP_INFO_STREAM(this->get_logger(), "timer has been canceled");
-            timer_main->cancel();
-        }   
-
-        no_targets_count ++;
-        std::cout << ns << "no targets count = " << no_targets_count << std::endl;
-        //
-        return;
-    }
-    else{
-        // RCLCPP_INFO_STREAM(this->get_logger(), "targe size is not 0");
-        no_targets_count = 0;
-    }
-      
-}
-
-void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg)
-{
-    set_costmap_data(*msg);
-}
-
-void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg)
+void MWFCN::map_callback(const nav_msgs::msg::OccupancyGrid msg)
 {
     set_map_data(*msg);
 }
 
-
-void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg)
+void MWFCN::costmap_callback(const nav_msgs::msg::OccupancyGrid msg)
 { 
-	// p.x=msg->point.x;
-	// p.y=msg->point.y;
-	// p.z=msg->point.z;
-	// points.points.push_back(p);
+    set_costmap_data(msg);
 }
 
-void MWFCN_Algo::set_costmap_data(nav_msgs::msg::OccupancyGrid costmapData)
+void MWFCN::set_costmap_data(nav_msgs::msg::OccupancyGrid costmapData)
 {
     std::unique_lock<std::mutex> lck (mtx_costmap);
     costmapData_=costmapData;
-
 }
 
-nav_msgs::msg::OccupancyGrid MWFCN_Algo::get_costmap_data()
+nav_msgs::msg::OccupancyGrid MWFCN::get_costmap_data()
 {
     std::unique_lock<std::mutex> lck (mtx_costmap);
     return costmapData_;
 }
 
-void MWFCN_Algo::set_map_data(nav_msgs::msg::OccupancyGrid mapData)
+void MWFCN::set_map_data(nav_msgs::msg::OccupancyGrid mapData)
 {
     std::unique_lock<std::mutex> lck (mtx_map);
     mapData_=mapData;
 }
 
-nav_msgs::msg::OccupancyGrid MWFCN_Algo::get_map_data()
+nav_msgs::msg::OccupancyGrid MWFCN::get_map_data()
 {
     std::unique_lock<std::mutex> lck (mtx_map);
     return mapData_;
@@ -432,10 +276,10 @@ nav_msgs::msg::OccupancyGrid MWFCN_Algo::get_map_data()
  * @return true     If transform is available
  * @return false    If transform is not available
  */
-bool MWFCN_Algo::get_transform(std::string target_frame, std::string source_frame, geometry_msgs::msg::TransformStamped &transform)
+bool MWFCN::get_transform(std::string target_frame, std::string source_frame, geometry_msgs::msg::TransformStamped &transform)
 {
     try{
-        transform = buffer->lookupTransform(target_frame, source_frame,tf2::TimePointZero);
+        transform = tf_buffer_->lookupTransform(target_frame, source_frame,tf2::TimePointZero);
         return true;
     }
     catch( const tf2::TransformException & ex){
