@@ -24,7 +24,8 @@ namespace exploration{
       enum VisualizationType 
       { 
         POINTS = 0,
-        LINE = 1
+        LINE = 1,
+        SPHERES = 2
       };
 
       struct Pixel
@@ -32,6 +33,7 @@ namespace exploration{
         int x = 0;
         int y = 0;
 
+        Pixel() {};
         Pixel(int x, int y): x(x), y(y) {};
         inline bool operator==(const Pixel& p) { return ((p.x == x) && (p.y == y)); };
       };
@@ -42,6 +44,7 @@ namespace exploration{
         int y = 0;    // Cluster center y
         int size = 0; // Number of points in cluster
 
+        Cluster() {};
         Cluster(int x, int y, int size): x(x), y(y), size(size) {};
         Cluster(Pixel point, int size): x(point.x), y(point.y), size(size) {};
         Pixel center() { return Pixel(x, y); };
@@ -83,6 +86,7 @@ namespace exploration{
       float rate_;
       float obstacle_inflation_radius_;
       int robot_count_;
+      uint robot_id_;
       std::vector<std::string> robot_base_frames_;  // Fully qualified frame names
 
       // ROS Subscribers, Publishers and Action clients

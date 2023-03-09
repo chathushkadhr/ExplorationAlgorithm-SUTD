@@ -479,7 +479,7 @@ visualization_msgs::msg::Marker MWFCN::create_visualization_msg(int type){
     visualization_msgs::msg::Marker marker;
     marker.header.frame_id = map_frame_;
     marker.header.stamp = rclcpp::Time(0);
-    marker.lifetime         = rclcpp::Duration(0,0);
+    marker.lifetime         = rclcpp::Duration::from_seconds(1.0 / rate_);
 
     if (type == LINE) {
         //------------------------------------- initilize the visualized lines
@@ -507,13 +507,32 @@ visualization_msgs::msg::Marker MWFCN::create_visualization_msg(int type){
         marker.color.a			= 1.0;
     }
 
+    else if(type == SPHERES) {
+        //------------------------------------- initilize the visualized points
+        marker.type 			= marker.SPHERE_LIST;
+        marker.action           = marker.ADD;
+        marker.pose.orientation.w =1.0;
+        marker.scale.x 			= 0.3; 
+        marker.scale.y			= 0.3; 
+        marker.color.r 			= 1.0;   // 255.0/255.0;
+        marker.color.g 			= 0.0;   // 0.0/255.0;
+        marker.color.b 			= 0.0;   // 0.0/255.0;
+        marker.color.a			= 1.0;
+    }
+
     else{
         RCLCPP_ERROR_STREAM(MWFCN::get_logger(), "Undefined visualization msg type");
     }
     return marker;
  } 
 
-void MWFCN::get_ros_parameters(void)
+/**
+ * @brief 
+ * 
+ * @return true     If success
+ * @return false    If failure
+ */
+bool MWFCN::get_ros_parameters(void)
 {
     this->declare_parameter("map_topic", "map"); 
     this->declare_parameter("costmap_topic", "global_costmap/costmap");
