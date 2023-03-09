@@ -1,12 +1,11 @@
 #include <chrono>
-#include <memory>
 #include <string>
+#include <list>
+#include <mutex>
 
-#include <exploration/colored_noise.h>
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
 #include "nav_msgs/msg/occupancy_grid.hpp"
-#include "visualization_msgs/msg/marker.hpp"
+#include "visualization_msgs/msg/marker_array.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "tf2_ros/transform_listener.h"
@@ -61,6 +60,7 @@ namespace exploration{
       nav_msgs::msg::OccupancyGrid get_map_data();
       bool map_data_available(void);
 
+      void explore();
       bool get_transform(std::string target_frame, std::string source_frame, geometry_msgs::msg::TransformStamped &transform);
       std::vector<Cluster> cluster_2D(std::vector<Pixel> points, int proximity_threshold = 10); // changed from 3
       void process_maps(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::OccupancyGrid costmapData, 
@@ -73,22 +73,22 @@ namespace exploration{
                                             int map_width, 
                                             std::vector<Pixel> &discovered_pixels,
                                             int unit_potential);
-      bool get_ros_parameters(void);
-      
+      float calculate_attraction(std::vector<std::vector<int>> robot_potential_maps, int map_width, Cluster target);
+      visualization_msgs::msg::Marker create_visualization_msg(int type);
+      void get_ros_parameters(void);
+
       // Parameters
       std::string map_topic_, costmap_topic_; 
       std::string robot_base_frame_, map_frame_, robot_frame_prefix_;
       float rate_;
       float obstacle_inflation_radius_;
       int robot_count_;
-      uint robot_id_;
       std::vector<std::string> robot_base_frames_;  // Fully qualified frame names
-      
+
       // ROS Subscribers, Publishers and Action clients
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr map_subscriber_;
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costmap_subscriber_;
       rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr target_publisher_;
-      std::vector<rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr> potential_map_publishers_;
       rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr navigation_client_;
 
       // ROS TF2
@@ -97,16 +97,18 @@ namespace exploration{
 
       // Attributes
       rclcpp::TimerBase::SharedPtr timer_main_;
-      
+
       // Shared variables
       nav_msgs::msg::OccupancyGrid mapData_, costmapData_;
       nav2_msgs::action::NavigateToPose_Goal robot_goal_;
       std::mutex mtx_map; 
       std::mutex mtx_costmap; 
 
+      // Constants
       const int MAP_PIXEL_OCCUPIED = 100;
       const int MAP_PIXEL_UNKNOWN = -1;
       const int MAP_PIXEL_FREE = 0;
 
+      const int LARGEST_MAP_DISTANCE = 500000; 
   };
 }

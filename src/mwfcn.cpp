@@ -7,25 +7,20 @@ MWFCN:: MWFCN() :
     Node("MWFCN_node")
 {   
     /*------- Fetch parameters ------*/
-    if (!get_ros_parameters()) return; // Exit if parameters fetching failure
+    get_ros_parameters();
 
     /*------- Create Subscribers and publishers ------*/
     map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
     costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
-    target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
-    for (int i = 1; i <= robot_count_; i++)
-    {
-        potential_map_publishers_.push_back(this->create_publisher<nav_msgs::msg::OccupancyGrid>(
-                                            robot_frame_prefix_ + std::to_string(i) + "/potential_map", 2));
-    }
+    target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 10);
 
     /*------- Create navigation_stack action client ------*/
     navigation_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose");
-    
+
     /*------- Initialize TF listener ------*/
     tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
-
+    
     /*------- Create main callback timer ------*/
     timer_main_ = this->create_wall_timer( std::chrono::duration<double>( 1.0 / rate_ ), std::bind(&MWFCN::explore, this));
 }
@@ -37,9 +32,9 @@ void MWFCN::explore(){
 
     /*------- Return if self map to base_foot_print transform is not available ------*/
     geometry_msgs::msg::TransformStamped map_to_baseframe;
-    if (!get_transform(robot_frame, robot_base_frame, map_to_baseframe)) return;
+    if (!get_transform(map_frame_, robot_base_frame_, map_to_baseframe)) return;
 
-    /*-------  Fetch external variables------*/
+    /*-------  Fetch external data------*/
     nav_msgs::msg::OccupancyGrid mapData = get_map_data();  
     nav_msgs::msg::OccupancyGrid costmapData = get_costmap_data(); 
 
@@ -47,7 +42,7 @@ void MWFCN::explore(){
     std::vector<Pixel> obstacles;
     std::vector<Pixel> targets;
     process_maps(mapData, costmapData, obstacles, targets);
-    RCLCPP_INFO_STREAM(this->get_logger(), "Targets count: " << std::to_string(targets.size()));
+    RCLCPP_DEBUG_STREAM(this->get_logger(), "Targets count: " << std::to_string(targets.size()));
 
     /*-------Check exploration stop condition ------*/
     if (targets.size() == 0)
@@ -58,186 +53,87 @@ void MWFCN::explore(){
 
     /*------- Cluster targets into different groups and find the center of each group   ------*/
     std::vector<Cluster> target_clusters = cluster_2D(targets);
-    // Display clusters
-    visualization_msgs::msg::Marker target_cluster_markers = create_visualization_msg(POINTS);
-    for (auto &cluster : target_clusters)
+
+    /*------- Receive robots' locations ------*/
+    std::vector<geometry_msgs::msg::TransformStamped> robot_transforms;
+    robot_transforms.push_back(map_to_baseframe); // Insert current robot's location
+    for (int i = 1; i < robot_count_; i++)
     {
-        target_cluster_markers.points.push_back(geometry_msgs::msg::Point().set__x(
-            cluster.x * mapData.info.resolution + mapData.info.origin.position.x).set__y(
-            cluster.y * mapData.info.resolution + mapData.info.origin.position.y));
+        geometry_msgs::msg::TransformStamped transform;
+        if (get_transform(map_frame_, robot_base_frames_[i], transform))
+        {
+            robot_transforms.push_back(transform);
+        }
     }
-    pub_centroid->publish(target_cluster_markers);
 
     /*------- Initialize the distance map (potential map) ------*/
-    std::vector<int> dismap_backup(mapData.data.begin(), mapData.data.end());
-    std::vector<std::vector<int>> target_distance_map;
-    target_distance_map.reserve(targets.size());
-    for (auto &cluster : target_clusters)
+    std::vector<std::vector<int>> robot_potential_maps;
+    robot_potential_maps.reserve(robot_transforms.size());
+    for (auto &robot_transform : robot_transforms)
     {
         std::vector<int> distance_map;
-        create_potential_map(mapData, cluster.center(), distance_map);
-        target_distance_map.push_back(distance_map);
+        int robot_location_x = (robot_transform.transform.translation.x - mapData.info.origin.position.x) / mapData.info.resolution;
+        int robot_location_y = (robot_transform.transform.translation.y - mapData.info.origin.position.y) / mapData.info.resolution;
+        create_potential_map(mapData, Pixel(robot_location_x, robot_location_y), distance_map);
+        robot_potential_maps.push_back(distance_map);
     }
 
-    
-    /*------- Receive other robots' locations ------*/
-    std::vector<bool> robot_available;
-    std::vector<geometry_msgs::msg::TransformStamped> robot_transform;
-    robot_available.resize(n_robot);
-    robot_transform.resize(n_robot);
-
-    for (int i = 0; i < n_robot; i++)
+    /*------- Calculate attraction to each target cluster ------*/
+    Pixel best_cluster(target_clusters.back().center());
+    float max_attraction = calculate_attraction(robot_potential_maps, mapData.info.width, target_clusters.back());
+    target_clusters.pop_back();
+    for (auto &cluster : target_clusters)
     {
-        robot_available[i] = get_transform(robot_frame, robots_base_frame_[i], robot_transform[i]);
+        float attraction = calculate_attraction(robot_potential_maps, mapData.info.width, cluster);
+        if (attraction > max_attraction)
+        {
+            best_cluster = cluster.center();
+            max_attraction = attraction;
+        }
     }
 
-    // ---------------------------------------- define the current point;
-    int currentLoc[2];
-    currentLoc[1] = floor((map_to_baseframe.transform.translation.y  -mapData.info.origin.position.y)/mapData.info.resolution);
-    currentLoc[0] = floor((map_to_baseframe.transform.translation.x  -mapData.info.origin.position.x)/mapData.info.resolution);
-    
+    // Display clusters and attraction
+    visualization_msgs::msg::MarkerArray target_cluster_markers;
+    int id = 0;
+    for (auto &cluster : target_clusters)
+    {
+        // Cluster visualization
+        target_cluster_markers.markers.push_back(create_visualization_msg(POINTS));
+        target_cluster_markers.markers.back().id = id++;
+        target_cluster_markers.markers.back().points.push_back(geometry_msgs::msg::Point().set__x(
+            cluster.x * mapData.info.resolution + mapData.info.origin.position.x).set__y(
+            cluster.y * mapData.info.resolution + mapData.info.origin.position.y));
 
+        float attraction = calculate_attraction(robot_potential_maps, mapData.info.width, cluster);
+        target_cluster_markers.markers.back().scale.x = attraction / max_attraction;
+        target_cluster_markers.markers.back().scale.y = attraction / max_attraction;
+        target_cluster_markers.markers.back().scale.z = attraction / max_attraction;
 
-    // ------------------------------------------ calculate path.
-    std::vector<Pixel> path;
-    int iteration = 1;
-    int currentPotential = 10000;
-    int riverFlowPotentialGain = 1;
-    minDis2Frontier  = 10000;  // a random initialized value greater than all possible distances.
-    path.emplace_back( currentLoc[0], currentLoc[1] );
-    //std::random_device rd{};
-    //std::mt19937 gen{rd()};
-    //std::normal_distribution<> d{0,0.01};
-    //std::map<int, int> hist{};
-
-
-    // ------------------------------------------ Colored noise (White: alpha = 0.0, Pink: alpha = 1.0, Brown: alpha = 2.0)
-    float sigma = 0.6; //for the potential function
-    double alpha = 2;
-    //int n = n_robot;
-    double q_d = 0.095;
-    int seed = 0;
-    double *noise;
-    
-    //iteration < 3000
-    while(iteration < 3000 && minDis2Frontier > 1){
-        // ------------------------------------------
-        // ------------------------------------------
-        // ------------------------------------------ get the minimial potential of the points around currentLoc
+        // Highlight best target in green
+        if (attraction == max_attraction)
         {
-            // ------------------------------------------ put locations around the current location into loc_around
-            float potential[8];
-            int min_idx = -1;
-            float min_potential = 10000;
-            int loc_around[8][2] = {
-                {currentLoc[0]    , currentLoc[1] + 1}, // up
-                {currentLoc[0] - 1, currentLoc[1] + 1}, // up-left
-                {currentLoc[0] - 1, currentLoc[1]}    , // down
-                {currentLoc[0] - 1, currentLoc[1] - 1}, // down-left
-                {currentLoc[0]    , currentLoc[1] - 1}, // down
-                {currentLoc[0] + 1, currentLoc[1] - 1}, // down-right
-                {currentLoc[0] + 1, currentLoc[1]}    , // right
-                {currentLoc[0] + 1, currentLoc[1] + 1} // up-right
-            }; 
-
-            // ------------------------------------------ calculate potentials of four neighbors of currentLoc
-            for (int i = 0; i < 8; i++){
-                int curr_around[2]={loc_around[i][0], loc_around[i][1]};
-                // Map bounds check
-                if ( (curr_around[0] < 0) || (curr_around[0] > mapData.info.width) ||
-                     (curr_around[1] < 0) || (curr_around[1] > mapData.info.height) )
-                {
-                    continue;
-                }
-
-                { // ------------------------------------ calculate current potential
-                    float attract = 0, repulsive = 0;
-                    for (int j = 0; j < target_clusters.size(); j++){
-                        float temp = float(target_distance_map[j][(curr_around[1])*mapData.info.width + curr_around[0]]);
-                        if(temp < 1){
-                            // std::cout << "zero loc: (" <<  cluster_center[j][0]   << ", " <<  cluster_center[j][1] << ")" << " temp" << temp << std::endl;
-                            // std::cout << "curr loc: (" <<  curr_around[0]  << ", " << curr_around[1] << ")" << std::endl;
-                            continue;
-                        }
-                        attract     = attract - K_ATTRACT*target_clusters[j].size/temp;
-                    }
-
-                    // there is no need to calculate potential of obstacles because information of obstacles have already been encoded in wave-front distance.
-                    // for (int j = 0; j < obstacles.size(); j++){
-                    //     float dis_obst = abs(obstacles[j][0]- curr_around[0]) + abs(obstacles[j][1]- curr_around[1]);
-                    //     if( dis_obst <= DIS_OBTSTACLE) {
-                    //         float temp = (1 / dis_obst - 1 / DIS_OBTSTACLE);
-                    //         repulsive = repulsive + 0.5 * ETA_REPLUSIVE * temp * temp;
-                    //     }
-                    // }
-
-                    // to increase the potential if currend point has been passed before
-                    for (int j =0; j < path.size(); j++){
-                        if(curr_around[0] == path[j].x && curr_around[1] == path[j].y){
-                            attract += riverFlowPotentialGain*5;
-                        }
-                    }
-
-                    // Add impact of robots.
-                    for(int i = 0; i < n_robot; i++){
-                        if(robot_available[i] ){
-                            int index_[2] = {int(round((robot_transform[i].transform.translation.x- mapData.info.origin.position.x)/mapData.info.resolution)), int(round((robot_transform[i].transform.translation.y - mapData.info.origin.position.y)/mapData.info.resolution))};
-                            int dis_ = abs(curr_around[0] - index_[0]) + abs(curr_around[1] - index_[1]);
-                            //float sample = d(gen);
-                            seed++;
-                            noise = f_alpha ( n_robot, q_d, alpha, &seed );
-                            if( dis_ < ROBOT_INTERFERE_RADIUS){
-                                float temp_ = exp((dis_ - ROBOT_INTERFERE_RADIUS)/sigma) + noise[i];
-                                attract += temp_;
-                                //TODO uncomment 
-                                // std::cout << "sigma: " << sigma << std::endl;
-                                // std::cout << "noise: " << noise[i] << std::endl;
-                                // std::cout << "robot" << i+1 << " loc  :( " << index_[0] << ", " << index_[1] << ")" << std::endl;
-                                // std::cout << ns << " loc  :( " << curr_around[0] << ", " << curr_around[1] << ")" << std::endl;
-                                // std::cout << robot_frame << " add " << robots_base_frame_[i] <<"'s potential = " << temp_ << std::endl; 
-                            }
-                        }
-                    }
-
-                    // potential[i] = attract + repulsive;
-                    
-                    potential[i] = attract;
-                    if(min_potential > potential[i] ){
-                        min_potential = potential[i];
-                        min_idx = i;
-                    }
-                }
-            }
-            if( currentPotential > min_potential ){
-                Pixel min_potential_location(loc_around[min_idx][0], loc_around[min_idx][1]);
-                if (!(path.back() == min_potential_location))
-                {
-                    path.push_back(min_potential_location);
-                }
-                currentPotential = min_potential;
-                
-            }
-            else{
-                riverFlowPotentialGain++;
-            }
+            target_cluster_markers.markers.back().color.r = 0.0;
+            target_cluster_markers.markers.back().color.g = 1.0;
+            target_cluster_markers.markers.back().color.b = 0.0;
         }
+    }
+    target_publisher_->publish(target_cluster_markers);
 
-        currentLoc[0] = (path.back()).x;
-        currentLoc[1] = (path.back()).y;
-        
-        for (int i = 0; i < target_clusters.size() ; i++){
-            int temp_dis_ =  target_distance_map[i][(currentLoc[1])*mapData.info.width + currentLoc[0]];
-            if( (temp_dis_ == 0) && (abs(currentLoc[0]-target_clusters[i].x) + abs(currentLoc[1]-target_clusters[i].y)) > 0){
-                continue;
-            }
+    /*------- Send cluster location with max attraction as goal ------*/
+    robot_goal_.pose.header.stamp = rclcpp::Time(0);
+    robot_goal_.pose.pose.position.x = best_cluster.x * mapData.info.resolution + mapData.info.origin.position.x;
+    robot_goal_.pose.pose.position.y = best_cluster.y * mapData.info.resolution + mapData.info.origin.position.y;
+    RCLCPP_INFO_STREAM(this->get_logger(), "Goal: " << robot_goal_.pose.pose.position.x << ", " << robot_goal_.pose.pose.position.y);
+    this->navigation_client_->async_send_goal(robot_goal_);
+}
 
 void MWFCN::map_callback(const nav_msgs::msg::OccupancyGrid msg)
 {
-    set_map_data(*msg);
+    set_map_data(msg);
 }
 
 void MWFCN::costmap_callback(const nav_msgs::msg::OccupancyGrid msg)
-{ 
+{
     set_costmap_data(msg);
 }
 
@@ -292,9 +188,9 @@ bool MWFCN::get_transform(std::string target_frame, std::string source_frame, ge
  * 
  * @param points 
  * @param proximity_threshold (optional) Maximum distance between two points, for them to be considered in one cluster (default = 3)
- * @return std::vector<MWFCN_Algo::Cluster> A vector of Clusters : [cluster center(x,y), number of points within the cluster]
+ * @return std::vector<MWFCN::Cluster> A vector of Clusters : [cluster center(x,y), number of points within the cluster]
  */
-std::vector<MWFCN_Algo::Cluster> MWFCN_Algo::cluster_2D(std::vector<MWFCN_Algo::Pixel> points, int proximity_threshold)
+std::vector<MWFCN::Cluster> MWFCN::cluster_2D(std::vector<MWFCN::Pixel> points, int proximity_threshold)
 {
     // Note: x & y value of detected targets are in increasing order because of the detection is in laser scan order.
     std::vector<Cluster> clusters;
@@ -365,7 +261,7 @@ std::vector<MWFCN_Algo::Cluster> MWFCN_Algo::cluster_2D(std::vector<MWFCN_Algo::
  * @param obstacles 
  * @param targets 
  */
-void MWFCN_Algo::process_maps(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::OccupancyGrid costmapData, 
+void MWFCN::process_maps(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::OccupancyGrid costmapData, 
                                       std::vector<Pixel> &obstacles, std::vector<Pixel> &targets)
 {
      /*------- Initialize the map ------*/
@@ -401,17 +297,20 @@ void MWFCN_Algo::process_maps(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::ms
                 {
                     // Potential target found at (j,i) pixel. 
                     /*------- Check if target has lower cost in costmap  ------*/
+                    (void)costmapData;
+                    /* TODO consider about worldmap  / robot frame to costmap frame rotation also. And map bound checking
                     float loc_x = j * mapData.info.resolution + mapData.info.origin.position.x;
                     float loc_y = i * mapData.info.resolution + mapData.info.origin.position.y;
                     int costmap_pixel_index = ((loc_y - costmapData.info.origin.position.y) / costmapData.info.resolution) * costmapData.info.width +
                                                 ((loc_x - costmapData.info.origin.position.x) / costmapData.info.resolution);
                     if (costmapData.data[costmap_pixel_index] > 0) continue;    // (j,i) pixel has high cost. End current iteration
+                    */
 
                     /*------- Search for obstacles within inflation radius of the (j,i) pixel  ------*/
                     auto obstacle = obstacles.begin();
                     for (; obstacle != obstacles.end(); obstacle++)
                     {
-                        if (abs(obstacle->x - j) + abs(obstacle->y - i) < inflation_radius) break;
+                        if (abs(obstacle->x - j) + abs(obstacle->y - i) < obstacle_inflation_radius_) break;
                     }
                     if (obstacle == obstacles.end())
                     {
@@ -438,11 +337,11 @@ void MWFCN_Algo::process_maps(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::ms
  * @return true     if potential map creation is successfull
  * @return false    if potential map creation failed
  */
-bool MWFCN_Algo::create_potential_map(nav_msgs::msg::OccupancyGrid mapData, Pixel source_point, std::vector<int> &potential_map, int potential_step)
+bool MWFCN::create_potential_map(nav_msgs::msg::OccupancyGrid mapData, Pixel source_point, std::vector<int> &potential_map, int potential_step)
 {
     /*------- Initialize potential map with maximum potential ------*/
     potential_map.resize(mapData.data.size());
-    potential_map.assign(potential_map.size(), LARGEST_MAP_DISTANCE);
+    potential_map.assign(potential_map.size(), 1000); //LARGEST_MAP_DISTANCE
 
     /*------- Initialize map and current processing points ------*/
     std::vector<int> map(mapData.data.begin(), mapData.data.end());
@@ -482,6 +381,7 @@ bool MWFCN_Algo::create_potential_map(nav_msgs::msg::OccupancyGrid mapData, Pixe
             process_pixel_potential(point, Pixel(point.x - 1, point.y - 1), map, potential_map, width, adjacent_pixels, potential_step);
         }
         process_queue = adjacent_pixels;
+        adjacent_pixels.clear();
         iteration++;
 
         // Costmap expansion maximum iteration limit check  ( TODO : Check if this is necessary)
@@ -505,7 +405,7 @@ bool MWFCN_Algo::create_potential_map(nav_msgs::msg::OccupancyGrid mapData, Pixe
  * @param discovered_pixels     A vector of free pixels around source_pixel
  * @param unit_potential        Potential increase between adjacent pixels
  */
-inline void MWFCN_Algo::process_pixel_potential(Pixel source_pixel, 
+inline void MWFCN::process_pixel_potential(Pixel source_pixel, 
                                             Pixel target_pixel, 
                                             std::vector<int> &map, 
                                             std::vector<int> &potential_map, 
@@ -514,12 +414,13 @@ inline void MWFCN_Algo::process_pixel_potential(Pixel source_pixel,
                                             int unit_potential)
 {
     // Check map bounds
-    if ( ((target_pixel.x + target_pixel.y * map_width) < 0) || ((target_pixel.x + target_pixel.y * map_width) >= map.size()) )
+    if ( ((target_pixel.x + target_pixel.y * map_width) < 0) || ((target_pixel.x + target_pixel.y * map_width) >= (int)map.size()) )
     {
         return;
     }
 
-    if (map[target_pixel.x + target_pixel.y * map_width] == MAP_PIXEL_FREE) 
+    // Potential map is extended to unknown regions also
+    if ( (map[target_pixel.x + target_pixel.y * map_width] == MAP_PIXEL_FREE) || (map[target_pixel.x + target_pixel.y * map_width] == MAP_PIXEL_UNKNOWN) )
     {
         discovered_pixels.emplace_back(target_pixel.x, target_pixel.y);
         potential_map[target_pixel.x + target_pixel.y * map_width] = potential_map[source_pixel.x + source_pixel.y * map_width] + unit_potential;
@@ -528,12 +429,36 @@ inline void MWFCN_Algo::process_pixel_potential(Pixel source_pixel,
     return;
 }
 
+/**
+ * @brief Given a set of robot potential maps and a target, returns attaction of the target to the first robot in the vector
+ * 
+ * @param robot_potential_maps  Potential maps for each robot. First potential map should belong to the host robot. Attraction value corresponds to this robot only.
+ * @param target 
+ * @return float 
+ */
+float MWFCN::calculate_attraction(std::vector<std::vector<int>> robot_potential_maps, int map_width, Cluster target)
+{
+    // Attraction due to cluster size
+    float size_attraction = 1.0 - 0.9 * exp(-target.size / 100.0); // Slow varying function from 0.1 to 1
+
+    // Host robot attraction to target    
+    float distance_attraction =  0.1 + 0.9 * exp(-robot_potential_maps[0][target.y * map_width + target.x] / 100.0);     // [ 0.1 to 1]
+
+    // Repulsion from other robots   
+    float attraction_factor = 1.0;
+    for (uint i = 1; i < robot_potential_maps.size(); i++)
+    {   
+        //attraction_factor *= ( 1 - exp( -robot_potential_maps[i][target.y * map_width + target.x] / 1000.0 )); // Slow varying function from 0 to 1
+        attraction_factor *= 
+    }
+
+    float attraction = size_attraction * distance_attraction * attraction_factor;
+    return attraction;
+}
 
 bool MWFCN::map_data_available(){
-    // TODO Testing only
-    // if (!(get_map_data().data.size() < 1 || get_costmap_data().data.size()<1)){
 
-        if (!(get_map_data().data.size() < 1)){
+    if (!(get_map_data().data.size() < 1 || get_costmap_data().data.size()<1)){
         map_frame_ = get_map_data().header.frame_id;
         robot_goal_.pose.header.frame_id = map_frame_;
         robot_goal_.pose.pose.position.z = 0;
@@ -550,7 +475,7 @@ visualization_msgs::msg::Marker MWFCN::create_visualization_msg(int type){
     visualization_msgs::msg::Marker marker;
     marker.header.frame_id = map_frame_;
     marker.header.stamp = rclcpp::Time(0);
-    marker.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+    marker.lifetime         = rclcpp::Duration(0,0);
 
     if (type == LINE) {
         //------------------------------------- initilize the visualized lines
@@ -579,18 +504,12 @@ visualization_msgs::msg::Marker MWFCN::create_visualization_msg(int type){
     }
 
     else{
-        RCLCPP_ERROR_STREAM(MWFCN_Algo::get_logger(), "Undefined visualization msg type");
+        RCLCPP_ERROR_STREAM(MWFCN::get_logger(), "Undefined visualization msg type");
     }
     return marker;
  } 
 
-/**
- * @brief 
- * 
- * @return true     If success
- * @return false    If failure
- */
-bool MWFCN::get_ros_parameters(void)
+void MWFCN::get_ros_parameters(void)
 {
     this->declare_parameter("map_topic", "map"); 
     this->declare_parameter("costmap_topic", "global_costmap/costmap");
@@ -608,7 +527,7 @@ bool MWFCN::get_ros_parameters(void)
     obstacle_inflation_radius_ = this->get_parameter("obstacle_inflation_radius").get_parameter_value().get<float>();
     robot_count_ = this->get_parameter("robot_count").get_parameter_value().get<int>();
 
-
+    
     // Remove any leading slash from robot_base_frame
     if (*robot_base_frame_.cbegin() == '/') robot_base_frame_.erase(0, 1);
     // Create fully qualified robot_base_frame names
@@ -617,19 +536,6 @@ bool MWFCN::get_ros_parameters(void)
         robot_base_frames_.push_back(robot_frame_prefix_ + std::to_string(i) + "/" + robot_base_frame_);
     }
 
-    // Extract robot id from node namespace
-    std::string ns = this->get_namespace();
-    RCLCPP_INFO_STREAM(this->get_logger(), "Running exploration in namespace: " << ns);
-    try{
-        std::string id_string = ns.substr(robot_frame_prefix_.size() + 1);
-        robot_id_ = std::stoi(id_string);
-        RCLCPP_INFO_STREAM(this->get_logger(), "Robot ID: " << robot_id_);
-    }
-    catch( ... ){
-        RCLCPP_ERROR_STREAM(this->get_logger(), "Cannot extract robot id from node namespace {" << ns 
-                                                    << "} with prefix {" << robot_frame_prefix_ << "}");
-        return false;
-    }
 
     #ifdef DEBUG
         RCLCPP_INFO_STREAM(MWFCN::get_logger(), "map topic: " << map_topic_
@@ -639,8 +545,6 @@ bool MWFCN::get_ros_parameters(void)
         <<"\nobstacle_inflation_radius: " << obstacle_inflation_radius_
         <<"\robot_count: " << robot_count_
         <<"\robot_frame_prefix: " << robot_frame_prefix_
-      );
+        );
     #endif
-
-    return true;
 }
