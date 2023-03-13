@@ -18,9 +18,9 @@ MWFCN_Algo:: MWFCN_Algo() :
     map_topic=this->get_parameter("map_topic").get_parameter_value().get<std::string>();
     this->declare_parameter("costmap_topic", "/robot1/global_costmap/costmap");
     costmap_topic=this->get_parameter("costmap_topic").get_parameter_value().get<std::string>();
-    this->declare_parameter("robot_base_frame", "robot1/base_footprint");
+    this->declare_parameter("robot_base_frame", "/robot1/base_footprint");
     robot_base_frame=this->get_parameter("robot_base_frame").get_parameter_value().get<std::string>();
-    this->declare_parameter("robot_frame", "robot1/map");
+    this->declare_parameter("robot_frame", "/robot1/map");
     robot_frame=this->get_parameter("robot_frame").get_parameter_value().get<std::string>();
     this->declare_parameter("namespace", "/robot1");
     ns=this->get_parameter("namespace").get_parameter_value().get<std::string>();
@@ -28,7 +28,7 @@ MWFCN_Algo:: MWFCN_Algo() :
     rateHz=this->get_parameter("rate").get_parameter_value().get<int>();
     this->declare_parameter("inflation_radius", 6.0);
     inflation_radius=this->get_parameter("inflation_radius").get_parameter_value().get<float>();
-    this->declare_parameter("n_robot", 1);
+    this->declare_parameter("n_robot", 2);
     n_robot=this->get_parameter("n_robot").get_parameter_value().get<int>();
     this->declare_parameter("this_robot_idx", 1);
     this_robot_idx=this->get_parameter("this_robot_idx").get_parameter_value().get<int>();
@@ -36,14 +36,8 @@ MWFCN_Algo:: MWFCN_Algo() :
     robot_ano_frame_preffix=this->get_parameter("robot_ano_frame_preffix").get_parameter_value().get<std::string>();
     this->declare_parameter("robot_ano_frame_suffix", "/base_footprint");
     robot_ano_frame_suffix=this->get_parameter("robot_ano_frame_suffix").get_parameter_value().get<std::string>();
-    this->declare_parameter("trajectory_query_name", "robot1/trajectory_query");
-    trajectory_query_name=this->get_parameter("trajectory_query_name").get_parameter_value().get<std::string>();
-    this->declare_parameter("output_file", "$(find exploration/data/robot1_MWFCN_trajectory.txt");      
-    output_file=this->get_parameter("output_file").get_parameter_value().get<std::string>();
-    this->declare_parameter("output_map_file", "$(find exploration)/data/robot1_MWFCN_explored_map.txt");
-    output_map_file=this->get_parameter("output_map_file").get_parameter_value().get<std::string>();  
     
-    robots_base_frame_ = new std::string[n_robot];
+    robots_frame_ = new std::string[n_robot];
 
     for (int i = 1; i < n_robot+1; i++){
 
@@ -52,24 +46,26 @@ MWFCN_Algo:: MWFCN_Algo() :
         ss << i;
         ss << robot_ano_frame_suffix;
 
-        robots_base_frame_[i-1] = ss.str();
+        robots_frame_[i-1] = ss.str();
     }
 
+    rclcpp::Rate rate(rateHz);
+
     // ------------------------------------- subscribe the map topics & clicked points
-    sub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic, 10, std::bind(&MWFCN_Algo::mapCallBack, this, _1));
-    costMapSub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic, 20, std::bind(&MWFCN_Algo::costmapMergedCallBack, this, _1));
+    sub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic, 4, std::bind(&MWFCN_Algo::mapCallBack, this, _1));
+    costMapSub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic, 4, std::bind(&MWFCN_Algo::costmapMergedCallBack, this, _1));
     
     // ------------------------------------- subscribe the map topics & clicked points
 
     // ------------------------------------- publish the detected points for following processing & display
-    pub = this->create_publisher<visualization_msgs::msg::Marker>("_shapes", 100);
-    pub_centroid = this->create_publisher<visualization_msgs::msg::Marker>("_detected_frontier_centroid", 10);
+    pub = this->create_publisher<visualization_msgs::msg::Marker>(ns+"/shapes", 100);
+    pub_centroid = this->create_publisher<visualization_msgs::msg::Marker>(ns+"/detected_frontier_centroid", 10);
         
     // publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     // timer_ = this->create_wall_timer(
     // 500ms, std::bind(&MWFCN_Algo::timer_callback, this));
 
-    buffer= std::make_unique<tf2_ros::Buffer>(this->get_clock(), tf2::durationFromSec(30.0));
+    buffer= std::make_unique<tf2_ros::Buffer>(this->get_clock());
     listener= std::make_shared<tf2_ros::TransformListener>(*buffer);
 
     #ifdef DEBUG
@@ -81,8 +77,38 @@ MWFCN_Algo:: MWFCN_Algo() :
 
     this->client_ptr_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, ns + "/navigate_to_pose");
     
-    timer_main = this->create_wall_timer( 1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
+    timer_main = this->create_wall_timer(2s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
+    robotGoal.pose.header.frame_id=robot_frame;
+    robotGoal.pose.pose.position.z=0;
+    robotGoal.pose.pose.orientation.z=1.0;
 
+    // ------------------------------------- initilize the visualized points & lines  
+    points.header.frame_id = robot_frame;
+    points.header.stamp = rclcpp::Time(0);
+    points.type 			= points.POINTS;
+    points.action           = points.ADD;
+    points.pose.orientation.w =1.0;
+    points.scale.x 			= 0.3; 
+    points.scale.y			= 0.3; 
+    points.color.r 			= 1.0;   // 255.0/255.0;
+    points.color.g 			= 0.0;   // 0.0/255.0;
+    points.color.b 			= 0.0;   // 0.0/255.0;
+    points.color.a			= 1.0;
+    points.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+
+    line.header.frame_id    = robot_frame;
+    line.header.stamp       = rclcpp::Time(0);
+    line.type				= line.LINE_LIST;
+    line.action             = line.ADD;
+    line.pose.orientation.w = 1.0;
+    line.scale.x 			= 0.03;
+    line.scale.y			= 0.03;
+    line.color.r			= 1.0;   // 0.0/255.0;
+    line.color.g			= 0.0;   // 0.0/255.0;
+    line.color.b 			= 1.0;   // 236.0/255.0;
+    line.color.a 			= 1.0;
+    line.lifetime           = rclcpp::Duration(0,0); // TODO : currently points are stored forever
+        
 }
 
 
@@ -92,37 +118,22 @@ void MWFCN_Algo::explore(){
     if (!map_data_available()) return;
 
     //Return if self map to base_foot_print transform is not available
-    geometry_msgs::msg::TransformStamped map_to_baseframe;
-
-    try{
-        map_to_baseframe = buffer->lookupTransform(robot_frame,robot_base_frame,tf2::TimePointZero);
-    }
-    catch( const tf2::TransformException & ex){
-        RCLCPP_WARN_STREAM(this->get_logger(), robot_base_frame + " to " + robot_frame + " transform is not available : " + ex.what());
-        return;
-    }
-    RCLCPP_INFO_STREAM(this->get_logger(), "map data received");
+    
+   
 
         // ---------------------------------------- variables from ROS input;
-    nav_msgs::msg::OccupancyGrid mapData = get_map_data();  
-    nav_msgs::msg::OccupancyGrid costmapData = get_costmap_data(); 
+    int HEIGHT = mapData.info.height;
+    int WIDTH  = mapData.info.width;
+    
 
-    int HEIGHT,WIDTH;
     std::vector<int* > obstacles, path, targets;
     int currentLoc[2], goal[2]; //target[2], obstacle[2]
     float  minDis2Frontier;
-    std::ifstream infile;
-    std::vector<int * > dismap_targets_ptr;
-
-    double trajectory_length, exploration_time;
-    double trajectory_x;
-    double trajectory_y;
-    HEIGHT = mapData.info.height;
-    WIDTH  = mapData.info.width;
-
-
-    int* dismap_backup = new int[HEIGHT*WIDTH];
     int map[HEIGHT*WIDTH];
+    std::vector<int * > dismap_targets_ptr;
+    int* dismap_backup = new int[HEIGHT*WIDTH];
+
+
 
     // ---------------------------------------- initialize the map & dismap
     for (int i=0; i<HEIGHT; i++)
@@ -197,7 +208,8 @@ void MWFCN_Algo::explore(){
             }
         }
     }
-
+    
+    // ------------------------------------------ remove targets within the inflation layer of costmap.
     {
         for (int idx_target = targets.size()-1; idx_target >= 0; idx_target--) {
             
@@ -222,17 +234,16 @@ void MWFCN_Algo::explore(){
                     break;
                 }
             }
+        
         }
         std::cout << "number targets after erase (obstacles): " << targets.size() << std::endl;
     }
 
     // ------------------------------------------ exploration finish detection
     if(targets.size() == 0){
-        RCLCPP_INFO_STREAM(this->get_logger(), "targe size=0");
         if(no_targets_count == 8){
             std::cout << "exploration done" << std::endl;
-            std::vector<geometry_msgs::msg::PointStamped> path_list;
-
+            // std::vector<geometry_msgs::msg::PointStamped> path_list;
             // auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
             // request->trajectory_id = 0;
             // auto result = trajectory_query_client->async_send_request(request);
@@ -267,21 +278,35 @@ void MWFCN_Algo::explore(){
             //     ofile2 << mapData.data[i] << " ";
             // }
             // ofile2.close();
-            RCLCPP_INFO_STREAM(this->get_logger(), "timer has been canceled");
             timer_main->cancel();
+            return;
         }   
 
         no_targets_count ++;
         std::cout << ns << "no targets count = " << no_targets_count << std::endl;
-        //
         return;
     }
     else{
-        RCLCPP_INFO_STREAM(this->get_logger(), "targe size is not 0");
+        
         no_targets_count = 0;
     }
     
     // ---------------------------------------- define the current point;
+    geometry_msgs::msg::TransformStamped map_to_baseframe;
+    int  temp=0;
+    while (temp==0){
+        try{
+            temp=1;
+            map_to_baseframe = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
+            
+        }
+        catch( const tf2::TransformException & ex){
+            RCLCPP_WARN_STREAM(this->get_logger(), robot_base_frame + " to " + mapData.header.frame_id + " transform is not available : " + ex.what());
+            temp=0;
+            rclcpp::sleep_for(100ms);
+            //return;
+        }
+    }
     currentLoc[0] = floor((map_to_baseframe.transform.translation.y  -mapData.info.origin.position.y)/mapData.info.resolution);
     currentLoc[1] = floor((map_to_baseframe.transform.translation.x  -mapData.info.origin.position.x)/mapData.info.resolution);
     path.push_back( currentLoc );
@@ -342,18 +367,18 @@ void MWFCN_Algo::explore(){
         cluster_center.push_back(new int[2]{target_cluster[min_idx_][0], target_cluster[min_idx_][1]});
         infoGain_cluster.push_back(num_);
     }
-    RCLCPP_INFO_STREAM(this->get_logger(), "end of the  cluster part");
+
     // ------------------------------------------ Display Cluster centroids
-    visualization_msgs::msg::Marker cluster_centroids = create_visualization_msg(POINTS);
+    points.points.clear();
     for(int i = 0; i < cluster_center.size(); i++){
         geometry_msgs::msg::Point temp;
         temp.x = cluster_center[i][1] * mapData.info.resolution + mapData.info.origin.position.x;
         temp.y = cluster_center[i][0] * mapData.info.resolution + mapData.info.origin.position.y;
         temp.z = 0;
-        cluster_centroids.points.push_back(temp);
+        points.points.push_back(temp);
     }
-    pub_centroid->publish(cluster_centroids);
-    RCLCPP_INFO_STREAM(this->get_logger(), "Published points");
+    pub_centroid->publish(points);
+
     // ------------------------------------------ Generate Dismap starting from targets
     int cluster_num = cluster_center.size();
     int** dismap_target = new int* [cluster_num];
@@ -369,9 +394,9 @@ void MWFCN_Algo::explore(){
     // ------------------------------------------ receive robots' locations
     bool ifmapmerged_vec[n_robot];
     geometry_msgs::msg::TransformStamped transform_robot[n_robot];
-    RCLCPP_INFO_STREAM(this->get_logger(), "Entered to the loop checks the transfom between each robot");
+
     for(int i = 0; i < n_robot; i++){
-   
+
         ifmapmerged_vec[i] = false;
         if(i == this_robot_idx-1){
             continue;
@@ -380,10 +405,11 @@ void MWFCN_Algo::explore(){
         geometry_msgs::msg::TransformStamped transform_;
 
         try{
-            transform_= buffer->lookupTransform(mapData.header.frame_id, robots_base_frame_[i],tf2::TimePointZero);
+            transform_= buffer->lookupTransform(robot_frame, robots_frame_[i],tf2::TimePointZero);
         }
         catch( const tf2::TransformException & ex){
-            RCLCPP_WARN_STREAM(this->get_logger(), robots_base_frame_[i] + " to " + mapData.header.frame_id + " transform is not available : " + ex.what());
+            RCLCPP_WARN_STREAM(this->get_logger(), robots_frame_[i] + " to " + robot_frame + " transform is not available : " + ex.what());
+            continue;
         }
 
 
@@ -394,7 +420,7 @@ void MWFCN_Algo::explore(){
         //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_robot[i].getOrigin().getX() << ", "<<   transform_robot[i].getOrigin().getY()<< " )" << std::endl;
 
     }
-    RCLCPP_INFO_STREAM(this->get_logger(), "Exit from the loop");
+
 
     // ------------------------------------------ calculate path.
     int iteration = 1;
@@ -414,14 +440,12 @@ void MWFCN_Algo::explore(){
     int seed = 0;
     double *noise;
 
-    // iteration < 3000
-    while(iteration < 3 && minDis2Frontier > 1){
+    while(iteration < 3000 && minDis2Frontier > 1){
         // ------------------------------------------
         // ------------------------------------------
         // ------------------------------------------ get the minimial potential of the points around currentLoc
         {
             // ------------------------------------------ put locations around the current location into loc_around
-            RCLCPP_INFO_STREAM(this->get_logger(), "Entered to the while loop at line 414");
             float potential[8];
             int min_idx = -1;
             float min_potential = 10000;
@@ -444,13 +468,14 @@ void MWFCN_Algo::explore(){
             // up-right
             loc_around[7] = new int[2]{currentLoc[0] + 1, currentLoc[1] + 1};
 
+            
 
             // ------------------------------------------ calculate potentials of four neighbors of currentLoc
             for (int i = 0; i < 8; i++){
                 int curr_around[2]={loc_around[i][0], loc_around[i][1]};
+
                 { // ------------------------------------ calculate current potential
                     float attract = 0, repulsive = 0;
-                    
                     for (int j = 0; j < cluster_center.size(); j++){
                         // int temp_int = dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]];
                         float temp = float(dismap_targets_ptr[j][(curr_around[0])*WIDTH + curr_around[1]]);
@@ -461,6 +486,7 @@ void MWFCN_Algo::explore(){
                         }
                         attract     = attract - K_ATTRACT*infoGain_cluster[j]/temp;
                     }
+
                     // there is no need to calculate potential of obstacles because information of obstacles have already been encoded in wave-front distance.
                     // for (int j = 0; j < obstacles.size(); j++){
                     //     float dis_obst = abs(obstacles[j][0]- curr_around[0]) + abs(obstacles[j][1]- curr_around[1]);
@@ -477,7 +503,9 @@ void MWFCN_Algo::explore(){
                         }
                     }
 
+
                     // Add impact of robots.
+                    
                     for(int i = 0; i < n_robot; i++){
                         if(ifmapmerged_vec[i] ){
                             int index_[2] = {int(round((transform_robot[i].transform.translation.y- mapData.info.origin.position.y)/mapData.info.resolution)), int(round((transform_robot[i].transform.translation.x - mapData.info.origin.position.x)/mapData.info.resolution))};
@@ -488,12 +516,12 @@ void MWFCN_Algo::explore(){
                             if( dis_ < ROBOT_INTERFERE_RADIUS){
                                 float temp_ = exp((dis_ - ROBOT_INTERFERE_RADIUS)/sigma) + noise[i];
                                 attract += temp_;
-                                //TODO uncomment 
+
                                 // std::cout << "sigma: " << sigma << std::endl;
                                 // std::cout << "noise: " << noise[i] << std::endl;
                                 // std::cout << "robot" << i+1 << " loc  :( " << index_[0] << ", " << index_[1] << ")" << std::endl;
                                 // std::cout << ns << " loc  :( " << curr_around[0] << ", " << curr_around[1] << ")" << std::endl;
-                                // std::cout << robot_frame << " add " << robots_base_frame_[i] <<"'s potential = " << temp_ << std::endl; 
+                                // std::cout << robot_frame << " add " << robots_frame_[i] <<"'s potential = " << temp_ << std::endl;
                             }
                         }
                     }
@@ -540,65 +568,58 @@ void MWFCN_Algo::explore(){
 
         // ---------------------------------------- publish path for displaying in rviz
         if(iteration >= 1){
-            visualization_msgs::msg::Marker path_msg = create_visualization_msg(LINE);
-            geometry_msgs::msg::Point p;
             p.x=(path[path.size()-2])[1] * mapData.info.resolution + mapData.info.origin.position.x; 
             p.y=(path[path.size()-2])[0] * mapData.info.resolution + mapData.info.origin.position.y;
             p.z=0.0;
-            path_msg.points.push_back(p);
+            line.points.push_back(p);
             p.x=currentLoc[1] * mapData.info.resolution + mapData.info.origin.position.x;
             p.y=currentLoc[0] * mapData.info.resolution + mapData.info.origin.position.y;
             p.z=0.0;
-            path_msg.points.push_back(p);
-            pub->publish(path_msg); 
+            line.points.push_back(p);
+            pub->publish(line); 
         }
     }
-    RCLCPP_INFO_STREAM(this->get_logger(), "Exit from the loop");
+
     goal[0] = path.back()[0];
     goal[1] = path.back()[1];
 
-    robotGoal.pose.pose.orientation.z = 1;
-    robotGoal.pose.pose.orientation.w = 0;
-    robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
-    robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
-    robotGoal.pose.header.stamp  = rclcpp::Time(0);
-    RCLCPP_INFO_STREAM(this->get_logger(), "Sent goal");
-    this->client_ptr_->async_send_goal(robotGoal);
 
-    // TODO Delete following block
-    // if(start_condition){
-    //     geometry_msgs::msg::TransformStamped  transform;
-    //     int  temp=0;
-    //     while (temp==0){
-    //         try{
-    //         temp=1;
-    //         transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
-    //         }
-    //         catch( const tf2::TransformException & ex){
-    //             temp=0;
-    //             rclcpp::sleep_for(100ms);
-    //         }
-    //     }
-    //     int loc_x = transform.transform.translation.x;
-    //     int loc_y = transform.transform.translation.y;
+    if(start_condition){
+        geometry_msgs::msg::TransformStamped  transform;
+        int  temp=0;
+        while (temp==0){
+            try{
+            temp=1;
+            transform = buffer->lookupTransform(mapData.header.frame_id,robot_base_frame,tf2::TimePointZero);
+            }
+            catch( const tf2::TransformException & ex){
+                temp=0;
+                rclcpp::sleep_for(100ms);
+            }
+        }
+        int loc_x = transform.transform.translation.x;
+        int loc_y = transform.transform.translation.y;
 
-    //     robotGoal.pose.pose.orientation.z = rotation_z[rotation_count];
-    //     robotGoal.pose.pose.orientation.w = rotation_w[rotation_count];
+        robotGoal.pose.pose.orientation.z = rotation_z[rotation_count];
+        robotGoal.pose.pose.orientation.w = rotation_w[rotation_count];
 
-    //     robotGoal.pose.pose.position.x = loc_x + 0.2;
-    //     robotGoal.pose.pose.position.y = loc_y + 0.2;
+        robotGoal.pose.pose.position.x = loc_x + 0.2;
+        robotGoal.pose.pose.position.y = loc_y + 0.2;
 
-    //     start_condition = false;
-    // }
-    // else{
-    //     robotGoal.pose.pose.orientation.z = 1;
-    //     robotGoal.pose.pose.orientation.w = 0;
-    //     robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
-    //     robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
-    //     robotGoal.pose.header.stamp  = rclcpp::Time(0);
+        start_condition = false;
 
-    //     this->client_ptr_->async_send_goal(robotGoal);
-    // }
+    }
+    else{
+        robotGoal.pose.pose.orientation.z = 1;
+        robotGoal.pose.pose.orientation.w = 0;
+        robotGoal.pose.pose.position.x = goal[1]*mapData.info.resolution + mapData.info.origin.position.x;
+        robotGoal.pose.pose.position.y = goal[0]*mapData.info.resolution + mapData.info.origin.position.y;
+        robotGoal.pose.header.stamp  = rclcpp::Time(0);
+
+        client_ptr_->async_send_goal(robotGoal);
+    }
+
+    line.points.clear();
 
     // ------------------------------------------- clear memory
     delete [] dismap_backup;
@@ -609,8 +630,8 @@ void MWFCN_Algo::explore(){
 
     // ------------------------------------------- keep frequency stable
     // _mt.unlock();
-    //Main while loop scope
-    RCLCPP_INFO_STREAM(this->get_logger(), "End of the loop");
+
+    //std::vector<int* > obstacles, path, targets
 
 
         
@@ -618,48 +639,28 @@ void MWFCN_Algo::explore(){
 
 void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg)
 {
-    set_costmap_data(*msg);
+    //_mt.lock();
+	mapData=*msg;
+    // std::cout << "assigner receives map" << std::endl;
+    //_mt.unlock();
 }
 
 void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg)
 {
-    set_map_data(*msg);
+    //_mt.lock();
+	costmapData=*msg;
+    // std::cout << "assigner receives costmap" << std::endl;
+    //_mt.unlock();
 }
 
 
 void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg)
 { 
-	// p.x=msg->point.x;
-	// p.y=msg->point.y;
-	// p.z=msg->point.z;
-	// points.points.push_back(p);
+	p.x=msg->point.x;
+	p.y=msg->point.y;
+	p.z=msg->point.z;
+	points.points.push_back(p);
 }
-
-void MWFCN_Algo::set_costmap_data(nav_msgs::msg::OccupancyGrid costmapData)
-{
-    std::unique_lock<std::mutex> lck (mtx_costmap);
-    costmapData_=costmapData;
-
-}
-
-nav_msgs::msg::OccupancyGrid MWFCN_Algo::get_costmap_data()
-{
-    std::unique_lock<std::mutex> lck (mtx_costmap);
-    return costmapData_;
-}
-
-void MWFCN_Algo::set_map_data(nav_msgs::msg::OccupancyGrid mapData)
-{
-    std::unique_lock<std::mutex> lck (mtx_map);
-    mapData_=mapData;
-}
-
-nav_msgs::msg::OccupancyGrid MWFCN_Algo::get_map_data()
-{
-    std::unique_lock<std::mutex> lck (mtx_map);
-    return mapData_;
-}
-
 
 void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backup_, int* curr, int HEIGHT, int WIDTH)
 {
@@ -729,65 +730,22 @@ void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backu
         std::vector<int *>().swap(next_iter);
         iter++;
     }
+    
     dismap_[(curr[0]) * WIDTH + curr[1]] = 0;  // int only zero is available
-    return ;
+    return ; 
 }
 
 
 bool MWFCN_Algo::map_data_available(){
+    if (!(mapData.data.size() < 1 || costmapData.data.size()<1)){
 
-    if (!(get_map_data().data.size() < 1 || get_costmap_data().data.size()<1)){
-        robotGoal.pose.header.frame_id=robot_frame;
-        robotGoal.pose.pose.position.z=0;
-        robotGoal.pose.pose.orientation.z=1.0;
         return true;
     }
 
     RCLCPP_WARN_STREAM(this->get_logger(), "map data is not available");
     return false;
 }  
- 
-visualization_msgs::msg::Marker MWFCN_Algo::create_visualization_msg(int type){
-
-    visualization_msgs::msg::Marker marker;
-    marker.header.frame_id = robot_frame;
-    marker.header.stamp = rclcpp::Time(0);
-    marker.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
-
-    if (type == LINE) {
-        //------------------------------------- initilize the visualized lines
-        marker.type				= marker.LINE_LIST;
-        marker.action           = marker.ADD;
-        marker.pose.orientation.w = 1.0;
-        marker.scale.x 			= 0.03;
-        marker.scale.y			= 0.03;
-        marker.color.r			= 1.0;   // 0.0/255.0;
-        marker.color.g			= 0.0;   // 0.0/255.0;
-        marker.color.b 			= 1.0;   // 236.0/255.0;
-        marker.color.a 			= 1.0;
-    }
-
-    else if(type == POINTS) {
-        //------------------------------------- initilize the visualized points
-        marker.type 			= marker.POINTS;
-        marker.action           = marker.ADD;
-        marker.pose.orientation.w =1.0;
-        marker.scale.x 			= 0.3; 
-        marker.scale.y			= 0.3; 
-        marker.color.r 			= 1.0;   // 255.0/255.0;
-        marker.color.g 			= 0.0;   // 0.0/255.0;
-        marker.color.b 			= 0.0;   // 0.0/255.0;
-        marker.color.a			= 1.0;
-    }
-
-    else{
-        RCLCPP_ERROR_STREAM(MWFCN_Algo::get_logger(), "Undefined visualization msg type");
-    }
-    return marker;
- } 
-
-
-
+  
 
 
 void MWFCN_Algo::debug_param(){
@@ -804,17 +762,7 @@ void MWFCN_Algo::debug_param(){
       <<"\nrobot_ano_frame_suffix: "<<robot_ano_frame_suffix
       <<"\ntrajectory_query_name: "<<trajectory_query_name
       <<"\noutput_file: "<<output_file
-      <<"\noutput_map_file: "<<output_map_file
       );
 
 
-}
-
-void MWFCN_Algo:: timer_callback()
-{
-      auto message = std_msgs::msg::String();
-      message.data = "Hello, world! " + std::to_string(count_++);
-      std::string x = std::to_string(rotation_w[0]);
-       RCLCPP_INFO(this->get_logger(), "I'm here");
-      publisher_->publish(message);
 }

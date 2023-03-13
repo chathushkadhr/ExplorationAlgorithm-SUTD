@@ -21,6 +21,7 @@ def generate_launch_description():
             get_package_share_directory('exploration'),"launch", 'exp_launch.launch.py')),
         launch_arguments={
                             'namespace': 'robot1', 
+                            'index': '1',
                             }.items())
 
     start_robot2_exploration_cmd = IncludeLaunchDescription(
@@ -28,6 +29,7 @@ def generate_launch_description():
             get_package_share_directory('exploration'),"launch", 'exp_launch.launch.py')),
         launch_arguments={
                             'namespace': 'robot2',
+                            'index': '2',
                             }.items())
 
     # Create the launch description and populate

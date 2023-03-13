@@ -19,6 +19,10 @@ def generate_launch_description():
     declare_arg_namespace = DeclareLaunchArgument('namespace',
         default_value='robot1',
         description='Host Name / Namespace')
+    
+    declare_arg_index = DeclareLaunchArgument('index',
+        default_value="1",
+        description='Index of the robot')
 
     # Create Launch configuratios
     namespace = LaunchConfiguration('namespace')
@@ -29,7 +33,7 @@ def generate_launch_description():
         description='Use simulation (Gazebo) clock if true')
     
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-
+    index =  LaunchConfiguration('index', default=1)
     
 
     remappings = [('/tf_static', 'tf_static'), 
@@ -45,7 +49,7 @@ def generate_launch_description():
             output="screen",
             parameters=[ {'use_sim_time': use_sim_time},
             ParameterFile(os.path.join(pkg_dir, 'config', 'params.yaml'), allow_substs=True)],
-            #prefix=['xterm -e gdb -ex run --args']
+            prefix=['xterm -e gdb -ex run --args']
         # arguments=['--ros-args', '--log-level', 'debug'],
         #emulate_tty=True)
             
@@ -55,6 +59,7 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(declare_arg_sim_time)
     ld.add_action(declare_arg_namespace)
+    ld.add_action(declare_arg_index)
     ld.add_action(node1)
 
     
