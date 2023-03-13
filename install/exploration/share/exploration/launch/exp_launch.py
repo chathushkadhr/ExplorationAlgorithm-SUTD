@@ -1,1 +1,0 @@
-/home/chathushka-sutd/ros2_ws_exp/src/exploration/launch/exp_launch.py
