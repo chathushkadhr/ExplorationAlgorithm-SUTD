@@ -380,9 +380,9 @@ std::vector<MWFCN::Pixel> MWFCN::inflate_obstacles(nav_msgs::msg::OccupancyGrid 
     obstacles.reserve(map.info.height * map.info.width);
 
     /*------- Find all obstacles in the map  ------*/
-    for (int i = 1; i < (map_height - 1); i++)
+    for (int i = 0; i < map_height; i++)
     {
-        for (int j = 1; j < (map_width - 1); j++)
+        for (int j = 0; j < map_width; j++)
         {
             if ( (map.data[i*map_width + j] != MAP_PIXEL_FREE) && (map.data[i*map_width + j] != MAP_PIXEL_UNKNOWN) )
             // if (map[i*map_width + j] == MAP_PIXEL_OCCUPIED) // TODO changed obstacle threshold from 100 to >0
