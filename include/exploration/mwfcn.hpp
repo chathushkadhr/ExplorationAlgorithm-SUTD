@@ -70,7 +70,7 @@ namespace exploration{
       void find_frontiers(nav_msgs::msg::OccupancyGrid mapData, std::vector<Pixel> &targets);
       std::vector<MWFCN::Pixel> inflate_obstacles(nav_msgs::msg::OccupancyGrid &map, float inflation = 0.3);
       inline void process_pixel_inflation(Pixel target_pixel, nav_msgs::msg::OccupancyGrid &map, std::list<Pixel> &inflated_pixels, int inflation = 50);
-      void copy_obstacles_from_map(nav_msgs::msg::OccupancyGrid &map, nav_msgs::msg::OccupancyGrid obstacle_map);
+      void copy_obstacles_from_map(nav_msgs::msg::OccupancyGrid &map, nav_msgs::msg::OccupancyGrid obstacle_map, uint8_t min_threshold = 0);
       bool create_potential_map(nav_msgs::msg::OccupancyGrid mapData, Pixel source_point, std::vector<int> &potential_map, int potential_step = 3);
       inline void process_pixel_potential(Pixel source_pixel, 
                                             Pixel target_pixel, 

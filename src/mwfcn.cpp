@@ -48,7 +48,7 @@ void MWFCN::explore(){
     std::vector<Pixel> obstacles = inflate_obstacles(mapData, obstacle_inflation_radius_);
 
     /*------- Copy other obstacles from costmap ------*/
-    copy_obstacles_from_map(mapData, costmapData);
+    copy_obstacles_from_map(mapData, costmapData, 99);  // Costmap values 99 to 100 are colision cells
     // Publish inflated map with costmap obstacles
     inflated_map_publisher->publish(mapData);
 
@@ -461,8 +461,9 @@ std::vector<MWFCN::Pixel> MWFCN::inflate_obstacles(nav_msgs::msg::OccupancyGrid 
  * 
  * @param map                       Map to which obstacles will be copied
  * @param obstacle_map              Map from which obstacles will be copied
+ * @param min_threshold             Minimum occupancy threshold for an obstacle to be copied
  */
-void MWFCN::copy_obstacles_from_map(nav_msgs::msg::OccupancyGrid &map, nav_msgs::msg::OccupancyGrid obstacle_map)
+void MWFCN::copy_obstacles_from_map(nav_msgs::msg::OccupancyGrid &map, nav_msgs::msg::OccupancyGrid obstacle_map, uint8_t min_threshold)
 {
     geometry_msgs::msg::TransformStamped costmap_to_map;
     bool costmap_available =  get_transform(obstacle_map.header.frame_id, map.header.frame_id, costmap_to_map);
@@ -477,6 +478,9 @@ void MWFCN::copy_obstacles_from_map(nav_msgs::msg::OccupancyGrid &map, nav_msgs:
         {
             for (int j = 1; j < (obstacle_map_width - 1); j++)
             {
+                // Filter obstacles by occupancy threshold
+                if (obstacle_map.data[j + i * obstacle_map.info.width] < min_threshold) continue;
+
                 local_point.x = j * obstacle_map.info.resolution + obstacle_map.info.origin.position.x;
                 local_point.y = i * obstacle_map.info.resolution + obstacle_map.info.origin.position.y;
                 transformed_point = local_point; // TODO convert using transform
