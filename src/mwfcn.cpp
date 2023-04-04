@@ -117,6 +117,12 @@ void MWFCN::explore(){
     uint robot_map_id = std::distance(available_robots.begin(), robot_map_id_itr);
     Pixel best_cluster(optimal_targets[robot_map_id]); 
 
+    /*------- Check target reachability ------*/
+    if (robot_potential_maps[robot_map_id][best_cluster.x + best_cluster.y * mapData.info.width] >= LARGEST_MAP_DISTANCE) 
+    {
+        RCLCPP_WARN_STREAM(this->get_logger(), "No reachable targets remaining! Ending Exploration!");
+    }
+
     // Display clusters and attraction
     visualization_msgs::msg::MarkerArray target_cluster_markers;
     int id = 0;
