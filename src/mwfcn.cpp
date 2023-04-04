@@ -61,6 +61,8 @@ void MWFCN::explore(){
     if (targets.size() == 0)
     {
         RCLCPP_INFO_STREAM(this->get_logger(), "Exploration done!");
+        this->navigation_client_->async_cancel_all_goals();
+        this->timer_main_->cancel();
         return;
     }
 
@@ -121,6 +123,9 @@ void MWFCN::explore(){
     if (robot_potential_maps[robot_map_id][best_cluster.x + best_cluster.y * mapData.info.width] >= LARGEST_MAP_DISTANCE) 
     {
         RCLCPP_WARN_STREAM(this->get_logger(), "No reachable targets remaining! Ending Exploration!");
+        this->navigation_client_->async_cancel_all_goals();
+        this->timer_main_->cancel();
+        return;
     }
 
     // Display clusters and attraction
