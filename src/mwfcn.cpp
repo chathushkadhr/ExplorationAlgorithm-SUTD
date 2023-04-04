@@ -356,6 +356,29 @@ void MWFCN::find_frontiers(nav_msgs::msg::OccupancyGrid mapData, std::vector<Pix
             }
         }
     }
+
+    // Border traversal (Check if any free cell lies on map borders)
+    for (int i = 0; i < map_height; i++)
+    {
+        if (map[i * map_width] == MAP_PIXEL_FREE) {                     // Left border
+            targets.emplace_back(0, i);
+        }                   
+        if (map[map_width - 1 + i * map_width] == MAP_PIXEL_FREE) {     // Right border
+            targets.emplace_back(map_width-1, i);            
+        }
+    }
+
+    for (int j = 0; j < map_width; j++)
+    {
+        if (map[j] == MAP_PIXEL_FREE) {                                 // Bottom border
+            targets.emplace_back(j, 0);
+        }                   
+        if (map[(map_height - 1) * map_width + j] == MAP_PIXEL_FREE) {  // Top border
+            targets.emplace_back(j, map_height - 1);            
+        }
+    }
+
+
     // Adjust vector sizes (reserve and shrink used for performance optimization)
     targets.shrink_to_fit();
     return;
