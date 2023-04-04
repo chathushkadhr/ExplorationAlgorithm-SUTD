@@ -644,7 +644,9 @@ std::map<int, MWFCN::Pixel> MWFCN::find_optimal_targets(std::vector<std::vector<
         {
             for (uint i = 0; i < robot_potential_maps.size(); i++)
             {
-                robot_potential_maps[i][target.x + target.y * map.info.width] /= optimal_point_potential_map[target.x + target.y * map.info.width];
+                if (robot_potential_maps[i][target.x + target.y * map.info.width] < LARGEST_MAP_DISTANCE) { // Skip unreachable targets
+                    robot_potential_maps[i][target.x + target.y * map.info.width] /= optimal_point_potential_map[target.x + target.y * map.info.width];
+                }
             }
         }
 
