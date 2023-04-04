@@ -7,7 +7,7 @@ $(var namespace)/MWFCN_node:
 
     rate: 0.3
 
-    obstacle_inflation_radius: 0.3
+    obstacle_inflation_radius: 0.22                             # Should match costmap circumscribed radius (costmap robot radius)
     robot_count: 3
 
 
