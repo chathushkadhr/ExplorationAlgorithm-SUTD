@@ -67,9 +67,10 @@ namespace exploration{
       void explore();
       bool get_transform(std::string target_frame, std::string source_frame, geometry_msgs::msg::TransformStamped &transform);
       std::vector<Cluster> cluster_2D(std::vector<Pixel> points, int proximity_threshold = 10); // changed from 3
-      void find_frontiers(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::OccupancyGrid costmapData, std::vector<Pixel> &targets);
+      void find_frontiers(nav_msgs::msg::OccupancyGrid mapData, std::vector<Pixel> &targets);
       std::vector<MWFCN::Pixel> inflate_obstacles(nav_msgs::msg::OccupancyGrid &map, float inflation = 0.3);
       inline void process_pixel_inflation(Pixel target_pixel, nav_msgs::msg::OccupancyGrid &map, std::list<Pixel> &inflated_pixels, int inflation = 50);
+      void copy_obstacles_from_map(nav_msgs::msg::OccupancyGrid &map, nav_msgs::msg::OccupancyGrid obstacle_map);
       bool create_potential_map(nav_msgs::msg::OccupancyGrid mapData, Pixel source_point, std::vector<int> &potential_map, int potential_step = 3);
       inline void process_pixel_potential(Pixel source_pixel, 
                                             Pixel target_pixel, 

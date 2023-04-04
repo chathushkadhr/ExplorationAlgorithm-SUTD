@@ -46,11 +46,15 @@ void MWFCN::explore(){
 
     /*------- Inflate and Extract obstacles from map ------*/
     std::vector<Pixel> obstacles = inflate_obstacles(mapData, obstacle_inflation_radius_);
+
+    /*------- Copy other obstacles from costmap ------*/
+    copy_obstacles_from_map(mapData, costmapData);
+    // Publish inflated map with costmap obstacles
     inflated_map_publisher->publish(mapData);
 
     /*------- Extract frontiers from maps ------*/
     std::vector<Pixel> targets;
-    find_frontiers(mapData, costmapData, targets);
+    find_frontiers(mapData, targets);
     RCLCPP_DEBUG_STREAM(this->get_logger(), "Targets count: " << std::to_string(targets.size()));
 
     /*-------Check exploration stop condition ------*/
@@ -307,7 +311,7 @@ std::vector<MWFCN::Cluster> MWFCN::cluster_2D(std::vector<MWFCN::Pixel> points, 
  * @param obstacles 
  * @param targets 
  */
-void MWFCN::find_frontiers(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::OccupancyGrid costmapData, std::vector<Pixel> &targets)
+void MWFCN::find_frontiers(nav_msgs::msg::OccupancyGrid mapData, std::vector<Pixel> &targets)
 {
      /*------- Initialize the map ------*/
     int map_height = mapData.info.height;
@@ -318,28 +322,6 @@ void MWFCN::find_frontiers(nav_msgs::msg::OccupancyGrid mapData, nav_msgs::msg::
     // Reserve max sizes for vectors to prevent relocation
     targets.reserve(map_height * map_width);
 
-    {// TODO copy costmap obstacles also
-        (void)costmapData;
-        // geometry_msgs::msg::TransformStamped costmap_to_map;
-        // bool costmap_available =  false; // TODO testing only get_transform(costmapData.header.frame_id, mapData.header.frame_id, costmap_to_map);
-        // if (costmap_available)
-        // {
-        //     /* TODO consider about worldmap  / robot frame to costmap frame rotation also */
-        //     geometry_msgs::msg::Vector3 map_location, costmap_location;
-        //     map_location.x = j * mapData.info.resolution + mapData.info.origin.position.x;
-        //     map_location.y = i * mapData.info.resolution + mapData.info.origin.position.y;
-        //     costmap_location = map_location; // TODO convert using transform
-
-        //     Pixel costmap_pixel( ((map_location.x - costmapData.info.origin.position.x) / costmapData.info.resolution),
-        //                         ((map_location.y - costmapData.info.origin.position.y) / costmapData.info.resolution));
-
-        //     if ( (costmap_pixel.x > 0) && (costmap_pixel.x < (int)costmapData.info.width) &&
-        //         (costmap_pixel.y > 0) && (costmap_pixel.y < (int)costmapData.info.height) &&
-        //         (costmapData.data[costmap_pixel.y * costmapData.info.width +  costmap_pixel.x] > 0)) continue; // (j,i) pixel has high cost. End current iteration
-        // }
-    }
-
-    
     // Traverse map row, column wise while checking each pixel for free regions
     for (int i = 1; i < (map_height - 1); i++)
     {
@@ -438,6 +420,47 @@ std::vector<MWFCN::Pixel> MWFCN::inflate_obstacles(nav_msgs::msg::OccupancyGrid 
 
     obstacles.shrink_to_fit();
     return obstacles; 
+}
+
+/**
+ * @brief Copies obstacles from obstacle_map to map
+ * 
+ * @param map                       Map to which obstacles will be copied
+ * @param obstacle_map              Map from which obstacles will be copied
+ */
+void MWFCN::copy_obstacles_from_map(nav_msgs::msg::OccupancyGrid &map, nav_msgs::msg::OccupancyGrid obstacle_map)
+{
+    geometry_msgs::msg::TransformStamped costmap_to_map;
+    bool costmap_available =  get_transform(obstacle_map.header.frame_id, map.header.frame_id, costmap_to_map);
+    if (costmap_available)
+    {
+        geometry_msgs::msg::Vector3 local_point, transformed_point;
+        int obstacle_map_height = obstacle_map.info.height;
+        int obstacle_map_width = obstacle_map.info.width;
+
+        // Traverse obstacle_map row, column wise while checking each pixel for obstacles
+        for (int i = 1; i < (obstacle_map_height - 1); i++)
+        {
+            for (int j = 1; j < (obstacle_map_width - 1); j++)
+            {
+                local_point.x = j * obstacle_map.info.resolution + obstacle_map.info.origin.position.x;
+                local_point.y = i * obstacle_map.info.resolution + obstacle_map.info.origin.position.y;
+                transformed_point = local_point; // TODO convert using transform
+
+                Pixel map_pixel( ((transformed_point.x - map.info.origin.position.x) / map.info.resolution),
+                                ((transformed_point.y - map.info.origin.position.y) / map.info.resolution));
+            
+                if ( (map_pixel.x > 0) && (map_pixel.x < (int)map.info.width) &&                                                    // Check x bounds
+                    (map_pixel.y > 0) && (map_pixel.y < (int)map.info.height) &&                                                    // Check y bounds
+                    (map.data[map_pixel.x + map_pixel.y * map.info.width] < obstacle_map.data[j + i * obstacle_map.info.width]) )   // Check if map occupancy is lower
+                {
+                    map.data[map_pixel.x + map_pixel.y * map.info.width] = obstacle_map.data[j + i * obstacle_map.info.width];
+                }
+            }
+        }
+    }
+
+    return;
 }
 
 /**
