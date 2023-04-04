@@ -20,31 +20,37 @@ def generate_launch_description():
         description='Host Name / Namespace')
 
     # Create Launch configuratios
-    namespace1 = LaunchConfiguration('namespace')
+    namespace = LaunchConfiguration('namespace')
 
     remappings = [('/tf_static', 'tf_static'), 
                     ('/tf', 'tf')]
     
-    node1 = Node(
+    start_exploration_node = Node(
             package='exploration',
-            # namespace='turtlesim1',
             executable='exec_exp',
             name='MWFCN_node',
-            namespace=namespace1,
+            namespace=namespace,
             remappings=remappings,
             output="screen",
             parameters=[
-            ParameterFile(os.path.join(pkg_dir, 'config', 'params.yaml'), allow_substs=True),
-            {'use_sim_time': True}],
+            ParameterFile(os.path.join(pkg_dir, 'config', 'params.yaml'), allow_substs=True)],
             # prefix=['xterm -e gdb -ex run --args']
-        # arguments=['--ros-args', '--log-level', 'debug'],
-        #emulate_tty=True)
+            # arguments=['--ros-args', '--log-level', 'debug'],
+            emulate_tty=True,
         )
-   
+    
+    start_hostmap_static_tf_publisher = Node(
+        package = "tf2_ros", 
+        executable = "static_transform_publisher",
+        name = "hostmap_tf_publisher",
+        namespace=namespace,
+        remappings=remappings,
+        arguments = ["0", "0", "0", "0", "0", "0", "base_footprint", [namespace,"/base_footprint"]])
     
     ld = LaunchDescription()
     ld.add_action(declare_arg_namespace)
-    ld.add_action(node1)
+    ld.add_action(start_exploration_node)
+    ld.add_action(start_hostmap_static_tf_publisher)
 
     
     return ld
