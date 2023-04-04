@@ -122,9 +122,15 @@ void MWFCN::explore(){
     /*------- Check target reachability ------*/
     if (robot_potential_maps[robot_map_id][best_cluster.x + best_cluster.y * mapData.info.width] >= LARGEST_MAP_DISTANCE) 
     {
-        RCLCPP_WARN_STREAM(this->get_logger(), "No reachable targets remaining! Ending Exploration!");
-        this->navigation_client_->async_cancel_all_goals();
-        this->timer_main_->cancel();
+        RCLCPP_WARN_STREAM(this->get_logger(), "No reachable targets remaining!");
+        // Check robot stuck condition (useful in cases where user set obstacle inflation value too large)
+        if (mapData.data[best_cluster.x + best_cluster.y * mapData.info.width] == MAP_PIXEL_FREE) {
+            RCLCPP_INFO_STREAM(this->get_logger(), "Ending exploration!");
+            this->timer_main_->cancel();
+        } else {
+            RCLCPP_ERROR_STREAM(this->get_logger(), "Robot stuck! Check surrounding and make sure obstacle inflation value is not too high");
+        }
+        this->navigation_client_->async_cancel_all_goals(); 
         return;
     }
 
