@@ -478,9 +478,9 @@ void MWFCN::clear_inflation(nav_msgs::msg::OccupancyGrid &map, Pixel center, flo
 {
     /*------- Initialize the map parameters ------*/
     uint radius_cell_count = int(radius / map.info.resolution);
-    int roi_x1 = ( (center.x - radius_cell_count) >= 0)? center.x - radius_cell_count : 0;
+    int roi_x1 = ( (center.x - (int)radius_cell_count) >= 0)? center.x - radius_cell_count : 0;
     int roi_x2 = ( (center.x + radius_cell_count) < map.info.width)? center.x + radius_cell_count : map.info.width - 1;
-    int roi_y1 = ( (center.y - radius_cell_count) >= 0)? center.y- radius_cell_count : 0;
+    int roi_y1 = ( (center.y - (int)radius_cell_count) >= 0)? center.y- radius_cell_count : 0;
     int roi_y2 = ( (center.y + radius_cell_count) < map.info.height)? center.y + radius_cell_count : map.info.height - 1;
 
     for (int x = roi_x1; x <= roi_x2; x++) {
