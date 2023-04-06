@@ -118,6 +118,7 @@ namespace exploration{
 
       // Constants
       const int MAP_PIXEL_OCCUPIED = 100;
+      const int MAP_PIXEL_INFLATED = 99;
       const int MAP_PIXEL_UNKNOWN = -1;
       const int MAP_PIXEL_FREE = 0;
 

@@ -48,7 +48,7 @@ void MWFCN::explore(){
     std::vector<Pixel> obstacles = inflate_obstacles(mapData, obstacle_inflation_radius_);
 
     /*------- Copy other obstacles from costmap ------*/
-    copy_obstacles_from_map(mapData, costmapData, 99);  // Costmap values 99 to 100 are colision cells
+    copy_obstacles_from_map(mapData, costmapData, MAP_PIXEL_INFLATED);  // Min threshold : Inflated obstacles
     // Publish inflated map with costmap obstacles
     inflated_map_publisher->publish(mapData);
 
