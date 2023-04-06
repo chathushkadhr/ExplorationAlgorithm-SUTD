@@ -90,6 +90,7 @@ void MWFCN::explore(){
         std::vector<int> distance_map;
         int robot_location_x = (robot_transform.transform.translation.x - mapData.info.origin.position.x) / mapData.info.resolution;
         int robot_location_y = (robot_transform.transform.translation.y - mapData.info.origin.position.y) / mapData.info.resolution;
+        clear_inflation(mapData, Pixel(robot_location_x, robot_location_y), obstacle_inflation_radius_);    // To prevent robot being stuck
         create_potential_map(mapData, Pixel(robot_location_x, robot_location_y), distance_map);
         robot_potential_maps.push_back(distance_map);
     }
@@ -464,6 +465,32 @@ std::vector<MWFCN::Pixel> MWFCN::inflate_obstacles(nav_msgs::msg::OccupancyGrid 
 
     obstacles.shrink_to_fit();
     return obstacles; 
+}
+
+/**
+ * @brief Clears inflated obstacles within a radius of the given location
+ * 
+ * @param map           Map data
+ * @param center        Center cell location, around which inflation needs to be removed
+ * @param radius        Radius of clearing inflated obstacles
+ */
+void MWFCN::clear_inflation(nav_msgs::msg::OccupancyGrid &map, Pixel center, float radius)
+{
+    /*------- Initialize the map parameters ------*/
+    uint radius_cell_count = int(radius / map.info.resolution);
+    int roi_x1 = ( (center.x - radius_cell_count) >= 0)? center.x - radius_cell_count : 0;
+    int roi_x2 = ( (center.x + radius_cell_count) < map.info.width)? center.x + radius_cell_count : map.info.width - 1;
+    int roi_y1 = ( (center.y - radius_cell_count) >= 0)? center.y- radius_cell_count : 0;
+    int roi_y2 = ( (center.y + radius_cell_count) < map.info.height)? center.y + radius_cell_count : map.info.height - 1;
+
+    for (int x = roi_x1; x <= roi_x2; x++) {
+        for (int y = roi_y1; y <= roi_y2; y++ ) {
+            if (std::hypot(x - center.x, y - center.y) <= radius_cell_count) {
+                if (map.data[x + y * map.info.width] == MAP_PIXEL_INFLATED) map.data[x + y * map.info.width] = MAP_PIXEL_FREE;
+            }
+        }
+    }
+    return;
 }
 
 /**
