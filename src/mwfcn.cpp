@@ -441,21 +441,21 @@ std::vector<MWFCN::Pixel> MWFCN::inflate_obstacles(nav_msgs::msg::OccupancyGrid 
         {
 
             // Check right pixel
-            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y), map, adjacent_pixels, MAP_PIXEL_INFLATED);
             // Check left pixel
-            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y), map, adjacent_pixels, MAP_PIXEL_INFLATED);
             // Check up pixel
-            process_pixel_inflation(Pixel(obstacle.x, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_INFLATED);
             // Check down pixel
-            process_pixel_inflation(Pixel(obstacle.x, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_INFLATED);
             // Check upper right pixel
-            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_INFLATED);
             // Check upper left pixel
-            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y + 1), map, adjacent_pixels, MAP_PIXEL_INFLATED);
             // Check lower right pixel
-            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x + 1, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_INFLATED);
             // Check lower left pixel
-            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_OCCUPIED);
+            process_pixel_inflation(Pixel(obstacle.x - 1, obstacle.y - 1), map, adjacent_pixels, MAP_PIXEL_INFLATED);
         }
         processing_obstacles = adjacent_pixels;
         std::copy(std::begin(adjacent_pixels), std::end(adjacent_pixels), std::back_inserter(obstacles));   // Add inflated pixels to obstacles vector to be returned
