@@ -677,6 +677,17 @@ std::map<int, MWFCN::Pixel> MWFCN::find_optimal_targets(std::vector<std::vector<
 {
     std::map<int, Pixel> optimal_target_clusters;
 
+    // Extract target potentials
+    std::map<uint, std::map<uint, float>> robot_target_potentials; // Map of [robot][target] -> float
+
+    for (uint t = 0; t < target_clusters.size(); t++)
+    {
+        for (uint r = 0; r < robot_potential_maps.size(); r++)
+        {
+            robot_target_potentials[r][t] = robot_potential_maps[r][target_clusters[t].x + target_clusters[t].y * map.info.width];
+        }
+    }
+
     uint optimal_target_id = 0;
     do
     {
@@ -684,21 +695,21 @@ std::map<int, MWFCN::Pixel> MWFCN::find_optimal_targets(std::vector<std::vector<
         float max_attraction = 0.0;
         Cluster best_target;
         int robot_id;
-        for (auto &target : target_clusters)
+        for (uint t = 0; t < target_clusters.size(); t++)
         {
             float cluster_size_attraction = 1.0; // - 0.9 * exp(-target.size / 100.0); // Slow varying function from 0.1 to 1
 
-            for (uint i = 0; i < robot_potential_maps.size(); i++)
+            for (uint r = 0; r < robot_potential_maps.size(); r++)
             {   
-                // Check if optimal target for robot 'i' has already been found
-                if (optimal_target_clusters.count(i)) continue; // Skip robot if optimal target is available
+                // Check if optimal target for robot 'r' has already been found
+                if (optimal_target_clusters.count(r)) continue; // Skip robot if optimal target is available
 
-                float attraction = cluster_size_attraction / robot_potential_maps[i][target.x + target.y * map.info.width];
+                float attraction = cluster_size_attraction / robot_target_potentials[r][t];
                 if (attraction > max_attraction)
                 {
                     max_attraction = attraction;
-                    best_target = target;
-                    robot_id = i;
+                    best_target = target_clusters[t];
+                    robot_id = r;
                 }
             }
         }
@@ -715,12 +726,12 @@ std::map<int, MWFCN::Pixel> MWFCN::find_optimal_targets(std::vector<std::vector<
             Once a robot reaches a target, other targets in close vicinity shall be allocated to the same robot. 
             Hence, the target point should apply a potential field to repel other robots from selecting nearby targets.
         */
-        for (auto &target : target_clusters)
+        for (uint t = 0; t < target_clusters.size(); t++)
         {
-            for (uint i = 0; i < robot_potential_maps.size(); i++)
+            for (uint r = 0; r < robot_potential_maps.size(); r++)
             {
-                if (robot_potential_maps[i][target.x + target.y * map.info.width] < LARGEST_MAP_DISTANCE) { // Skip unreachable targets
-                    robot_potential_maps[i][target.x + target.y * map.info.width] /= optimal_point_potential_map[target.x + target.y * map.info.width];
+                if (robot_target_potentials[r][t] < LARGEST_MAP_DISTANCE) { // Skip unreachable targets
+                    robot_target_potentials[r][t] /= (float)optimal_point_potential_map[target_clusters[t].x + target_clusters[t].y * map.info.width];
                 }
             }
         }
