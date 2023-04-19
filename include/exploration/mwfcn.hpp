@@ -47,7 +47,7 @@ namespace exploration{
 
         Cluster() {};
         Cluster(int x, int y, int size): x(x), y(y), size(size) {};
-        Cluster(Pixel point, int size): x(point.x), y(point.y), size(size) {};
+        Cluster(Pixel point, int size=1): x(point.x), y(point.y), size(size) {};
         Pixel center() { return Pixel(x, y); };
       };
 
