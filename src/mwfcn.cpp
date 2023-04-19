@@ -44,6 +44,8 @@ void MWFCN::explore(){
     nav_msgs::msg::OccupancyGrid mapData = get_map_data();  
     nav_msgs::msg::OccupancyGrid costmapData = get_costmap_data(); 
 
+    /*------- Filter map noise ------*/
+    filter_map_noise(mapData);
     /*------- Inflate and Extract obstacles from map ------*/
     std::vector<Pixel> obstacles = inflate_obstacles(mapData, obstacle_inflation_radius_);
 
@@ -766,6 +768,63 @@ float MWFCN::calculate_attraction(std::vector<std::vector<int>> robot_potential_
 
     float attraction = size_attraction * distance_attraction * attraction_factor;
     return attraction;
+}
+
+/**
+ * @brief Removes map noise. Occupied cells without no adjacent occupied cell are cleared and set to 'Unoccupied'
+ * 
+ * @param mapData OccupancyGrid message
+ */
+void MWFCN::filter_map_noise(nav_msgs::msg::OccupancyGrid &mapData)
+{
+    // Traverse obstacle_map row, column wise while checking each pixel for obstacles
+    for (uint y = 1; y < (mapData.info.height - 1); y++)
+    {
+        for (uint x = 1; x < (mapData.info.width - 1); x++)
+        {
+            if ((mapData.data[x + y * mapData.info.width] != MAP_PIXEL_FREE) && (mapData.data[x + y * mapData.info.width] != MAP_PIXEL_UNKNOWN))
+            {
+                // Check surrounding pixels of x,y for occupancy
+                if (    is_pixel_occupied(Pixel( x + 1, y     ), mapData) ||    // Right pixel
+                        is_pixel_occupied(Pixel( x - 1, y     ), mapData) ||    // Left pixel
+                        is_pixel_occupied(Pixel( x    , y + 1 ), mapData) ||    // Upper pixel
+                        is_pixel_occupied(Pixel( x    , y - 1 ), mapData) ||    // Lower pixel
+                        is_pixel_occupied(Pixel( x + 1, y + 1 ), mapData) ||    // Right Upper pixel
+                        is_pixel_occupied(Pixel( x - 1, y + 1 ), mapData) ||    // Left Upper pixel
+                        is_pixel_occupied(Pixel( x + 1, y - 1 ), mapData) ||    // Right Lower pixel
+                        is_pixel_occupied(Pixel( x - 1, y - 1 ), mapData) )     // Left Lower pixel
+                {
+                    continue;
+                }
+                else
+                {
+                    mapData.data[x + y * mapData.info.width] = MAP_PIXEL_FREE;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * @brief Checks if a given pixel is occupied. Will return "Not occupied" is the cell is out of map bounds
+ * 
+ * @param pixel 
+ * @param map 
+ * @return true         Map pixel occupied (& within map bounds)
+ * @return false        Map pixel unoccupied or out of map bounds
+ */
+inline bool MWFCN::is_pixel_occupied(Pixel pixel, nav_msgs::msg::OccupancyGrid map)
+{
+    // Check map bounds
+    if ( ((pixel.x + pixel.y * (int)map.info.width) < 0) || ((pixel.x + pixel.y * (int)map.info.width) >= (int)map.data.size()) )
+    {
+        // Return unoccupied if out of map bounds
+        return false;
+    }
+
+    // Potential map is extended to unknown regions also
+    return ( (map.data[pixel.x + pixel.y * map.info.width] != MAP_PIXEL_FREE) &&
+             (map.data[pixel.x + pixel.y * map.info.width] != MAP_PIXEL_UNKNOWN));
 }
 
 bool MWFCN::map_data_available(){

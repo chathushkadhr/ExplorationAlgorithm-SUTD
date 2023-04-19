@@ -84,6 +84,8 @@ namespace exploration{
       std::map<int, Pixel> find_optimal_targets(std::vector<std::vector<int>> robot_potential_maps, 
                                                 std::vector<Cluster> target_clusters, 
                                                 nav_msgs::msg::OccupancyGrid map);
+      void filter_map_noise(nav_msgs::msg::OccupancyGrid &mapData);
+      inline bool is_pixel_occupied(Pixel pixel, nav_msgs::msg::OccupancyGrid map);
       visualization_msgs::msg::Marker create_visualization_msg(int type);
       bool get_ros_parameters(void);
 
