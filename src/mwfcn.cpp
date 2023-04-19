@@ -148,18 +148,18 @@ void MWFCN::explore(){
     int id = 0;
     for (auto &cluster : target_clusters)
     {
-        // Cluster visualization
-        target_cluster_markers.markers.push_back(create_visualization_msg(POINTS));
-        target_cluster_markers.markers.back().id = id++;
-        target_cluster_markers.markers.back().points.push_back(geometry_msgs::msg::Point().set__x(
-            cluster.x * mapData.info.resolution + mapData.info.origin.position.x).set__y(
-            cluster.y * mapData.info.resolution + mapData.info.origin.position.y));
-
         // Highlight robots' targets in blue
         for (auto &optimal_target : optimal_targets)
         {
             if (cluster.center() == optimal_target.second)
             {
+                // Cluster visualization
+                target_cluster_markers.markers.push_back(create_visualization_msg(POINTS));
+                target_cluster_markers.markers.back().id = id++;
+                target_cluster_markers.markers.back().points.push_back(geometry_msgs::msg::Point().set__x(
+                    cluster.x * mapData.info.resolution + mapData.info.origin.position.x).set__y(
+                    cluster.y * mapData.info.resolution + mapData.info.origin.position.y));
+
                 target_cluster_markers.markers.back().color.r = 0.0;
                 target_cluster_markers.markers.back().color.g = 0.0;
                 target_cluster_markers.markers.back().color.b = 1.0;
