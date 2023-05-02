@@ -66,8 +66,6 @@ void MWFCN::explore(){
 
     /*------- Copy other obstacles from costmap ------*/
     copy_obstacles_from_map(mapData, costmapData, MAP_PIXEL_INFLATED);  // Min threshold : Inflated obstacles
-    // Publish inflated map with costmap obstacles
-    inflated_map_publisher->publish(mapData);
 
     /*------- Extract frontiers from maps ------*/
     std::vector<Pixel> targets;
@@ -114,19 +112,6 @@ void MWFCN::explore(){
         clear_inflation(mapData, Pixel(robot_location_x, robot_location_y), obstacle_inflation_radius_);    // To prevent robot being stuck
         create_potential_map(mapData, Pixel(robot_location_x, robot_location_y), distance_map);
         robot_potential_maps.push_back(distance_map);
-    }
-
-    /*------- Publish distance maps ------*/
-    for (uint i = 0; i < robot_potential_maps.size(); i++)
-    {
-        nav_msgs::msg::OccupancyGrid potential_map_msg;
-        potential_map_msg.header = mapData.header;
-        potential_map_msg.info = mapData.info;
-        potential_map_msg.data.resize(robot_potential_maps[i].size());
-
-        std::transform(robot_potential_maps[i].begin(), robot_potential_maps[i].end(), 
-                        potential_map_msg.data.begin(), [](int val) -> uint8_t { return val / 10; });
-        potential_map_publishers_[i]->publish(potential_map_msg);
     }
 
     /*------- Calculate best target for each robot ------*/

@@ -104,8 +104,6 @@ namespace exploration{
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr map_subscriber_;
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costmap_subscriber_;
       rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr target_publisher_;
-      rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr inflated_map_publisher;
-      std::vector<rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr> potential_map_publishers_;
       rclcpp::Publisher<exploration::msg::ExplorationState>::SharedPtr exploration_state_publisher_;
       rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr navigation_client_;
 
