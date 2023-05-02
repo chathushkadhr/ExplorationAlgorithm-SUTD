@@ -16,6 +16,18 @@ find_package(visualization_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(nav2_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+set(msg_files
+  "msg/ExplorationState.msg"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+   ${msg_files}
+   DEPENDENCIES  geometry_msgs std_msgs rclcpp std_msgs
+)
+
+ament_export_dependencies(rosidl_default_runtime)
 
 set(
   DEPENDENCIES
@@ -27,6 +39,7 @@ set(
   tf2_ros
   nav2_msgs
   rclcpp_action
+  )
 set(
   SOURCES
   src/exploration_node.cpp
@@ -58,6 +71,11 @@ target_include_directories(exec_exp PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_compile_features(exec_exp PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+rosidl_get_typesupport_target(cpp_typesupport_target
+  ${PROJECT_NAME} rosidl_typesupport_cpp)
+
+target_link_libraries(exec_exp "${cpp_typesupport_target}")
 
 
 install(TARGETS exec_exp

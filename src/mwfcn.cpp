@@ -14,6 +14,7 @@ MWFCN:: MWFCN() :
     costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
     target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
     inflated_map_publisher = this->create_publisher<nav_msgs::msg::OccupancyGrid>("inflated_map", 1);
+    exploration_state_publisher_ = this->create_publisher<exploration::msg::ExplorationState>("exploration_state", 1);
     for (int i = 1; i <= robot_count_; i++)
     {
         potential_map_publishers_.push_back(this->create_publisher<nav_msgs::msg::OccupancyGrid>(
@@ -26,9 +27,14 @@ MWFCN:: MWFCN() :
     /*------- Initialize TF listener ------*/
     tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
+    /*------- Initialize Exploration state ------*/
+    exploration_state_.robot_id = robot_id_;
+    exploration_state_.status = exploration::msg::ExplorationState::ACTIVE;
     
     /*------- Create main callback timer ------*/
     timer_main_ = this->create_wall_timer( std::chrono::duration<double>( 1.0 / rate_ ), std::bind(&MWFCN::explore, this));
+    timer_exploration_state_publisher_ = this->create_wall_timer( std::chrono::duration<double>(1.0 / rate_), std::bind(&MWFCN::publish_exploration_state, this));
 }
 
 void MWFCN::explore(){
@@ -39,6 +45,15 @@ void MWFCN::explore(){
     /*------- Return if self map to base_foot_print transform is not available ------*/
     geometry_msgs::msg::TransformStamped map_to_baseframe;
     if (!get_transform(map_frame_, robot_base_frame_, map_to_baseframe)) return;
+
+    /*------- Update Exploration state ------*/
+    std::unique_lock exploration_state_lock(mtx_exploration_state);
+    exploration_state_.header.frame_id = robot_frame_prefix_ + std::to_string(robot_id_) + "/" + map_frame_;
+    exploration_state_.location.position.set__x(map_to_baseframe.transform.translation.x). set__y(
+        map_to_baseframe.transform.translation.y).set__z(map_to_baseframe.transform.translation.z);
+    exploration_state_.location.orientation.set__x(map_to_baseframe.transform.rotation.x).set__y(
+        map_to_baseframe.transform.rotation.y).set__z(map_to_baseframe.transform.rotation.z).set__w(
+        map_to_baseframe.transform.rotation.w);
 
     /*-------  Fetch external data------*/
     nav_msgs::msg::OccupancyGrid mapData = get_map_data();  
@@ -51,8 +66,6 @@ void MWFCN::explore(){
 
     /*------- Copy other obstacles from costmap ------*/
     copy_obstacles_from_map(mapData, costmapData, MAP_PIXEL_INFLATED);  // Min threshold : Inflated obstacles
-    // Publish inflated map with costmap obstacles
-    inflated_map_publisher->publish(mapData);
 
     /*------- Extract frontiers from maps ------*/
     std::vector<Pixel> targets;
@@ -65,11 +78,15 @@ void MWFCN::explore(){
         RCLCPP_INFO_STREAM(this->get_logger(), "Exploration done!");
         this->navigation_client_->async_cancel_all_goals();
         this->timer_main_->cancel();
+        exploration_state_.status = exploration::msg::ExplorationState::DONE;
         return;
     }
 
     /*------- Cluster targets into different groups and find the center of each group   ------*/
-    std::vector<Cluster> target_clusters = cluster_2D(targets);
+    //std::vector<Cluster> target_clusters = cluster_2D(targets);
+    std::vector<Cluster> target_clusters;
+    target_clusters.reserve(targets.size());
+    std::copy(std::begin(targets), std::end(targets), std::back_inserter(target_clusters));
 
     /*------- Receive robots' locations ------*/
     std::vector<geometry_msgs::msg::TransformStamped> robot_transforms;
@@ -97,19 +114,6 @@ void MWFCN::explore(){
         robot_potential_maps.push_back(distance_map);
     }
 
-    /*------- Publish distance maps ------*/
-    for (uint i = 0; i < robot_potential_maps.size(); i++)
-    {
-        nav_msgs::msg::OccupancyGrid potential_map_msg;
-        potential_map_msg.header = mapData.header;
-        potential_map_msg.info = mapData.info;
-        potential_map_msg.data.resize(robot_potential_maps[i].size());
-
-        std::transform(robot_potential_maps[i].begin(), robot_potential_maps[i].end(), 
-                        potential_map_msg.data.begin(), [](int val) -> uint8_t { return val / 10; });
-        potential_map_publishers_[i]->publish(potential_map_msg);
-    }
-
     /*------- Calculate best target for each robot ------*/
     std::map<int, Pixel> optimal_targets = find_optimal_targets(robot_potential_maps, target_clusters, mapData);
     // Get host robot best target
@@ -134,8 +138,10 @@ void MWFCN::explore(){
         if (mapData.data[robot_location_x + robot_location_y * mapData.info.width] == MAP_PIXEL_FREE) {
             RCLCPP_INFO_STREAM(this->get_logger(), "Ending exploration!");
             this->timer_main_->cancel();
+            exploration_state_.status = exploration::msg::ExplorationState::DONE;
         } else {
             RCLCPP_ERROR_STREAM(this->get_logger(), "Robot stuck! Check surrounding and make sure obstacle inflation value is not too high");
+            exploration_state_.status = exploration::msg::ExplorationState::ERROR;
         }
         this->navigation_client_->async_cancel_all_goals(); 
         return;
@@ -146,18 +152,18 @@ void MWFCN::explore(){
     int id = 0;
     for (auto &cluster : target_clusters)
     {
-        // Cluster visualization
-        target_cluster_markers.markers.push_back(create_visualization_msg(POINTS));
-        target_cluster_markers.markers.back().id = id++;
-        target_cluster_markers.markers.back().points.push_back(geometry_msgs::msg::Point().set__x(
-            cluster.x * mapData.info.resolution + mapData.info.origin.position.x).set__y(
-            cluster.y * mapData.info.resolution + mapData.info.origin.position.y));
-
         // Highlight robots' targets in blue
         for (auto &optimal_target : optimal_targets)
         {
             if (cluster.center() == optimal_target.second)
             {
+                // Cluster visualization
+                target_cluster_markers.markers.push_back(create_visualization_msg(POINTS));
+                target_cluster_markers.markers.back().id = id++;
+                target_cluster_markers.markers.back().points.push_back(geometry_msgs::msg::Point().set__x(
+                    cluster.x * mapData.info.resolution + mapData.info.origin.position.x).set__y(
+                    cluster.y * mapData.info.resolution + mapData.info.origin.position.y));
+
                 target_cluster_markers.markers.back().color.r = 0.0;
                 target_cluster_markers.markers.back().color.g = 0.0;
                 target_cluster_markers.markers.back().color.b = 1.0;
@@ -954,4 +960,12 @@ bool MWFCN::get_ros_parameters(void)
     #endif
 
     return true;
+}
+
+void MWFCN::publish_exploration_state(void)
+{
+    std::unique_lock exploration_state_lock(mtx_exploration_state);
+    exploration::msg::ExplorationState state_msg;
+    state_msg.header.stamp = this->get_clock()->now();
+    exploration_state_publisher_->publish(state_msg);
 }
