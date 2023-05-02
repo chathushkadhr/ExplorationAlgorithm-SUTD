@@ -959,7 +959,6 @@ bool MWFCN::get_ros_parameters(void)
 void MWFCN::publish_exploration_state(void)
 {
     std::unique_lock exploration_state_lock(mtx_exploration_state);
-    exploration::msg::ExplorationState state_msg;
-    state_msg.header.stamp = this->get_clock()->now();
-    exploration_state_publisher_->publish(state_msg);
+    exploration_state_.header.stamp = this->get_clock()->now();
+    exploration_state_publisher_->publish(exploration_state_);
 }
