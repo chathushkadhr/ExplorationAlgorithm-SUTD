@@ -13,7 +13,9 @@ MWFCN:: MWFCN() :
     map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
     costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
     target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
+    
     inflated_map_publisher = this->create_publisher<nav_msgs::msg::OccupancyGrid>("inflated_map", 1);
+    robot_state_publisher = this->create_publisher<exploration::msg::RobotState>("/robot_state_topic", 1);
     for (int i = 1; i <= robot_count_; i++)
     {
         potential_map_publishers_.push_back(this->create_publisher<nav_msgs::msg::OccupancyGrid>(
@@ -65,6 +67,7 @@ void MWFCN::explore(){
         RCLCPP_INFO_STREAM(this->get_logger(), "Exploration done!");
         this->navigation_client_->async_cancel_all_goals();
         this->timer_main_->cancel();
+        timer_robot_state = this->create_wall_timer( std::chrono::duration<double>(1.0), std::bind(&MWFCN::send_robot_state, this));
         return;
     }
 
@@ -956,4 +959,15 @@ bool MWFCN::get_ros_parameters(void)
     #endif
 
     return true;
+}
+
+void MWFCN::send_robot_state()
+{
+    exploration::msg::RobotState robot_state;
+    robot_state.header.frame_id = map_frame_;
+    robot_state.header.stamp = this->get_clock()->now();
+    robot_state.id = robot_id_;
+    robot_state_publisher->publish(robot_state);
+
+
 }

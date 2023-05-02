@@ -14,6 +14,7 @@
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "tf2_ros/transform_broadcaster.h"
+#include "exploration/msg/robot_state.hpp"
 #include<string>
 
 //#define DEBUG
@@ -104,6 +105,7 @@ namespace exploration{
       rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr target_publisher_;
       rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr inflated_map_publisher;
       std::vector<rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr> potential_map_publishers_;
+      rclcpp::Publisher<exploration::msg::RobotState>::SharedPtr robot_state_publisher;
       rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr navigation_client_;
 
       // ROS TF2
@@ -112,7 +114,7 @@ namespace exploration{
 
       // Attributes
       rclcpp::TimerBase::SharedPtr timer_main_;
-
+      rclcpp::TimerBase::SharedPtr timer_robot_state;
       // Shared variables
       nav_msgs::msg::OccupancyGrid mapData_, costmapData_;
       nav2_msgs::action::NavigateToPose_Goal robot_goal_;
@@ -126,5 +128,7 @@ namespace exploration{
       const int MAP_PIXEL_FREE = 0;
 
       const int LARGEST_MAP_DISTANCE = 500000; 
+
+      void send_robot_state();
   };
 }
