@@ -13,7 +13,7 @@ MWFCN:: MWFCN() :
     map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
     costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
     target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
-    exploration_state_publisher_ = this->create_publisher<exploration::msg::ExplorationState>("exploration_state", 1);
+    exploration_state_publisher_ = this->create_publisher<exploration::msg::ExplorationState>("/exploration_state", 1);
 
     /*------- Create navigation_stack action client ------*/
     navigation_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose");
