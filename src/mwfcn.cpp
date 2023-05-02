@@ -85,6 +85,7 @@ void MWFCN::explore(){
     }
 
     /*------- Cluster targets into different groups and find the center of each group   ------*/
+    //std::vector<Cluster> target_clusters = cluster_2D(targets);
     std::vector<Cluster> target_clusters;
     target_clusters.reserve(targets.size());
     std::copy(std::begin(targets), std::end(targets), std::back_inserter(target_clusters));
