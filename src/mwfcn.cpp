@@ -40,14 +40,8 @@ void MWFCN::explore(){
     geometry_msgs::msg::TransformStamped map_to_baseframe;
     if (!get_transform(map_frame_, robot_base_frame_, map_to_baseframe)) return;
 
-    /*------- Update Exploration state ------*/
+    /*------- Exploration state thread safety lock ---------*/
     std::unique_lock exploration_state_lock(mtx_exploration_state);
-    exploration_state_.header.frame_id = robot_frame_prefix_ + std::to_string(robot_id_) + "/" + map_frame_;
-    exploration_state_.location.position.set__x(map_to_baseframe.transform.translation.x). set__y(
-        map_to_baseframe.transform.translation.y).set__z(map_to_baseframe.transform.translation.z);
-    exploration_state_.location.orientation.set__x(map_to_baseframe.transform.rotation.x).set__y(
-        map_to_baseframe.transform.rotation.y).set__z(map_to_baseframe.transform.rotation.z).set__w(
-        map_to_baseframe.transform.rotation.w);
 
     /*-------  Fetch external data------*/
     nav_msgs::msg::OccupancyGrid mapData = get_map_data();  
@@ -959,6 +953,17 @@ bool MWFCN::get_ros_parameters(void)
 void MWFCN::publish_exploration_state(void)
 {
     std::unique_lock exploration_state_lock(mtx_exploration_state);
+
+    /*------- Update Exploration state ------*/
+    geometry_msgs::msg::TransformStamped map_to_baseframe;
+    if (!get_transform(map_frame_, robot_base_frame_, map_to_baseframe)) return;
+    exploration_state_.header.frame_id = robot_frame_prefix_ + std::to_string(robot_id_) + "/" + map_frame_;
+    exploration_state_.location.position.set__x(map_to_baseframe.transform.translation.x). set__y(
+        map_to_baseframe.transform.translation.y).set__z(map_to_baseframe.transform.translation.z);
+    exploration_state_.location.orientation.set__x(map_to_baseframe.transform.rotation.x).set__y(
+        map_to_baseframe.transform.rotation.y).set__z(map_to_baseframe.transform.rotation.z).set__w(
+        map_to_baseframe.transform.rotation.w);
+
     exploration_state_.header.stamp = this->get_clock()->now();
     exploration_state_publisher_->publish(exploration_state_);
 }
