@@ -4,16 +4,15 @@ using namespace exploration;
 using std::placeholders::_1;
 
 MWFCN:: MWFCN() : 
-    Node("MWFCN_node")
+    Node("MWFCN_node"),
+    map_frame_("map")
 {   
     /*------- Fetch parameters ------*/
     if (!get_ros_parameters()) return; // Exit if parameters fetching failure
 
-    /*------- Create Subscribers and publishers ------*/
-    map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
-    costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
-    target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
-    exploration_state_publisher_ = this->create_publisher<exploration::msg::ExplorationState>("/exploration_state", 1);
+    /*------- Initialize Exploration state ------*/
+    exploration_state_.robot_id = robot_id_;
+    exploration_state_.status = exploration::msg::ExplorationState::INACTIVE;
 
     /*------- Create navigation_stack action client ------*/
     navigation_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose");
@@ -22,12 +21,14 @@ MWFCN:: MWFCN() :
     tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 
-    /*------- Initialize Exploration state ------*/
-    exploration_state_.robot_id = robot_id_;
-    exploration_state_.status = exploration::msg::ExplorationState::ACTIVE;
+    /*------- Create Subscribers and publishers ------*/
+    map_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic_, 10, std::bind(&MWFCN::map_callback, this, _1));
+    costmap_subscriber_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(costmap_topic_, 20, std::bind(&MWFCN::costmap_callback, this, _1));
+    exploration_cmd_subscriber_ = this->create_subscription<std_msgs::msg::Bool>(std::string(this->get_name()) + "/enable", 10, std::bind(&MWFCN::enable_exploration_callback, this, _1));
+    target_publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_targets", 1);
+    exploration_state_publisher_ = this->create_publisher<exploration::msg::ExplorationState>("/exploration_state", 1);
     
-    /*------- Create main callback timer ------*/
-    timer_main_ = this->create_wall_timer( std::chrono::duration<double>( 1.0 / rate_ ), std::bind(&MWFCN::explore, this));
+    /*------- Create timers ------*/
     timer_exploration_state_publisher_ = this->create_wall_timer( std::chrono::duration<double>(1.0 / rate_), std::bind(&MWFCN::publish_exploration_state, this));
 }
 
@@ -200,6 +201,34 @@ void MWFCN::map_callback(const nav_msgs::msg::OccupancyGrid msg)
 void MWFCN::costmap_callback(const nav_msgs::msg::OccupancyGrid msg)
 {
     set_costmap_data(msg);
+}
+
+void MWFCN::enable_exploration_callback(const std_msgs::msg::Bool msg)
+{
+    if (msg.data)
+    {
+        if (exploration_state_.status != exploration::msg::ExplorationState::ACTIVE)
+        {
+            /*------- Initialize Exploration state ------*/
+            exploration_state_.status = exploration::msg::ExplorationState::ACTIVE;
+            
+            RCLCPP_INFO_STREAM(this->get_logger(), "Starting Exploration!");
+
+            /*------- Create main callback timer ------*/
+            timer_main_ = this->create_wall_timer( std::chrono::duration<double>( 1.0 / rate_ ), std::bind(&MWFCN::explore, this));
+        }
+        else
+        {
+            RCLCPP_WARN_STREAM(this->get_logger(), "Exploration already running. Start request ignored!");
+        }
+    }
+    else
+    {
+        this->timer_main_->cancel();
+        this->navigation_client_->async_cancel_all_goals(); 
+        RCLCPP_INFO_STREAM(this->get_logger(), "Ending exploration: Requested by User!");
+        exploration_state_.status = exploration::msg::ExplorationState::DONE;
+    }
 }
 
 void MWFCN::set_costmap_data(nav_msgs::msg::OccupancyGrid costmapData)

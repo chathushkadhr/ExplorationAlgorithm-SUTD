@@ -15,6 +15,7 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "tf2_ros/transform_broadcaster.h"
 #include "exploration/msg/exploration_state.hpp"
+#include "std_msgs/msg/bool.hpp"
 #include<string>
 
 //#define DEBUG
@@ -58,6 +59,7 @@ namespace exploration{
     private:
       void map_callback(const nav_msgs::msg::OccupancyGrid msg);
       void costmap_callback(const nav_msgs::msg::OccupancyGrid msg);
+      void enable_exploration_callback(const std_msgs::msg::Bool msg);
 
       void set_costmap_data(nav_msgs::msg::OccupancyGrid costmapData);
       nav_msgs::msg::OccupancyGrid get_costmap_data();
@@ -103,6 +105,7 @@ namespace exploration{
       // ROS Subscribers, Publishers and Action clients
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr map_subscriber_;
       rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr costmap_subscriber_;
+      rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr exploration_cmd_subscriber_;
       rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr target_publisher_;
       rclcpp::Publisher<exploration::msg::ExplorationState>::SharedPtr exploration_state_publisher_;
       rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr navigation_client_;
