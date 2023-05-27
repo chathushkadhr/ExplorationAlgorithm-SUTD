@@ -1,5 +1,7 @@
 # Frontier Based Multirobot Exploration
 
+**This repository has been deprecated. The development has been moved to https://github.com/acachathuranga/multi-robot-explore.** Please download the latest code from our new repository.
+
 Given a dynamic global map and the locations of multiple robots within the map, this package issues navigation goals to each robot in order to collaboratively explore the environment. 
 
 ## Dependencies
