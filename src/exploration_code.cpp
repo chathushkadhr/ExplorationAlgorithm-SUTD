@@ -1,4 +1,4 @@
-#include <exploration/exploration_code.hpp>
+#include "exploration/exploration_code.hpp"
 
 using namespace exploration;
 using std::placeholders::_1;
@@ -24,8 +24,8 @@ MWFCN_Algo:: MWFCN_Algo() :
     robot_frame=this->get_parameter("robot_frame").get_parameter_value().get<std::string>();
     this->declare_parameter("namespace", "/robot1");
     ns=this->get_parameter("namespace").get_parameter_value().get<std::string>();
-    this->declare_parameter("rate", 1);
-    rateHz=this->get_parameter("rate").get_parameter_value().get<int>();
+    // this->declare_parameter("rate", 1);
+    // rateHz=this->get_parameter("rate").get_parameter_value().get<int>();
     this->declare_parameter("inflation_radius", 6.0);
     inflation_radius=this->get_parameter("inflation_radius").get_parameter_value().get<float>();
     this->declare_parameter("n_robot", 2);
@@ -49,7 +49,7 @@ MWFCN_Algo:: MWFCN_Algo() :
         robots_frame_[i-1] = ss.str();
     }
 
-    rclcpp::Rate rate(rateHz);
+    // rclcpp::Rate rate(rateHz);
 
     // ------------------------------------- subscribe the map topics & clicked points
     sub = this->create_subscription<nav_msgs::msg::OccupancyGrid>(map_topic, 4, std::bind(&MWFCN_Algo::mapCallBack, this, _1));
@@ -75,15 +75,20 @@ MWFCN_Algo:: MWFCN_Algo() :
     // trajectory_query_client =this->create_client<cartographer_ros_msgs::srv::TrajectoryQuery>(trajectory_query_name);
     // trajectory_query_client->wait_for_service();
 
+    sim_exploration_state_.data = false;
+    sim_exploration_state_publisher_ = this->create_publisher<std_msgs::msg::Bool>("/"+robot_ano_frame_preffix+std::to_string(this_robot_idx)+"/exploration_state", 1);
+    timer_exploration_state_publisher_ = this->create_wall_timer( std::chrono::duration<double>(1.0), std::bind(&MWFCN_Algo::publish_exploration_state, this));
+
+
     this->client_ptr_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, ns + "/navigate_to_pose");
     
-    timer_main = this->create_wall_timer(2s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
-    robotGoal.pose.header.frame_id=robot_frame;
+    timer_main = this->create_wall_timer(1s, std::bind(&MWFCN_Algo::explore, this));  //TODO adjust the period and return part at line 403
+
     robotGoal.pose.pose.position.z=0;
     robotGoal.pose.pose.orientation.z=1.0;
 
     // ------------------------------------- initilize the visualized points & lines  
-    points.header.frame_id = robot_frame;
+
     points.header.stamp = rclcpp::Time(0);
     points.type 			= points.POINTS;
     points.action           = points.ADD;
@@ -96,7 +101,6 @@ MWFCN_Algo:: MWFCN_Algo() :
     points.color.a			= 1.0;
     points.lifetime         = rclcpp::Duration(0,0); // TODO : currently points are stored forever
 
-    line.header.frame_id    = robot_frame;
     line.header.stamp       = rclcpp::Time(0);
     line.type				= line.LINE_LIST;
     line.action             = line.ADD;
@@ -221,7 +225,7 @@ void MWFCN_Algo::explore(){
                 continue;
             }
         }
-        std::cout << "number targets after erase (costmap): " << targets.size() << std::endl;
+        // std::cout << "number targets after erase (costmap): " << targets.size() << std::endl;
     }
 
     // ------------------------------------------ remove targets within the inflation radius of obstacles.
@@ -236,13 +240,14 @@ void MWFCN_Algo::explore(){
             }
         
         }
-        std::cout << "number targets after erase (obstacles): " << targets.size() << std::endl;
+        // std::cout << "number targets after erase (obstacles): " << targets.size() << std::endl;
     }
 
     // ------------------------------------------ exploration finish detection
     if(targets.size() == 0){
         if(no_targets_count == 8){
             std::cout << "exploration done" << std::endl;
+            sim_exploration_state_.data = true;
             // std::vector<geometry_msgs::msg::PointStamped> path_list;
             // auto request = std::make_shared<cartographer_ros_msgs::srv::TrajectoryQuery::Request>();
             // request->trajectory_id = 0;
@@ -333,7 +338,7 @@ void MWFCN_Algo::explore(){
             for (int i = size_target_process-1; i >= 0 ; i--){
                 for (int j = 0; j < target_cluster.size(); j++){
                     int dis_ = abs(target_process[i][0] - target_cluster[j][0]) +  abs(target_process[i][1] - target_cluster[j][1]);
-                    if(dis_ < 3){
+                    if(dis_ < 4){
                         target_cluster.push_back(target_process[i]);
                         target_process.erase(target_process.begin() + i);
                         condition = true;
@@ -394,6 +399,8 @@ void MWFCN_Algo::explore(){
     // ------------------------------------------ receive robots' locations
     bool ifmapmerged_vec[n_robot];
     geometry_msgs::msg::TransformStamped transform_robot[n_robot];
+   
+
 
     for(int i = 0; i < n_robot; i++){
 
@@ -406,6 +413,19 @@ void MWFCN_Algo::explore(){
 
         try{
             transform_= buffer->lookupTransform(robot_frame, robots_frame_[i],tf2::TimePointZero);
+            RCLCPP_WARN_STREAM(this->get_logger(), robots_frame_[i] + " to "+robot_frame+ " transform is available" );
+
+
+            transform_robot[i] = transform_;
+            ifmapmerged_vec[i] = true;
+
+
+            int index_[2] = {int(round((transform_robot[i].transform.translation.y- mapData.info.origin.position.y)/mapData.info.resolution)), int(round((transform_robot[i].transform.translation.x - mapData.info.origin.position.x)/mapData.info.resolution))};
+            int dis_ = abs(currentLoc[0] - index_[0]) + abs(currentLoc[1] - index_[1]);
+
+
+        
+
         }
         catch( const tf2::TransformException & ex){
             RCLCPP_WARN_STREAM(this->get_logger(), robots_frame_[i] + " to " + robot_frame + " transform is not available : " + ex.what());
@@ -415,8 +435,7 @@ void MWFCN_Algo::explore(){
 
 
         //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_.getOrigin().getX() << ", "<<   transform_.getOrigin().getY()<< " )" << std::endl;
-        transform_robot[i] = transform_;
-        ifmapmerged_vec[i] = true;
+        
         //std::cout<< robot_frame << " receive " << robots_frame[i] << " (" << transform_robot[i].getOrigin().getX() << ", "<<   transform_robot[i].getOrigin().getY()<< " )" << std::endl;
 
     }
@@ -433,12 +452,14 @@ void MWFCN_Algo::explore(){
     //std::map<int, int> hist{};
 
     // ------------------------------------------ Colored noise (White: alpha = 0.0, Pink: alpha = 1.0, Brown: alpha = 2.0)
-    float sigma = 0.6; //for the potential function
+    float sigma = 12.0; //for the potential function
     double alpha = 2;
     //int n = n_robot;
     double q_d = 0.095;
     int seed = 0;
     double *noise;
+
+
 
     while(iteration < 3000 && minDis2Frontier > 1){
         // ------------------------------------------
@@ -487,7 +508,7 @@ void MWFCN_Algo::explore(){
                         attract     = attract - K_ATTRACT*infoGain_cluster[j]/temp;
                     }
 
-                    // there is no need to calculate potential of obstacles because information of obstacles have already been encoded in wave-front distance.
+                    // // there is no need to calculate potential of obstacles because information of obstacles have already been encoded in wave-front distance.
                     // for (int j = 0; j < obstacles.size(); j++){
                     //     float dis_obst = abs(obstacles[j][0]- curr_around[0]) + abs(obstacles[j][1]- curr_around[1]);
                     //     if( dis_obst <= DIS_OBTSTACLE) {
@@ -504,8 +525,9 @@ void MWFCN_Algo::explore(){
                     }
 
 
-                    // Add impact of robots.
-                    
+                    //Add impact of robots.
+                   
+
                     for(int i = 0; i < n_robot; i++){
                         if(ifmapmerged_vec[i] ){
                             int index_[2] = {int(round((transform_robot[i].transform.translation.y- mapData.info.origin.position.y)/mapData.info.resolution)), int(round((transform_robot[i].transform.translation.x - mapData.info.origin.position.x)/mapData.info.resolution))};
@@ -514,8 +536,9 @@ void MWFCN_Algo::explore(){
                             seed++;
                             noise = f_alpha ( n_robot, q_d, alpha, &seed );
                             if( dis_ < ROBOT_INTERFERE_RADIUS){
-                                float temp_ = exp((dis_ - ROBOT_INTERFERE_RADIUS)/sigma) + noise[i];
+                                float temp_ = exp(-1*(dis_ - ROBOT_INTERFERE_RADIUS)/sigma) +  noise[i];  //There was an issue in original code ,  Need to multiply by -1 to repel.  Change sigma to avoid segmentation faults.(See the shape of the graph)
                                 attract += temp_;
+                                
 
                                 // std::cout << "sigma: " << sigma << std::endl;
                                 // std::cout << "noise: " << noise[i] << std::endl;
@@ -637,15 +660,17 @@ void MWFCN_Algo::explore(){
         
 }
 
-void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg)
+void MWFCN_Algo::mapCallBack(const nav_msgs::msg::OccupancyGrid::SharedPtr msg)
+
 {
     //_mt.lock();
 	mapData=*msg;
     // std::cout << "assigner receives map" << std::endl;
+    RCLCPP_INFO(this->get_logger(),"assigner receives map");
     //_mt.unlock();
 }
 
-void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg)
+void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::SharedPtr msg)
 {
     //_mt.lock();
 	costmapData=*msg;
@@ -654,7 +679,7 @@ void MWFCN_Algo::costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::Const
 }
 
 
-void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg)
+void MWFCN_Algo::rvizCallBack(const geometry_msgs::msg::PointStamped::SharedPtr msg)
 { 
 	p.x=msg->point.x;
 	p.y=msg->point.y;
@@ -681,47 +706,65 @@ void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backu
             std::cout << "distance exceeds MAXIMUM SETUP" << std::endl;
             return;
         }
-        for (int i = 0; i < curr_iter.size(); i++) {
+        for (int i = 0; i < curr_iter.size(); i++) {    //Check array bounds of  each condition to avoid segmentation faults in ROS2. (In ROS1 code, this wasn't and no segmentation faluts)
+
+            if (  ((curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1])>=0  && ((curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1])< HEIGHT*WIDTH  ){
             if (dismap_[(curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1]] == 0) {
                 dismap_[(curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1]] = iter + 3;
                 next_iter.push_back(new int[2]{curr_iter[i][0] + 1, curr_iter[i][1]});
             }
+            }
+           
 
+            if (  ((curr_iter[i][0] ) * WIDTH + curr_iter[i][1] + 1)>=0  && ((curr_iter[i][0] ) * WIDTH + curr_iter[i][1] + 1)< HEIGHT*WIDTH  ){ 
             if (dismap_[(curr_iter[i][0]) * WIDTH + curr_iter[i][1] + 1] == 0) {
                 dismap_[(curr_iter[i][0]) * WIDTH + curr_iter[i][1] + 1] = iter + 3;
                 next_iter.push_back(new int[2]{curr_iter[i][0], curr_iter[i][1] + 1});
             }
-
+            }
+                     
+            if (  ((curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1])>=0  &&  ((curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1])< HEIGHT*WIDTH  ){ 
             if (dismap_[(curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1]] == 0) {
                 dismap_[(curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1]] = iter + 3;
                 next_iter.push_back(new int[2]{curr_iter[i][0] - 1, curr_iter[i][1]});
             }
-
+            }
+                        
+            if (  ((curr_iter[i][0] ) * WIDTH + curr_iter[i][1]-1)>=0  && ((curr_iter[i][0] ) * WIDTH + curr_iter[i][1]-1)< HEIGHT*WIDTH  ){ 
             if (dismap_[(curr_iter[i][0]) * WIDTH + curr_iter[i][1] - 1] == 0) {
                 dismap_[(curr_iter[i][0]) * WIDTH + curr_iter[i][1] - 1] = iter + 3;
                 next_iter.push_back(new int[2]{curr_iter[i][0], curr_iter[i][1] - 1});
             }
-
+            }
+            
+            if (  ((curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] + 1)>=0  && ((curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] + 1)< HEIGHT*WIDTH  ){ 
             if (dismap_[(curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] + 1] == 0) {
                 dismap_[(curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] + 1] = iter + 4;
                 next_iter.push_back(new int[2]{curr_iter[i][0] + 1, curr_iter[i][1] + 1});
             }
-
+            }
+            
+            if (  ((curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] - 1)>=0  && ((curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] - 1)< HEIGHT*WIDTH  ){ 
             if (dismap_[(curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] - 1] == 0) {
                 dismap_[(curr_iter[i][0] + 1) * WIDTH + curr_iter[i][1] - 1] = iter + 4;
                 next_iter.push_back(new int[2]{curr_iter[i][0] + 1, curr_iter[i][1] - 1});
             }
-
+            }
+        
+            if (  ((curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] + 1)>=0  && ((curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] + 1)< HEIGHT*WIDTH  ){ 
             if (dismap_[(curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] + 1] == 0) {
                 dismap_[(curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] + 1] = iter + 4;
                 next_iter.push_back(new int[2]{curr_iter[i][0] - 1, curr_iter[i][1] + 1});
             }
-
+            }
+          
+            if (  ((curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] - 1 )>=0  && ((curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] - 1 )< HEIGHT*WIDTH  ){ 
             if (dismap_[(curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] - 1] == 0) {
                 dismap_[(curr_iter[i][0] - 1) * WIDTH + curr_iter[i][1] - 1] = iter + 4;
                 next_iter.push_back(new int[2]{curr_iter[i][0] - 1, curr_iter[i][1] - 1});
             }
-
+            }
+       
         }
         for (int curr_idx = 0; curr_idx < curr_iter.size(); curr_idx++){
             delete [] curr_iter[curr_idx];
@@ -738,7 +781,10 @@ void MWFCN_Algo::dismapConstruction_start_target(int* dismap_, int* dismap_backu
 
 bool MWFCN_Algo::map_data_available(){
     if (!(mapData.data.size() < 1 || costmapData.data.size()<1)){
-
+        robotGoal.pose.header.frame_id=mapData.header.frame_id;
+        points.header.frame_id = mapData.header.frame_id;
+        line.header.frame_id    = mapData.header.frame_id;
+        robot_frame =mapData.header.frame_id;
         return true;
     }
 
@@ -764,5 +810,11 @@ void MWFCN_Algo::debug_param(){
       <<"\noutput_file: "<<output_file
       );
 
+
+}
+
+void MWFCN_Algo::publish_exploration_state(void){
+    
+    sim_exploration_state_publisher_ -> publish(sim_exploration_state_);
 
 }

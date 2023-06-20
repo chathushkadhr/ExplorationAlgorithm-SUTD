@@ -5,6 +5,7 @@
 #include <exploration/colored_noise.h>
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "std_msgs/msg/bool.hpp"
 #include "nav_msgs/msg/occupancy_grid.hpp"
 #include "visualization_msgs/msg/marker.hpp"
 #include "geometry_msgs/msg/point_stamped.hpp"
@@ -21,10 +22,13 @@
 #include<iomanip>
 #include<string>
 #include<cstdlib>
+#include "std_msgs/msg/bool.h"
 
 #define LARGEST_MAP_DISTANCE 500000 
 #define K_ATTRACT 1
 #define ROBOT_INTERFERE_RADIUS 50
+#define ETA_REPLUSIVE 3
+#define DIS_OBTSTACLE 6
 
 
 using namespace std::chrono_literals;
@@ -46,13 +50,14 @@ namespace exploration{
     private:
       void timer_callback();
       void debug_param();
-      void mapCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg);
-      void costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::ConstPtr & msg);
-      void rvizCallBack(const geometry_msgs::msg::PointStamped::ConstPtr & msg);
+      void mapCallBack(const nav_msgs::msg::OccupancyGrid::SharedPtr msg);
+      void costmapMergedCallBack(const nav_msgs::msg::OccupancyGrid::SharedPtr msg);
+      void rvizCallBack(const geometry_msgs::msg::PointStamped::SharedPtr msg);
       void dismapConstruction_start_target(int* dismap_, int* dismap_backup_, int* curr, int HEIGHT, int WIDTH);
       void check_clicked_points();
       bool map_data_available();  
       void explore();
+      void publish_exploration_state(void);
 
       nav2_msgs::action::NavigateToPose_Goal robotGoal;
       //geometry_msgs::msg::PoseStamped robotGoal;
@@ -92,6 +97,12 @@ namespace exploration{
       // tf2_ros::TransformListener listener{buffer};
       std::unique_ptr<tf2_ros::Buffer> buffer;
       std::shared_ptr<tf2_ros::TransformListener> listener{nullptr};
+
+      rclcpp::TimerBase::SharedPtr timer_exploration_state_publisher_;
+      std_msgs::msg::Bool sim_exploration_state_;
+      rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr sim_exploration_state_publisher_;
+
+      
       
     
 

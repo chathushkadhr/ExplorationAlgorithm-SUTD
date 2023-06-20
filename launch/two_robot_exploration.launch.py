@@ -18,7 +18,7 @@ def generate_launch_description():
     
     start_robot1_exploration_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
-            get_package_share_directory('exploration'),"launch", 'exp_launch.launch.py')),
+            get_package_share_directory('exploration_khattiya'),"launch", 'exp_launch.launch.py')),
         launch_arguments={
                             'namespace': 'robot1', 
                             'index': '1',
@@ -26,7 +26,7 @@ def generate_launch_description():
 
     start_robot2_exploration_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
-            get_package_share_directory('exploration'),"launch", 'exp_launch.launch.py')),
+            get_package_share_directory('exploration_khattiya'),"launch", 'exp_launch.launch.py')),
         launch_arguments={
                             'namespace': 'robot2',
                             'index': '2',

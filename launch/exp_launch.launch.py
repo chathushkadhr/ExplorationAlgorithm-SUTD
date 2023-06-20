@@ -13,7 +13,7 @@ from launch.actions import TimerAction
     
 def generate_launch_description():
     
-    pkg_dir = get_package_share_directory("exploration")
+    pkg_dir = get_package_share_directory("exploration_khattiya")
 
     #Declare arguments
     declare_arg_namespace = DeclareLaunchArgument('namespace',
@@ -40,7 +40,7 @@ def generate_launch_description():
                     ('/tf', 'tf')]
     
     node1 = Node(
-            package='exploration',
+            package='exploration_khattiya',
             # namespace='turtlesim1',
             executable='exec_exp',
             name='MWFCN_node',
@@ -49,7 +49,7 @@ def generate_launch_description():
             output="screen",
             parameters=[ {'use_sim_time': use_sim_time},
             ParameterFile(os.path.join(pkg_dir, 'config', 'params.yaml'), allow_substs=True)],
-            prefix=['xterm -e gdb -ex run --args']
+            
         # arguments=['--ros-args', '--log-level', 'debug'],
         #emulate_tty=True)
             

@@ -3,14 +3,12 @@ $(var namespace)/MWFCN_node:
       # Map Topic discovery
     map_topic: /$(var namespace)/map
     costmap_topic: /$(var namespace)/global_costmap/costmap
-    robot_base_frame: $(var namespace)/base_footprint
+    robot_base_frame: base_footprint
     robot_frame: $(var namespace)/map
     namespace: /$(var namespace)
-    rate: 1
     inflation_radius: 6.0
     n_robot: 2
     this_robot_idx: $(var index)
     robot_ano_frame_preffix: robot
     robot_ano_frame_suffix: /base_footprint
-
 
